@@ -1,0 +1,27 @@
+{
+  "name": "@swaply/api",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "deploy": "wrangler deploy",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.2.2",
+    "@swaply/db": "workspace:*",
+    "@swaply/types": "workspace:*",
+    "hono": "^4.4.0",
+    "stripe": "^16.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "tsx": "^4.15.0",
+    "typescript": "^5.4.0",
+    "wrangler": "^3.60.0"
+  }
+}
