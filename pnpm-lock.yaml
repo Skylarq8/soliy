@@ -161,6 +161,10 @@ importers:
         version: 5.9.3
 
   packages/types:
+    dependencies:
+      '@swaply/db':
+        specifier: workspace:*
+        version: link:../db
     devDependencies:
       typescript:
         specifier: ^5.4.0

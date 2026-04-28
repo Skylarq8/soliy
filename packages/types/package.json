@@ -5,6 +5,9 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "dependencies": {
+    "@swaply/db": "workspace:*"
+  },
   "devDependencies": {
     "typescript": "^5.4.0"
   }
