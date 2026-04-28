@@ -8,10 +8,10 @@ export function useSwapChat(proposalId: string) {
   useEffect(() => {
     supabase
       .from('messages')
-      .select('*, users:sender_id(nickname, avatar_url)')
+      .select('*, users(nickname, avatar_url)')
       .eq('proposal_id', proposalId)
       .order('created_at')
-      .then(({ data }) => setMessages((data as Message[]) ?? []))
+      .then(({ data }) => setMessages((data as unknown as Message[]) ?? []))
 
     const channel = supabase
       .channel(`proposal:${proposalId}`)
