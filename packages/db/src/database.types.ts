@@ -3,7 +3,7 @@
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       users: {
@@ -37,6 +37,7 @@ export interface Database {
           is_admin?: boolean
           created_at?: string
         }
+        Relationships: []
       }
       listings: {
         Row: {
@@ -44,7 +45,7 @@ export interface Database {
           user_id: string
           title: string
           description: string | null
-          category: 'clothing' | 'skincare' | 'makeup' | 'accessories'
+          category: string
           photos: string[]
           condition: number
           price: number | null
@@ -54,7 +55,7 @@ export interface Database {
           verify_tier: number
           verify_expiry: string | null
           category_meta: Json | null
-          status: 'active' | 'swapped' | 'sold' | 'archived'
+          status: string
           created_at: string
         }
         Insert: {
@@ -62,7 +63,7 @@ export interface Database {
           user_id: string
           title: string
           description?: string | null
-          category: 'clothing' | 'skincare' | 'makeup' | 'accessories'
+          category: string
           photos: string[]
           condition: number
           price?: number | null
@@ -72,10 +73,36 @@ export interface Database {
           verify_tier?: number
           verify_expiry?: string | null
           category_meta?: Json | null
-          status?: 'active' | 'swapped' | 'sold' | 'archived'
+          status?: string
           created_at?: string
         }
-        Update: Partial<Database['public']['Tables']['listings']['Insert']>
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          description?: string | null
+          category?: string
+          photos?: string[]
+          condition?: number
+          price?: number | null
+          swap_enabled?: boolean
+          boost_until?: string | null
+          verified?: boolean
+          verify_tier?: number
+          verify_expiry?: string | null
+          category_meta?: Json | null
+          status?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "listings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       proposals: {
         Row: {
@@ -85,8 +112,9 @@ export interface Database {
           offered_items: string[]
           requested_items: string[]
           money_offer: number
-          status: 'pending' | 'accepted' | 'declined' | 'countered' | 'completed'
+          status: string
           escrow_id: string | null
+          category_meta: Json | null
           created_at: string
           updated_at: string
         }
@@ -97,12 +125,26 @@ export interface Database {
           offered_items: string[]
           requested_items: string[]
           money_offer?: number
-          status?: 'pending' | 'accepted' | 'declined' | 'countered' | 'completed'
+          status?: string
           escrow_id?: string | null
+          category_meta?: Json | null
           created_at?: string
           updated_at?: string
         }
-        Update: Partial<Database['public']['Tables']['proposals']['Insert']>
+        Update: {
+          id?: string
+          sender_id?: string
+          receiver_id?: string
+          offered_items?: string[]
+          requested_items?: string[]
+          money_offer?: number
+          status?: string
+          escrow_id?: string | null
+          category_meta?: Json | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       messages: {
         Row: {
@@ -121,7 +163,15 @@ export interface Database {
           blocked?: boolean
           created_at?: string
         }
-        Update: Partial<Database['public']['Tables']['messages']['Insert']>
+        Update: {
+          id?: string
+          proposal_id?: string
+          sender_id?: string
+          content?: string
+          blocked?: boolean
+          created_at?: string
+        }
+        Relationships: []
       }
       reviews: {
         Row: {
@@ -142,7 +192,16 @@ export interface Database {
           comment?: string | null
           created_at?: string
         }
-        Update: Partial<Database['public']['Tables']['reviews']['Insert']>
+        Update: {
+          id?: string
+          proposal_id?: string
+          reviewee_id?: string
+          reviewer_id?: string
+          rating?: number
+          comment?: string | null
+          created_at?: string
+        }
+        Relationships: []
       }
       verifications: {
         Row: {
@@ -150,7 +209,7 @@ export interface Database {
           listing_id: string
           tier: number
           photos: string[]
-          status: 'pending' | 'approved' | 'rejected'
+          status: string
           reviewed_at: string | null
           expires_at: string | null
           admin_note: string | null
@@ -160,12 +219,22 @@ export interface Database {
           listing_id: string
           tier: number
           photos: string[]
-          status?: 'pending' | 'approved' | 'rejected'
+          status?: string
           reviewed_at?: string | null
           expires_at?: string | null
           admin_note?: string | null
         }
-        Update: Partial<Database['public']['Tables']['verifications']['Insert']>
+        Update: {
+          id?: string
+          listing_id?: string
+          tier?: number
+          photos?: string[]
+          status?: string
+          reviewed_at?: string | null
+          expires_at?: string | null
+          admin_note?: string | null
+        }
+        Relationships: []
       }
       follows: {
         Row: {
@@ -176,7 +245,11 @@ export interface Database {
           follower_id: string
           following_id: string
         }
-        Update: Partial<Database['public']['Tables']['follows']['Insert']>
+        Update: {
+          follower_id?: string
+          following_id?: string
+        }
+        Relationships: []
       }
       boosts: {
         Row: {
@@ -199,7 +272,17 @@ export interface Database {
           starts_at?: string
           ends_at?: string | null
         }
-        Update: Partial<Database['public']['Tables']['boosts']['Insert']>
+        Update: {
+          id?: string
+          listing_id?: string
+          user_id?: string
+          days?: number
+          amount?: number
+          stripe_id?: string | null
+          starts_at?: string
+          ends_at?: string | null
+        }
+        Relationships: []
       }
       notifications: {
         Row: {
@@ -218,18 +301,68 @@ export interface Database {
           read?: boolean
           created_at?: string
         }
-        Update: Partial<Database['public']['Tables']['notifications']['Insert']>
+        Update: {
+          id?: string
+          user_id?: string
+          type?: string
+          payload?: Json | null
+          read?: boolean
+          created_at?: string
+        }
+        Relationships: []
       }
+      categories: {
+        Row: {
+          id: string
+          name: string
+          parent_id: string | null
+          icon: string
+          fields: Json
+          sort_order: number
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          id: string
+          name: string
+          parent_id?: string | null
+          icon?: string
+          fields?: Json
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          parent_id?: string | null
+          icon?: string
+          fields?: Json
+          sort_order?: number
+          is_active?: boolean
+          created_at?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
     }
     Functions: {
       increment_swap_count: {
         Args: { user_id: string }
-        Returns: void
+        Returns: undefined
       }
       increment_violation: {
         Args: { user_id: string }
-        Returns: void
+        Returns: undefined
       }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
     }
   }
 }
