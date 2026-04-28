@@ -1,15 +1,15 @@
 'use client'
 import { useEffect, useState } from 'react'
-import { api } from '@/lib/api'
+import { supabase } from '@/lib/supabase'
 import type { Notification } from '@swaply/types'
 import Link from 'next/link'
 
 const TYPE_LABELS: Record<string, string> = {
-  new_proposal:     'Шинэ proposal ирлээ',
-  proposal_accepted:'Proposal зөвшөөрлөө',
-  new_message:      'Шинэ мессеж',
-  verified:         'Зар баталгаажлаа',
-  boost_expiring:   'Boost дуусах гэж байна',
+  new_proposal:      'Шинэ proposal ирлээ',
+  proposal_accepted: 'Proposal зөвшөөрлөө',
+  new_message:       'Шинэ мессеж',
+  verified:          'Зар баталгаажлаа',
+  boost_expiring:    'Boost дуусах гэж байна',
 }
 
 export default function NotificationsPage() {
@@ -17,16 +17,35 @@ export default function NotificationsPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    api.users.notifications()
-      .then(({ notifications }: { notifications: Notification[] }) => {
-        setNotifications(notifications)
-        setLoading(false)
-        api.users.markAllRead()
-      })
-      .catch(() => setLoading(false))
+    async function load() {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (!session) { setLoading(false); return }
+
+      const { data } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', session.user.id)
+        .order('created_at', { ascending: false })
+        .limit(50)
+
+      setNotifications((data ?? []) as Notification[])
+      setLoading(false)
+
+      // Mark all as read
+      await supabase
+        .from('notifications')
+        .update({ read: true })
+        .eq('user_id', session.user.id)
+        .eq('read', false)
+    }
+    load()
   }, [])
 
-  if (loading) return <div className="flex items-center justify-center h-64 text-muted-foreground">Уншиж байна…</div>
+  if (loading) return (
+    <div className="flex items-center justify-center h-64">
+      <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+    </div>
+  )
 
   return (
     <div className="max-w-lg mx-auto px-4 py-6">
@@ -44,7 +63,11 @@ export default function NotificationsPage() {
             <Link
               key={n.id}
               href={href}
-              className={`block rounded-2xl border p-4 transition-colors hover:bg-muted/50 ${!n.read ? 'border-violet-200 dark:border-violet-800 bg-violet-50 dark:bg-violet-950/30' : 'border-border'}`}
+              className={`block rounded-2xl border p-4 transition-colors hover:bg-muted/50 ${
+                !n.read
+                  ? 'border-primary/30 bg-primary/5'
+                  : 'border-border'
+              }`}
             >
               <p className="text-sm font-medium">{TYPE_LABELS[n.type] ?? n.type}</p>
               <p className="text-xs text-muted-foreground mt-0.5">
