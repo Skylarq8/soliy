@@ -52,119 +52,113 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Right — decorative mock UI */}
-        <div className="flex-1 flex justify-center items-start pt-2 lg:pt-6 relative">
-          <div className="relative w-full max-w-lg">
+        {/* Right — decorative mock UI, flex-col so notification never overlaps */}
+        <div className="flex-1 flex flex-col items-center gap-4 pt-2 lg:pt-6">
 
-            {/* Swap Protected badge — centered at top */}
-            <div className="absolute -top-10 left-1/2 -translate-x-1/2 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-card text-xs font-medium text-foreground whitespace-nowrap">
-              <svg className="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-              </svg>
-              Swap Protected
+          {/* Swap Protected badge */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-card border border-border shadow-sm text-xs font-medium text-foreground whitespace-nowrap">
+            <svg className="w-3.5 h-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+            Swap Protected
+          </div>
+
+          {/* Cards + swap center row */}
+          <div className="w-full max-w-lg flex gap-3 items-stretch">
+
+            {/* Card 1 — Can Swap · Verified seller */}
+            <div className="group flex-1 min-w-0 flex flex-col bg-card rounded-2xl shadow-card overflow-hidden border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+              <div className="relative overflow-hidden flex-shrink-0 h-32 sm:h-52">
+                <img
+                  src="https://i.pinimg.com/1200x/dd/a4/b8/dda4b8d9db65a71b788fb130e402b87e.jpg"
+                  alt="Oversized Hoodie"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+                {/* СОЛИХ badge — only badge needed */}
+                <div className="absolute top-1.5 left-1.5">
+                  <span className="px-1.5 sm:px-2 py-px sm:py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-[10px] lg:text-xs font-bold flex items-center gap-0.5 sm:gap-1">
+                    <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                    </svg>
+                    СОЛИХ
+                  </span>
+                </div>
+                {/* Verified — compact green circle icon only */}
+                <div className="absolute top-1.5 right-1.5">
+                  <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-500 flex items-center justify-center">
+                    <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <div className="p-3 sm:p-4 flex-1 flex flex-col">
+                <p className="text-sm font-bold text-foreground leading-snug line-clamp-2">Oversized Hoodie</p>
+                <p className="text-base sm:text-base lg:text-lg font-extrabold text-primary mt-1">85,000₮</p>
+                <div className="mt-auto pt-3 flex items-center justify-between gap-1">
+                  <div className="flex items-center gap-1 min-w-0">
+                    <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary flex-shrink-0">Б</div>
+                    <span className="text-xs text-muted-foreground truncate">@bold</span>
+                    <svg className="w-3 h-3 text-blue-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <span className="text-xs text-yellow-500 font-medium flex-shrink-0">⭐ 4.9</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-1">2 цаг өмнө</p>
+              </div>
             </div>
 
-            {/* Cards + swap button row */}
-            <div className="flex gap-3 items-stretch">
-
-              {/* Card 1 — Can Swap · Verified seller */}
-              <div className="flex-1 flex flex-col bg-card rounded-xl shadow-card-hover overflow-hidden">
-                <div className="relative overflow-hidden flex-shrink-0 h-32 sm:h-52">
-                  <img
-                    src="https://i.pinimg.com/1200x/dd/a4/b8/dda4b8d9db65a71b788fb130e402b87e.jpg"
-                    alt="Oversized Hoodie"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  {/* Swap badge — top left */}
-                  <div className="absolute top-1.5 left-1.5">
-                    <span className="px-1.5 sm:px-2 py-px sm:py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] lg:text-xs font-bold flex items-center gap-0.5 sm:gap-1">
-                      <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                      </svg>
-                      СОЛИХ
-                    </span>
-                  </div>
-                  {/* Verified badge — top right */}
-                  <div className="absolute top-1.5 right-1.5">
-                    <span className="flex items-center gap-0.5 px-1 sm:px-1.5 py-px sm:py-0.5 rounded-full bg-green-500 text-white text-[9px] sm:text-[10px] lg:text-xs font-medium">
-                      <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                      <span className="hidden sm:inline">Баталгаажсан</span>
-                    </span>
-                  </div>
-                </div>
-                <div className="p-2.5 sm:p-4 flex-1 flex flex-col">
-                  <p className="text-xs sm:text-sm lg:text-base font-bold text-foreground leading-tight">Oversized Hoodie</p>
-                  <p className="text-sm sm:text-base lg:text-lg font-extrabold text-primary mt-0.5">85,000₮</p>
-                  <div className="mt-auto pt-2 flex items-center justify-between gap-1">
-                    <div className="flex items-center gap-1 min-w-0">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-primary/20 flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-primary flex-shrink-0">Б</div>
-                      <span className="text-[10px] sm:text-[11px] text-muted-foreground truncate">@bold</span>
-                      {/* Verified checkmark next to name */}
-                      <svg className="w-3 h-3 text-blue-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                      </svg>
-                    </div>
-                    <span className="text-[10px] text-yellow-500 font-medium flex-shrink-0">⭐ 4.9</span>
-                  </div>
-                  <p className="text-[9px] text-muted-foreground mt-0.5">2 цаг өмнө</p>
-                </div>
+            {/* Swap center — stronger */}
+            <div className="flex flex-col items-center justify-center gap-2 flex-shrink-0">
+              <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shadow-lg ring-4 ring-primary/20">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                </svg>
               </div>
-
-              {/* Swap center */}
-              <div className="flex flex-col items-center justify-center gap-2 flex-shrink-0">
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center shadow-lg">
-                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                  </svg>
-                </div>
-                <div className="px-2 py-1 rounded-full bg-card border border-accent/30 text-accent text-[11px] font-bold whitespace-nowrap">
-                  + 40,000₮
-                </div>
+              <div className="px-2 py-1 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-extrabold whitespace-nowrap">
+                + 40,000₮
               </div>
+            </div>
 
-              {/* Card 2 — Sell only · Not verified */}
-              <div className="flex-1 flex flex-col bg-card rounded-xl shadow-card-hover overflow-hidden">
-                <div className="relative overflow-hidden flex-shrink-0 h-32 sm:h-52">
-                  <img
-                    src="https://i.pinimg.com/736x/29/56/dc/2956dc4256ab83324d95c0fbf92883cd.jpg"
-                    alt="Air Max Sneakers"
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                  {/* Sell-only badge — no swap available */}
-                  <div className="absolute top-1.5 left-1.5">
-                    <span className="px-1.5 sm:px-2 py-px sm:py-0.5 rounded-full bg-amber-500 text-white text-[9px] sm:text-[10px] lg:text-xs font-bold">ЗАРНА</span>
+            {/* Card 2 — No badge (sell only is the default, no clutter) */}
+            <div className="group flex-1 min-w-0 flex flex-col bg-card rounded-2xl shadow-card overflow-hidden border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+              <div className="relative overflow-hidden flex-shrink-0 h-32 sm:h-52">
+                <img
+                  src="https://i.pinimg.com/736x/29/56/dc/2956dc4256ab83324d95c0fbf92883cd.jpg"
+                  alt="Air Max Sneakers"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+              <div className="p-3 sm:p-4 flex-1 flex flex-col">
+                <p className="text-sm font-bold text-foreground leading-snug line-clamp-2">Air Max Sneakers</p>
+                <p className="text-base sm:text-base lg:text-lg font-extrabold text-primary mt-1">125,000₮</p>
+                <div className="mt-auto pt-3 flex items-center justify-between gap-1">
+                  <div className="flex items-center gap-1 min-w-0">
+                    <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground flex-shrink-0">Б</div>
+                    <span className="text-xs text-muted-foreground truncate">@bataa</span>
                   </div>
+                  <span className="text-xs text-yellow-500 font-medium flex-shrink-0">⭐ 5.0</span>
                 </div>
-                <div className="p-2.5 sm:p-4 flex-1 flex flex-col">
-                  <p className="text-xs sm:text-sm lg:text-base font-bold text-foreground leading-tight">Air Max Sneakers</p>
-                  <p className="text-sm sm:text-base lg:text-lg font-extrabold text-primary mt-0.5">125,000₮</p>
-                  <div className="mt-auto pt-2 flex items-center justify-between gap-1">
-                    <div className="flex items-center gap-1 min-w-0">
-                      <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-muted flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-muted-foreground flex-shrink-0">Б</div>
-                      <span className="text-[10px] sm:text-[11px] text-muted-foreground truncate">@bataa</span>
-                      {/* No verified icon — not verified seller */}
-                    </div>
-                    <span className="text-[10px] text-yellow-500 font-medium flex-shrink-0">⭐ 5.0</span>
-                  </div>
-                  <p className="text-[9px] text-muted-foreground mt-0.5">5 цаг өмнө</p>
-                </div>
+                <p className="text-[10px] text-muted-foreground mt-1">5 цаг өмнө</p>
               </div>
             </div>
           </div>
-          {/* Offer accepted notification */}
-          <div className="absolute -bottom-14 flex justify-center items-center gap-2.5 px-4 py-2.5 bg-card rounded-xl shadow-card-hover border border-border">
-              <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                Б
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-foreground">Санал зөвшөөрөгдлөө! 🎉</p>
-                <p className="text-[10px] text-muted-foreground">Төлбөр хадгалагдаж байна</p>
-              </div>
+
+          {/* Offer accepted notification — in flow, no overlap */}
+          <div className="flex items-center gap-2.5 px-4 py-2.5 bg-card rounded-xl shadow-sm border border-border">
+            <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+              Б
             </div>
+            <div>
+              <p className="text-xs font-semibold text-foreground">Санал зөвшөөрөгдлөө! 🎉</p>
+              <p className="text-[10px] text-muted-foreground">Төлбөр хадгалагдаж байна</p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

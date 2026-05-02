@@ -7,16 +7,18 @@ const CATEGORIES = [
     sub: 'Дээд, доод, гадуур хувцас',
     count: '12,400+',
     icon: '👗',
-    gradient: 'from-gray-800 via-gray-700 to-gray-900',
+    accent: 'bg-violet-500',
+    hoverTint: 'bg-violet-500/10',
     href: '/explore?category=clothing',
   },
   {
     id: 'skincare',
-    name: 'Арьс засал',
+    name: 'Гоо сайхан',
     sub: 'Сэрүүм, чийгшүүлэгч, SPF',
     count: '5,800+',
     icon: '✨',
-    gradient: 'from-amber-800 via-stone-700 to-amber-900',
+    accent: 'bg-violet-500',
+    hoverTint: 'bg-violet-500/10',
     href: '/explore?category=skincare',
   },
   {
@@ -25,7 +27,8 @@ const CATEGORIES = [
     sub: 'Нич, дизайнер, винтаж',
     count: '3,200+',
     icon: '🌸',
-    gradient: 'from-blue-800 via-indigo-700 to-blue-900',
+    accent: 'bg-violet-500',
+    hoverTint: 'bg-violet-500/10',
     href: '/explore?category=fragrance',
   },
   {
@@ -34,7 +37,8 @@ const CATEGORIES = [
     sub: 'Гоёл, цүнх, нарны шил',
     count: '8,900+',
     icon: '💎',
-    gradient: 'from-stone-500 via-neutral-600 to-stone-700',
+    accent: 'bg-violet-500',
+    hoverTint: 'bg-violet-500/10',
     href: '/explore?category=accessories',
   },
 ]
@@ -63,33 +67,38 @@ export function CategoriesSection() {
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
           {CATEGORIES.map(cat => (
             <Link
               key={cat.id}
               href={cat.href}
-              className="group relative rounded-2xl overflow-hidden h-72 lg:h-96 bg-gradient-to-br hover:shadow-card-hover transition-shadow"
+              className="group relative aspect-square rounded-2xl overflow-hidden bg-card border border-border shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] flex flex-col items-center justify-center gap-2 p-5"
             >
-              {/* Gradient background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${cat.gradient}`} />
+              {/* Colored accent bar — top */}
+              <div className={`absolute top-0 left-0 right-0 h-[3px] ${cat.accent}`} />
 
-              {/* Shine overlay on hover */}
-              <div className="absolute inset-0 opacity-0 group-hover:opacity-10 bg-white transition-opacity" />
+              {/* Hover tint overlay */}
+              <div className={`absolute inset-0 ${cat.hoverTint} opacity-0 group-hover:opacity-100 transition-opacity duration-300`} />
 
-              {/* Icon box */}
-              <div className="absolute top-3 left-3 w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm flex items-center justify-center text-lg">
+              {/* Icon */}
+              <span className="relative z-10 text-4xl md:text-5xl select-none">
                 {cat.icon}
-              </div>
+              </span>
 
-              {/* Bottom text */}
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <h3 className="text-white text-xl md:text-2xl font-extrabold leading-tight">
-                  {cat.name}
-                </h3>
-                <p className="text-white/70 text-xs mt-0.5 mb-3">{cat.sub}</p>
-                <span className="inline-block px-3 py-1 rounded-full bg-black/40 backdrop-blur-sm text-white/90 text-xs font-medium">
-                  {cat.count} бараа
-                </span>
+              {/* Name */}
+              <h3 className="relative z-10 text-foreground text-base md:text-base lg:text-lg font-bold text-center leading-tight">
+                {cat.name}
+              </h3>
+
+              {/* Sub */}
+              <p className="relative z-10 text-muted-foreground text-xs md:text-xs text-center leading-snug px-1">
+                {cat.sub}
+              </p>
+
+              {/* Count + arrow */}
+              <div className="relative z-10 flex items-center gap-1 text-muted-foreground text-xs md:text-xs font-semibold mt-1">
+                <span>{cat.count} бараа</span>
+                <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
               </div>
             </Link>
           ))}
