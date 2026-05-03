@@ -2,14 +2,20 @@ import Link from 'next/link'
 
 export function HeroSection() {
   return (
-    <section className="py-14 md:py-20 overflow-hidden">
+    <section className="py-14 md:py-20 overflow-hidden bg-gradient-to-br from-violet-100/80 via-white to-teal-50/80 dark:from-[#0a1628] dark:via-[#0d2438] dark:to-[#091e18]">
+      {/* Glow */}
+      <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-violet-400/30 rounded-full blur-[120px] opacity-40 pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-teal-400/30 rounded-full blur-[120px] opacity-40 pointer-events-none" />
+
+      {/* Mesh */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(139,92,246,0.15),transparent_40%),radial-gradient(circle_at_70%_80%,rgba(20,184,166,0.15),transparent_40%)] pointer-events-none" />
       <div className="max-w-screen-xl mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
         {/* Left — text */}
         <div className="flex-1 max-w-xl text-center lg:text-left">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/25 bg-primary/5 text-primary text-sm font-medium mb-6">
             <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-              Хэрэглэхгүй зүйлсээ үнэ цэн болгож солилц
+            Хэрэглэхгүй зүйлсээ үнэ цэн болгож солилц
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-[56px] font-extrabold leading-[1.1] tracking-tight mb-5">
@@ -40,9 +46,9 @@ export function HeroSection() {
 
           <div className="flex gap-8 justify-center lg:justify-start">
             {[
-              { value: '50К+', label: 'Идэвхтэй хэрэглэгч' },
+              { value: '50К+',  label: 'Идэвхтэй хэрэглэгч' },
               { value: '200К+', label: 'Нийтлэгдсэн бараа' },
-              { value: '4.9★', label: 'Дундаж үнэлгээ' },
+              { value: '4.9★',  label: 'Дундаж үнэлгээ' },
             ].map(s => (
               <div key={s.label}>
                 <p className="text-2xl font-extrabold text-foreground">{s.value}</p>
@@ -52,7 +58,7 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Right — decorative mock UI, flex-col so notification never overlaps */}
+        {/* Right — decorative mock UI */}
         <div className="flex-1 flex flex-col items-center gap-4 pt-2 lg:pt-6">
 
           {/* Swap Protected badge */}
@@ -66,7 +72,7 @@ export function HeroSection() {
           {/* Cards + swap center row */}
           <div className="w-full max-w-lg flex gap-3 items-stretch">
 
-            {/* Card 1 — Can Swap · Verified seller */}
+            {/* Card 1 */}
             <div className="group flex-1 min-w-0 flex flex-col bg-card rounded-2xl shadow-card overflow-hidden border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
               <div className="relative overflow-hidden flex-shrink-0 h-32 sm:h-52">
                 <img
@@ -76,16 +82,14 @@ export function HeroSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                {/* СОЛИХ badge — only badge needed */}
                 <div className="absolute top-1.5 left-1.5">
-                  <span className="px-1.5 sm:px-2 py-px sm:py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] sm:text-[10px] lg:text-xs font-bold flex items-center gap-0.5 sm:gap-1">
+                  <span className="px-1.5 sm:px-2 py-px sm:py-0.5 rounded-full bg-primary text-primary-foreground text-[10px] font-bold flex items-center gap-0.5 sm:gap-1">
                     <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
                     </svg>
                     СОЛИХ
                   </span>
                 </div>
-                {/* Verified — compact green circle icon only */}
                 <div className="absolute top-1.5 right-1.5">
                   <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-green-500 flex items-center justify-center">
                     <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -96,7 +100,7 @@ export function HeroSection() {
               </div>
               <div className="p-3 sm:p-4 flex-1 flex flex-col">
                 <p className="text-sm font-bold text-foreground leading-snug line-clamp-2">Oversized Hoodie</p>
-                <p className="text-base sm:text-base lg:text-lg font-extrabold text-primary mt-1">85,000₮</p>
+                <p className="text-base font-extrabold text-primary mt-1">85,000₮</p>
                 <div className="mt-auto pt-3 flex items-center justify-between gap-1">
                   <div className="flex items-center gap-1 min-w-0">
                     <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary flex-shrink-0">Б</div>
@@ -111,7 +115,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Swap center — stronger */}
+            {/* Swap center */}
             <div className="flex flex-col items-center justify-center gap-2 flex-shrink-0">
               <div className="w-11 h-11 rounded-full bg-primary flex items-center justify-center shadow-lg ring-4 ring-primary/20">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -123,7 +127,7 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Card 2 — No badge (sell only is the default, no clutter) */}
+            {/* Card 2 */}
             <div className="group flex-1 min-w-0 flex flex-col bg-card rounded-2xl shadow-card overflow-hidden border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
               <div className="relative overflow-hidden flex-shrink-0 h-32 sm:h-52">
                 <img
@@ -136,7 +140,7 @@ export function HeroSection() {
               </div>
               <div className="p-3 sm:p-4 flex-1 flex flex-col">
                 <p className="text-sm font-bold text-foreground leading-snug line-clamp-2">Air Max Sneakers</p>
-                <p className="text-base sm:text-base lg:text-lg font-extrabold text-primary mt-1">125,000₮</p>
+                <p className="text-base font-extrabold text-primary mt-1">125,000₮</p>
                 <div className="mt-auto pt-3 flex items-center justify-between gap-1">
                   <div className="flex items-center gap-1 min-w-0">
                     <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center text-[10px] font-bold text-muted-foreground flex-shrink-0">Б</div>
@@ -149,7 +153,7 @@ export function HeroSection() {
             </div>
           </div>
 
-          {/* Offer accepted notification — in flow, no overlap */}
+          {/* Notification */}
           <div className="flex items-center gap-2.5 px-4 py-2.5 bg-card rounded-xl shadow-sm border border-border">
             <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
               Б

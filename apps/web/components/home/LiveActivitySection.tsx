@@ -51,7 +51,7 @@ export function LiveActivitySection() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
 
           {/* Left */}
-          <div className="flex-1 max-w-md">
+          <div className="flex-1">
             <div className="flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <p className="text-xs font-bold tracking-widest text-green-600 uppercase">

@@ -5,7 +5,7 @@ import { BottomNav } from '@/components/shared/BottomNav'
 import { Footer } from '@/components/shared/Footer'
 
 export const metadata: Metadata = {
-  title: 'Swaply — Солилцоё, Худалдаалъя',
+  title: 'DeerSwaply — Солилцоё, Худалдаалъя',
   description: 'Хувцас, арьс засал, будалт, аксессуарыг second-hand аргаар солих, зарах платформ.',
 }
 
