@@ -1,6 +1,8 @@
 import { supabase } from './supabase'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8787'
+const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (
+  process.env.NODE_ENV === 'development' ? 'http://localhost:8787' : ''
+)
 
 async function getToken(): Promise<string | null> {
   const { data } = await supabase.auth.getSession()
@@ -8,16 +10,25 @@ async function getToken(): Promise<string | null> {
 }
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  if (!API_URL) {
+    throw new Error('API URL тохируулаагүй байна. Vercel дээр NEXT_PUBLIC_API_URL env нэмнэ үү.')
+  }
+
   const token = await getToken()
   const isFormData = init?.body instanceof FormData
-  const res = await fetch(`${API_URL}${path}`, {
-    ...init,
-    headers: {
-      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
-      ...(token ? { Authorization: `Bearer ${token}` } : {}),
-      ...init?.headers,
-    },
-  })
+  let res: Response
+  try {
+    res = await fetch(`${API_URL}${path}`, {
+      ...init,
+      headers: {
+        ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...init?.headers,
+      },
+    })
+  } catch {
+    throw new Error('API сервертэй холбогдож чадсангүй. NEXT_PUBLIC_API_URL зөв эсэхийг шалгана уу.')
+  }
 
   const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`)

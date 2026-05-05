@@ -14,11 +14,11 @@ export function CategoryFields({ category, register, watch }: Props) {
       <SelectField label="Арьсны төрөл" options={['oily', 'dry', 'combination', 'sensitive', 'normal']} {...register('category_meta.skin_type')} />
       <div className="space-y-1">
         <label className="text-sm font-medium">Ашигласан %: {watch('category_meta.percent_used') ?? 0}%</label>
-        <input type="range" min={0} max={100} {...register('category_meta.percent_used', { valueAsNumber: true })} className="w-full accent-violet-600" />
+        <input type="range" min={0} max={100} {...register('category_meta.percent_used', { valueAsNumber: true })} className="w-full accent-primary" />
       </div>
       <Field label="Дуусах огноо" type="date" {...register('category_meta.expiry_date')} />
       <label className="flex items-center gap-2 text-sm cursor-pointer">
-        <input type="checkbox" {...register('category_meta.is_opened')} className="accent-violet-600 w-4 h-4" />
+        <input type="checkbox" {...register('category_meta.is_opened')} className="accent-primary w-4 h-4" />
         Нээгдсэн?
       </label>
     </div>
@@ -40,7 +40,7 @@ export function CategoryFields({ category, register, watch }: Props) {
       <Field label="Формула" placeholder="Matte / Gloss / Serum" {...register('category_meta.formula_type')} />
       <div className="space-y-1">
         <label className="text-sm font-medium">Ашигласан %</label>
-        <input type="range" min={0} max={100} {...register('category_meta.percent_used', { valueAsNumber: true })} className="w-full accent-violet-600" />
+        <input type="range" min={0} max={100} {...register('category_meta.percent_used', { valueAsNumber: true })} className="w-full accent-primary" />
       </div>
       <TextareaField label="Ариун цэврийн тэмдэглэл" placeholder="Спиртэлсэн, давхар хөнгөхгүй…" {...register('category_meta.hygiene_note')} />
     </div>
@@ -64,7 +64,7 @@ function Field({ label, ...props }: { label: string } & React.InputHTMLAttribute
       <label className="text-sm font-medium">{label}</label>
       <input
         {...props}
-        className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+        className="w-full rounded-xl border border-border bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
       />
     </div>
   )
@@ -76,7 +76,7 @@ function SelectField({ label, options, ...props }: { label: string; options: str
       <label className="text-sm font-medium">{label}</label>
       <select
         {...props}
-        className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+        className="w-full rounded-xl border border-border bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary"
       >
         <option value="">Сонгох…</option>
         {options.map(o => <option key={o} value={o} className="capitalize">{o}</option>)}
@@ -92,7 +92,7 @@ function TextareaField({ label, ...props }: { label: string } & React.TextareaHT
       <textarea
         {...props}
         rows={3}
-        className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500 resize-none"
+        className="w-full rounded-xl border border-border bg-card px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary resize-none"
       />
     </div>
   )

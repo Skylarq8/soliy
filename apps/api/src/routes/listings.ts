@@ -11,7 +11,7 @@ const createSchema = z.object({
   title:         z.string().min(3).max(100),
   description:   z.string().max(1000).optional(),
   category:      z.enum(['clothing', 'skincare', 'makeup', 'accessories']),
-  photos:        z.array(z.string().url()).min(2).max(8),
+  photos:        z.array(z.string().url()).min(1).max(8),
   condition:     z.number().int().min(1).max(5),
   price:         z.number().int().positive().optional(),
   swap_enabled:  z.boolean().default(true),

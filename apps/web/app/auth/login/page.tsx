@@ -24,7 +24,11 @@ export default function LoginPage() {
     setError('')
 
     try {
-      const { email } = await api.auth.resolveLogin(identifier)
+      const trimmedIdentifier = identifier.trim()
+      const email = trimmedIdentifier.includes('@')
+        ? trimmedIdentifier.toLowerCase()
+        : (await api.auth.resolveLogin(trimmedIdentifier)).email
+
       const { error: loginError } = await supabase.auth.signInWithPassword({
         email,
         password,
