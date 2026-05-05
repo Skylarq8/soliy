@@ -31,7 +31,12 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   }
 
   const data = await res.json().catch(() => ({}))
-  if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`)
+  if (!res.ok) {
+    if (res.status === 404) {
+      throw new Error('API endpoint олдсонгүй. NEXT_PUBLIC_API_URL нь web URL биш, deploy хийсэн API URL байх ёстой.')
+    }
+    throw new Error(data.error ?? `HTTP ${res.status}`)
+  }
   return data as T
 }
 
