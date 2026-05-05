@@ -3,6 +3,7 @@ import { supabase } from './supabase'
 const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (
   process.env.NODE_ENV === 'development' ? 'http://localhost:8787' : ''
 )
+const API_BASE_URL = API_URL.replace(/\/+$/, '')
 
 async function getToken(): Promise<string | null> {
   const { data } = await supabase.auth.getSession()
@@ -10,7 +11,7 @@ async function getToken(): Promise<string | null> {
 }
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
-  if (!API_URL) {
+  if (!API_BASE_URL) {
     throw new Error('API URL тохируулаагүй байна. Vercel дээр NEXT_PUBLIC_API_URL env нэмнэ үү.')
   }
 
@@ -18,7 +19,7 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const isFormData = init?.body instanceof FormData
   let res: Response
   try {
-    res = await fetch(`${API_URL}${path}`, {
+    res = await fetch(`${API_BASE_URL}${path}`, {
       ...init,
       headers: {
         ...(isFormData ? {} : { 'Content-Type': 'application/json' }),

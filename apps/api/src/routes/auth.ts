@@ -26,6 +26,10 @@ const resolveSchema = z.object({
 const missingProfileColumnsMessage =
   'Database migration is required: add name and phone columns to the users table.'
 
+function missingSupabaseAdminEnv(c: { env: AppEnv['Bindings'] }) {
+  return !c.env.SUPABASE_URL || !c.env.SUPABASE_SERVICE_ROLE_KEY
+}
+
 function normalizePhone(phone: string) {
   const compact = phone.trim().replace(/[\s().-]/g, '')
   return compact.startsWith('00') ? `+${compact.slice(2)}` : compact
@@ -36,6 +40,10 @@ function normalizeEmail(email: string) {
 }
 
 app.post('/register', zValidator('json', registerSchema), async (c) => {
+  if (missingSupabaseAdminEnv(c)) {
+    return c.json({ error: 'API Supabase admin env дутуу байна: SUPABASE_URL болон SUPABASE_SERVICE_ROLE_KEY тохируулна уу.' }, 500)
+  }
+
   const body = c.req.valid('json')
   const name = body.name.trim()
   const nickname = body.nickname.trim()
@@ -98,6 +106,10 @@ app.post('/resolve-login', zValidator('json', resolveSchema), async (c) => {
   }
 
   const phone = normalizePhone(value)
+  if (missingSupabaseAdminEnv(c)) {
+    return c.json({ error: 'API Supabase admin env дутуу байна: SUPABASE_URL болон SUPABASE_SERVICE_ROLE_KEY тохируулна уу.' }, 500)
+  }
+
   const { data, error } = await supabaseAdmin
     .from('users')
     .select('id')

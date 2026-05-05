@@ -18,6 +18,30 @@ import auth      from './routes/auth'
 
 const app = new Hono<AppEnv>()
 
+function allowedCorsOrigin(origin: string, c: { env: AppEnv['Bindings'] }) {
+  if (!origin) return origin
+
+  const allowed = new Set([
+    c.env.WEB_URL,
+    c.env.ADMIN_URL,
+    'http://localhost:3000',
+    'http://localhost:3001',
+  ].filter(Boolean))
+
+  if (allowed.has(origin)) return origin
+
+  try {
+    const { hostname } = new URL(origin)
+    if (hostname === 'localhost' || hostname.endsWith('.vercel.app')) {
+      return origin
+    }
+  } catch {
+    return null
+  }
+
+  return null
+}
+
 app.use('*', async (c, next) => {
   Object.assign(process.env, c.env)
   await next()
@@ -25,7 +49,7 @@ app.use('*', async (c, next) => {
 app.use('*', logger())
 app.use('*', async (c, next) => {
   const middleware = cors({
-    origin: [c.env.WEB_URL ?? 'http://localhost:3000', c.env.ADMIN_URL ?? 'http://localhost:3001'],
+    origin: (origin, corsContext) => allowedCorsOrigin(origin, corsContext),
     allowHeaders: ['Authorization', 'Content-Type'],
     allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   })
@@ -35,6 +59,7 @@ app.use('*', async (c, next) => {
 // Public routes (no auth)
 app.route('/webhooks', webhooks)
 app.route('/auth', auth)
+app.get('/', (c) => c.json({ ok: true, service: 'swaply-api', ts: new Date().toISOString() }))
 app.get('/health', (c) => c.json({ ok: true, ts: new Date().toISOString() }))
 
 // Protected routes
