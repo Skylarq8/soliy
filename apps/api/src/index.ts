@@ -44,6 +44,8 @@ function allowedCorsOrigin(origin: string, c: { env: AppEnv['Bindings'] }) {
 
 app.use('*', async (c, next) => {
   Object.assign(process.env, c.env)
+  process.env.SUPABASE_URL ??= c.env.NEXT_PUBLIC_SUPABASE_URL
+  process.env.SUPABASE_ANON_KEY ??= c.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
   await next()
 })
 app.use('*', logger())

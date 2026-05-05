@@ -27,7 +27,7 @@ const missingProfileColumnsMessage =
   'Database migration is required: add name and phone columns to the users table.'
 
 function missingSupabaseAdminEnv(c: { env: AppEnv['Bindings'] }) {
-  return !c.env.SUPABASE_URL || !c.env.SUPABASE_SERVICE_ROLE_KEY
+  return !(c.env.SUPABASE_URL || c.env.NEXT_PUBLIC_SUPABASE_URL) || !c.env.SUPABASE_SERVICE_ROLE_KEY
 }
 
 function normalizePhone(phone: string) {
