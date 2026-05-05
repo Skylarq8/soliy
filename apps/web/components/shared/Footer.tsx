@@ -15,7 +15,7 @@ const LINKS = {
   ],
   'ТУСЛАМЖ': [
     { label: 'Тусламжийн төв', href: '/help' },
-    { label: 'Биднтэй холбоо барих', href: '/contact' },
+    { label: 'Бидэнтэй холбоо барих', href: '/contact' },
     { label: 'Аюулгүй байдлын зөвлөмж', href: '/safety' },
     { label: 'Асуудал мэдэгдэх', href: '/report' },
   ],
@@ -48,7 +48,7 @@ export function Footer() {
             </div>
 
             <p className="text-sm leading-relaxed mb-6 max-w-xs">
-              Загвар болон гоо сайхны зах зээлийн ухаалаг платформ. Солих, худалдах, зарах итгэлтэйгээр.
+              Загвар болон гоо сайхны барааг солих, зарах, мөнгөн нэмэлттэй тохиролцох ухаалаг платформ.
             </p>
 
             {/* Social links */}
@@ -115,7 +115,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6">
           <p className="text-xs text-white/30 order-2 sm:order-1">
-            © 2025 Swaply, Inc. Бүх эрх хуулиар хамгаалагдсан.
+            © 2026 Swaply, Inc. Бүх эрх хуулиар хамгаалагдсан.
           </p>
 
           <div className="flex items-center gap-5 order-1 sm:order-2">

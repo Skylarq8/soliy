@@ -3,23 +3,14 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
+import { useTheme } from '@/components/shared/ThemeProvider'
 
 export function Navbar() {
   const pathname = usePathname()
   const router = useRouter()
   const [search, setSearch] = useState('')
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark')
-  const [mounted, setMounted] = useState(false)
+  const { theme, toggle } = useTheme()
   const [user, setUser] = useState<{ id: string } | null>(null)
-
-  useEffect(() => {
-    const saved = localStorage.getItem('theme') as 'light' | 'dark' | null
-    const sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const t = saved ?? sys
-    setTheme(t)
-    setMounted(true)
-    document.documentElement.classList.toggle('dark', t === 'dark')
-  }, [])
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user ? { id: data.user.id } : null))
@@ -28,15 +19,6 @@ export function Navbar() {
     })
     return () => subscription.unsubscribe()
   }, [])
-
-  function toggleTheme() {
-    setTheme(prev => {
-      const next = prev === 'dark' ? 'light' : 'dark'
-      localStorage.setItem('theme', next)
-      document.documentElement.classList.toggle('dark', next === 'dark')
-      return next
-    })
-  }
 
   function handleSearch(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -76,6 +58,21 @@ export function Navbar() {
           {navLink('/explore', 'Бараа')}
         </div>
 
+        {/* Mobile search */}
+        {/* <form onSubmit={handleSearch} className="flex md:hidden flex-1 min-w-0">
+          <div className="relative w-full">
+            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+            <input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Бараа хайх"
+              className="w-full min-w-0 pl-9 pr-3 py-1.5 text-sm bg-muted rounded-full border border-border focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/40"
+            />
+          </div>
+        </form> */}
+
         {/* Search — flex-1 on mobile, fixed width on desktop */}
         <form onSubmit={handleSearch} className="hidden md:flex md:flex-none md:w-72">
           <div className="relative w-full">
@@ -97,12 +94,13 @@ export function Navbar() {
 
           {/* Dark mode toggle */}
           <button
-            onClick={toggleTheme}
+            type="button"
+            onClick={toggle}
             className={iconBtn}
-            aria-label="Гэрлийн горим"
+            aria-label={theme === 'dark' ? 'Гэрлийн горим руу солих' : 'Харанхуй горим руу солих'}
             suppressHydrationWarning
           >
-            {mounted && (theme === 'light' ? (
+            {theme === 'light' ? (
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
               </svg>
@@ -110,7 +108,7 @@ export function Navbar() {
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
               </svg>
-            ))}
+            )}
           </button>
 
           {user && (

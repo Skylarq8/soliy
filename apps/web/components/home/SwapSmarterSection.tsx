@@ -1,161 +1,183 @@
 const FEATURES = [
   {
-    emoji: '🤝',
-    title: 'Харилцан тохиролцоо',
-    desc: 'Аль аль тал тохирохоосоо өмнө ямар ч гүйлгээ хийгддэггүй',
+    label: 'Үнэ тэнцүүлэх',
+    desc: 'Барааны үнэ зөрвөл мөнгөн нэмэлтээ ил тод бичнэ.',
   },
   {
-    emoji: '💰',
-    title: 'Уян хатан үнэ',
-    desc: 'Үнийн зөрүүг нохцлохын тулд мөнгөн нэмэлт хийх боломжтой',
+    label: 'Counter хийх',
+    desc: 'Санал таарахгүй бол дүн эсвэл бараагаа өөрчлөөд буцаана.',
   },
   {
-    emoji: '🛡️',
-    title: 'Escrow хамгаалалт',
-    desc: 'Хүргэлт баталгаажих хүртэл хөрөнгийг аюулгүй хадгалдаг',
+    label: 'Шийдвэр хадгалах',
+    desc: 'Зөвшөөрсөн, татгалзсан, counter хийсэн мөр бүр үлдэнэ.',
   },
+]
+
+const TIMELINE = [
+  { label: 'Санал ирсэн', value: 'Кашмер пальто ⇄ Nike пүүз' },
+  { label: 'Үнийн зөрүү', value: '+35,000₮ нэмэлт' },
+  { label: 'Төлөв', value: 'Хүлээгдэж байна' },
 ]
 
 export function SwapSmarterSection() {
   return (
     <section className="py-14 md:py-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-6">
+        <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-12 items-start">
 
-        {/* Header */}
-        <div className="text-center mb-12">
-          <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
-            SWAPLY АРГА
-          </p>
-          <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mb-3">
-            Зөвхөн худалдаж авдаг биш —{' '}
-            <span className="text-accent">Ухаалгаар солилцоорой</span>
-          </h2>
-          <p className="text-muted-foreground max-w-lg mx-auto text-sm md:text-base">
-            Хэрэггүй болсон зүйлсийг хүссэн зүйлдээ солилцоорой. Үнийн зөрүүд мөнгөн нэмэлт хийгээрэй. Хоёул ялна.
-          </p>
-        </div>
+          <div className="lg:sticky lg:top-24">
+            <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
+              SWAPLY АРГА
+            </p>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-4 leading-tight">
+              Саналаа чат биш,{' '}
+              <span className="text-accent">тохиролцооны самбар</span> дээр шийд.
+            </h2>
+            <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-6">
+              Хоёр тал ямар бараа солих, хэн хэдэн төгрөг нэмэх, counter хийх эсэхээ нэг дэлгэц дээр тодорхой харна.
+            </p>
 
-        {/* Swap demo cards */}
-        <div className="flex flex-row items-stretch justify-center gap-2 sm:gap-6 mb-12 max-w-sm sm:max-w-2xl lg:max-w-4xl mx-auto w-full">
-
-          {/* Card 1 — Can Swap · Verified seller */}
-          <div className="group flex-1 min-w-0 flex flex-col bg-card rounded-2xl shadow-card overflow-hidden border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-            <div className="relative overflow-hidden flex-shrink-0 h-36 sm:h-64 lg:h-80">
-              <img
-                src="https://i.pinimg.com/webp/736x/83/6a/e9/836ae9f91b683c50c4dea5e2a400f4f6.webp"
-                alt="Арьсан цүнх"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              {/* СОЛИХ badge — single primary badge */}
-              <div className="absolute top-1.5 left-1.5">
-                <span className="px-1.5 sm:px-2 py-px sm:py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] lg:text-xs font-bold flex items-center gap-0.5 sm:gap-1">
-                  <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                  </svg>
-                  СОЛИХ
-                </span>
-              </div>
-              {/* Verified — compact green circle icon only */}
-              <div className="absolute top-1.5 right-1.5">
-                <div className="w-5 h-5 sm:w-6 sm:h-6 lg:w-7 lg:h-7 rounded-full bg-green-500 flex items-center justify-center">
-                  <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5 lg:w-4 lg:h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
+            <div className="grid gap-3">
+              {FEATURES.map(item => (
+                <div key={item.label} className="flex gap-3 rounded-2xl border border-border bg-card p-4 shadow-card">
+                  <div className="mt-1 w-2.5 h-2.5 rounded-full bg-primary flex-shrink-0" />
+                  <div>
+                    <h3 className="font-bold text-foreground">{item.label}</h3>
+                    <p className="text-sm text-muted-foreground mt-0.5">{item.desc}</p>
+                  </div>
                 </div>
-              </div>
-            </div>
-            <div className="p-3 sm:p-4 lg:p-6 flex-1 flex flex-col">
-              <p className="hidden sm:block text-[11px] lg:text-sm text-muted-foreground mb-0.5">Винтаж дизайнер</p>
-              <p className="text-sm sm:text-sm lg:text-lg font-bold text-foreground line-clamp-2 leading-snug">Арьсан цүнх</p>
-              <p className="text-base sm:text-lg lg:text-2xl font-extrabold text-primary mt-1 lg:mt-1">180,000₮</p>
-              <div className="mt-auto pt-3 lg:pt-4">
-                <div className="flex items-center gap-1 lg:gap-2 min-w-0">
-                  <div className="w-5 h-5 lg:w-7 lg:h-7 rounded-full bg-primary/20 flex items-center justify-center text-[10px] lg:text-xs font-bold text-primary flex-shrink-0">А</div>
-                  <span className="text-xs lg:text-sm text-muted-foreground truncate">@anujin</span>
-                  <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-blue-500 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-xs lg:text-sm text-yellow-500 font-medium ml-auto flex-shrink-0">⭐ 5.0</span>
-                </div>
-                <p className="text-[10px] lg:text-xs text-muted-foreground mt-1">1 өдрийн өмнө</p>
-              </div>
+              ))}
             </div>
           </div>
 
-          {/* Swap center — stronger, glowing */}
-          <div className="flex flex-col items-center justify-center gap-2 lg:gap-3 flex-shrink-0">
-            <div className="w-11 h-11 sm:w-14 sm:h-14 lg:w-[4.5rem] lg:h-[4.5rem] rounded-full bg-primary flex items-center justify-center shadow-lg ring-4 ring-primary/20">
-              <svg className="w-6 h-6 sm:w-7 sm:h-7 lg:w-9 lg:h-9 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-              </svg>
-            </div>
-            <div className="hidden sm:flex flex-col items-center gap-1">
-              <span className="px-3 lg:px-4 py-1 lg:py-1.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs lg:text-sm font-extrabold whitespace-nowrap">
-                + 20,000₮ нэмэлт
-              </span>
-              <div className="flex items-center gap-1.5 text-xs text-green-600 font-medium">
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Хоёул зөвшөөрсөн
-              </div>
-            </div>
-            <span className="sm:hidden px-2 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-extrabold whitespace-nowrap">
-              +20,000₮
-            </span>
-          </div>
-
-          {/* Card 2 — Can Swap · NOT verified */}
-          <div className="group flex-1 min-w-0 flex flex-col bg-card rounded-2xl shadow-card overflow-hidden border border-border transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
-            <div className="relative overflow-hidden flex-shrink-0 h-36 sm:h-64 lg:h-80">
-              <img
-                src="https://i.pinimg.com/736x/4e/3a/19/4e3a196668d458ec7ac6fa7643a29607.jpg"
-                alt="Винтаж жинс хүрэм"
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                loading="lazy"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-black/30 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              {/* СОЛИХ badge */}
-              <div className="absolute top-1.5 left-1.5">
-                <span className="px-1.5 sm:px-2 py-px sm:py-0.5 rounded-full bg-primary text-primary-foreground text-[9px] sm:text-[10px] lg:text-xs font-bold flex items-center gap-0.5 sm:gap-1">
-                  <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-                  </svg>
-                  СОЛИХ
+          <div className="rounded-[1.75rem] border border-border bg-card shadow-[0_24px_70px_rgb(15_23_42/0.12)] overflow-hidden">
+            <div className="bg-primary text-primary-foreground px-5 md:px-7 py-5">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <div>
+                  <p className="text-xs font-bold tracking-widest uppercase opacity-70">Live offer board</p>
+                  <h3 className="text-2xl md:text-3xl font-extrabold mt-1">Саналын дэлгэрэнгүй</h3>
+                </div>
+                <span className="w-fit rounded-full bg-white/15 px-4 py-2 text-xs font-bold">
+                  Хариу хүлээж байна
                 </span>
               </div>
             </div>
-            <div className="p-3 sm:p-4 lg:p-6 flex-1 flex flex-col">
-              <p className="hidden sm:block text-[11px] lg:text-sm text-muted-foreground mb-0.5">90-ийн үеийн загвар</p>
-              <p className="text-sm sm:text-sm lg:text-lg font-bold text-foreground line-clamp-2 leading-snug">Винтаж жинс хүрэм</p>
-              <p className="text-base sm:text-lg lg:text-2xl font-extrabold text-primary mt-1 lg:mt-1">160,000₮</p>
-              <div className="mt-auto pt-3 lg:pt-4">
-                <div className="flex items-center gap-1 lg:gap-2 min-w-0">
-                  <div className="w-5 h-5 lg:w-7 lg:h-7 rounded-full bg-muted flex items-center justify-center text-[10px] lg:text-xs font-bold text-muted-foreground flex-shrink-0">Н</div>
-                  <span className="text-xs lg:text-sm text-muted-foreground truncate">@nomio</span>
-                  <span className="text-xs lg:text-sm text-yellow-500 font-medium ml-auto flex-shrink-0">⭐ 4.8</span>
+
+            <div className="p-4 md:p-7">
+              <div className="grid md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-5 items-stretch">
+                <DealItem
+                  owner="Солонго санал болгож байна"
+                  image="https://images.unsplash.com/photo-1551232864-3f0890e580d9?auto=format&fit=crop&w=900&q=80"
+                  title="Кашмер пальто"
+                  price="220,000₮"
+                  meta="Цэвэрхэн · M size"
+                />
+
+                <div className="flex md:flex-col items-center justify-center gap-2">
+                  <div className="h-px md:h-16 w-12 md:w-px bg-border" />
+                  <div className="w-12 h-12 rounded-full bg-background border border-border flex items-center justify-center text-primary font-black shadow-sm">
+                    ⇄
+                  </div>
+                  <div className="h-px md:h-16 w-12 md:w-px bg-border" />
                 </div>
-                <p className="text-[10px] lg:text-xs text-muted-foreground mt-1">3 өдрийн өмнө</p>
+
+                <DealItem
+                  owner="Тэмкагийн бараа"
+                  image="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80"
+                  title="Nike пүүз"
+                  price="185,000₮"
+                  meta="Original · 39 размер"
+                />
+              </div>
+
+              <div className="mt-5 rounded-2xl border border-accent/30 bg-accent/10 p-4 md:p-5">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                  <div>
+                    <p className="text-xs font-bold tracking-widest text-accent uppercase">Balance</p>
+                    <p className="text-lg md:text-xl font-extrabold text-foreground mt-1">
+                      Солонго үнийн зөрүүг тэнцүүлэхээр <span className="text-accent">+35,000₮</span> нэмлээ
+                    </p>
+                  </div>
+                  <div className="rounded-2xl bg-card border border-border px-4 py-3 text-right">
+                    <p className="text-xs text-muted-foreground">Нийт санал</p>
+                    <p className="text-xl font-extrabold text-foreground">220,000₮</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-[1fr_0.8fr] gap-4 mt-5">
+                <div className="rounded-2xl border border-border bg-background p-4">
+                  <p className="text-sm font-bold text-foreground mb-3">Тохиролцооны түүх</p>
+                  <div className="space-y-3">
+                    {TIMELINE.map((item, index) => (
+                      <div key={item.label} className="flex gap-3">
+                        <div className="flex flex-col items-center">
+                          <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
+                            {index + 1}
+                          </span>
+                          {index < TIMELINE.length - 1 && <span className="w-px flex-1 bg-border mt-1" />}
+                        </div>
+                        <div className="pb-2">
+                          <p className="text-xs text-muted-foreground">{item.label}</p>
+                          <p className="text-sm font-semibold text-foreground">{item.value}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="rounded-2xl border border-border bg-background p-4 flex flex-col">
+                  <p className="text-sm font-bold text-foreground mb-3">Шийдвэр</p>
+                  <div className="grid gap-2 mt-auto">
+                    <button className="h-11 rounded-xl bg-primary text-primary-foreground font-bold">
+                      Зөвшөөрөх
+                    </button>
+                    <button className="h-11 rounded-xl bg-card border border-border text-foreground font-bold">
+                      Counter санал
+                    </button>
+                    <button className="h-11 rounded-xl bg-accent/10 text-accent font-bold">
+                      Татгалзах
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        {/* Feature cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          {FEATURES.map(f => (
-            <div key={f.title} className="bg-card border border-border rounded-2xl p-6 text-center">
-              <span className="text-3xl mb-3 block">{f.emoji}</span>
-              <h3 className="font-bold text-foreground mb-1.5">{f.title}</h3>
-              <p className="text-sm text-muted-foreground">{f.desc}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>
+  )
+}
+
+function DealItem({
+  owner,
+  image,
+  title,
+  price,
+  meta,
+}: {
+  owner: string
+  image: string
+  title: string
+  price: string
+  meta: string
+}) {
+  return (
+    <div className="rounded-2xl border border-border bg-background overflow-hidden">
+      <div className="aspect-[4/3] relative">
+        <img src={image} alt={title} className="w-full h-full object-cover" />
+        <div className="absolute left-3 top-3 rounded-full bg-card/90 px-3 py-1 text-[11px] font-bold text-primary">
+          Солих боломжтой
+        </div>
+      </div>
+      <div className="p-4">
+        <p className="text-xs font-semibold text-muted-foreground">{owner}</p>
+        <h3 className="text-lg font-extrabold text-foreground mt-1">{title}</h3>
+        <div className="flex items-end justify-between gap-3 mt-2">
+          <p className="text-xl font-extrabold text-price">{price}</p>
+          <p className="text-xs text-muted-foreground text-right">{meta}</p>
+        </div>
+      </div>
+    </div>
   )
 }

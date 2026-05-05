@@ -1,14 +1,10 @@
 import Link from 'next/link'
 
 const FEED = [
-  { user: 'alex_styles', avatar: 'А', color: 'bg-blue-500', action: 'Өвлийн куртка болон гутлыг солилцлоо', type: 'Солилцоо', typeCls: 'bg-primary/10 text-primary', ago: '2м' },
-  { user: 'beauty.mira', avatar: 'Б', color: 'bg-teal-500', action: 'Шинэ арьс засалын багц нэмлээ', type: 'Шинэ', typeCls: 'bg-green-100 text-green-700', ago: '5м' },
-  { user: 'sneakerhead.jo', avatar: 'С', color: 'bg-orange-500', action: 'Air Max гуталыг 120,000₮-д зарлаа', type: 'Зарлаа', typeCls: 'bg-amber-100 text-amber-700', ago: '8м' },
-  { user: 'luxe.maria', avatar: 'Л', color: 'bg-purple-500', action: 'Цүнх + 20,000₮-г пальто-д солилцлоо', type: 'Солилцоо', typeCls: 'bg-primary/10 text-primary', ago: '12м' },
-  { user: 'denim.kai', avatar: 'Д', color: 'bg-slate-500', action: 'Винтаж жинс куртка нэмлээ', type: 'Шинэ', typeCls: 'bg-green-100 text-green-700', ago: '15м' },
-  { user: 'parfum.bella', avatar: 'П', color: 'bg-pink-500', action: 'Chanel No.5 үнэртэнг 95,000₮-д зарлаа', type: 'Зарлаа', typeCls: 'bg-amber-100 text-amber-700', ago: '20м' },
-  { user: 'vintage.gems', avatar: 'В', color: 'bg-yellow-600', action: 'Алтан гинжийг цаг болгон солилцлоо', type: 'Солилцоо', typeCls: 'bg-primary/10 text-primary', ago: '25м' },
-  { user: 'style.nova', avatar: 'Н', color: 'bg-rose-500', action: 'Нарны шилний коллекц нэмлээ', type: 'Шинэ', typeCls: 'bg-green-100 text-green-700', ago: '30м' },
+  { user: 'solongo', avatar: 'С', color: 'bg-primary', action: 'пальтогоо пүүз + 35,000₮ саналтай солихоор тохирч байна', type: 'Санал', typeCls: 'bg-primary/10 text-primary', state: 'Чат' },
+  { user: 'mira', avatar: 'М', color: 'bg-accent', action: 'арьс арчилгааны багцаа үнэртэнтэй солих хүсэлт авлаа', type: 'Шинэ', typeCls: 'bg-green-100 text-green-700', state: 'Хүсэлт' },
+  { user: 'temka', avatar: 'Т', color: 'bg-amber-500', action: 'пүүзний үнээ мөнгөн нэмэлттэй саналд нээлттэй болголоо', type: 'Үнэ', typeCls: 'bg-amber-100 text-amber-700', state: 'Нээлттэй' },
+  { user: 'anujin', avatar: 'А', color: 'bg-rose-500', action: 'цүнхний зараа зөвхөн баталгаажсан профайлд харагдахаар тохирууллаа', type: 'Итгэл', typeCls: 'bg-primary/10 text-primary', state: 'Баталгаа' },
 ]
 
 const STATS = [
@@ -19,8 +15,8 @@ const STATS = [
       </svg>
     ),
     bg: 'bg-primary/10 text-primary',
-    value: '1,247',
-    label: 'Өнөөдрийн солилцоо',
+    value: 'Солих',
+    label: 'Бараагаар санал тавих',
   },
   {
     icon: (
@@ -29,8 +25,8 @@ const STATS = [
       </svg>
     ),
     bg: 'bg-teal-500/10 text-teal-600',
-    value: '3,892',
-    label: 'Идэвхтэй жагсаалт',
+    value: 'Нэмэх',
+    label: 'Үнийн зөрүүг мөнгөөр тэнцүүлэх',
   },
   {
     icon: (
@@ -39,8 +35,8 @@ const STATS = [
       </svg>
     ),
     bg: 'bg-amber-500/10 text-amber-600',
-    value: '892',
-    label: 'Өнөөдөр шинэ',
+    value: 'Батлах',
+    label: 'Хүлээн авснаа хоёр тал батлах',
   },
 ]
 
@@ -55,17 +51,17 @@ export function LiveActivitySection() {
             <div className="flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <p className="text-xs font-bold tracking-widest text-green-600 uppercase">
-                Шууд үйл ажиллагаагаа
+                СОЛИЛЦООНЫ УРСГАЛ
               </p>
             </div>
 
             <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mb-4">
-              Жинхэнэ хүмүүс,{' '}
-              <span className="text-accent">жинхэнэ солилцоо.</span>
+              Зүгээр зараад дуусах биш,{' '}
+              <span className="text-accent">тохиролцож арилжаална.</span>
             </h2>
 
             <p className="text-muted-foreground text-sm md:text-base mb-8 leading-relaxed">
-              Swaply дээр одоо болж байгаа зүйлийг харах. Өдөр бүр мянга мянган солилцоо, жагсаалт, хэлцэл явагддаг.
+              Санал бүр бараа, мөнгөн нэмэлт, чат, баталгаажуулалттайгаа нэг дор харагдана. Хэрэглэгч тохиролцооны нөхцөлийг эхнээс нь тодорхой ойлгоно.
             </p>
 
             <div className="flex flex-col gap-3">
@@ -89,9 +85,9 @@ export function LiveActivitySection() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-green-500" />
-                <span className="font-semibold text-sm text-foreground">Шууд мэдээлэл</span>
+                <span className="font-semibold text-sm text-foreground">Саналын урсгал</span>
               </div>
-              <span className="text-xs text-muted-foreground">Сая шинэчлэгдлээ</span>
+              <span className="text-xs text-muted-foreground">Шинэ санал</span>
             </div>
 
             {/* Feed items */}
@@ -111,7 +107,7 @@ export function LiveActivitySection() {
                     <span className={`px-2 py-0.5 rounded-full text-[10px] font-semibold ${item.typeCls}`}>
                       {item.type}
                     </span>
-                    <span className="text-[11px] text-muted-foreground whitespace-nowrap">{item.ago}</span>
+                    <span className="text-[11px] text-muted-foreground whitespace-nowrap">{item.state}</span>
                   </div>
                 </div>
               ))}
@@ -123,7 +119,7 @@ export function LiveActivitySection() {
                 href="/explore"
                 className="block text-center text-sm font-semibold text-primary hover:underline"
               >
-                Бүх идэвхжилийг харах →
+                Бараа болон саналуудыг харах →
               </Link>
             </div>
           </div>

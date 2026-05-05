@@ -16,7 +16,7 @@ const STEPS = [
     color: 'bg-teal-500/10 text-teal-600',
     numBg: 'bg-teal-500',
     title: 'Санал тавих',
-    desc: 'Солилцоо, мөнгөн санал, эсвэл хоёулааг хослуулан санал болгоорой — бүрэн уян хатан.',
+    desc: 'Солилцоо, мөнгөн санал, эсвэл хоёуланг нь хослуулан санал болгоорой. Бүрэн уян хатан.',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
@@ -39,8 +39,8 @@ const STEPS = [
     num: '04',
     color: 'bg-green-500/10 text-green-600',
     numBg: 'bg-green-500',
-    title: 'Аюулгүй хүргэлт',
-    desc: 'Хоёр тал хүлээн авснаа баталгаажуулах хүртэл төлбөр хадгалагдана. 100% аюулгүй.',
+    title: 'Хүлээлцээд батлах',
+    desc: 'Хоёр тал бараагаа хүлээн авснаа баталгаажуулсны дараа тохиролцоо дуусна.',
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
@@ -51,7 +51,7 @@ const STEPS = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-14 md:py-20">
+    <section id="how-it-works" className="py-14 md:py-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-6">
 
         {/* Header */}
@@ -63,7 +63,7 @@ export function HowItWorksSection() {
             Swaply хэрхэн ажилладаг вэ?
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto text-sm md:text-base">
-            Жагсаалтаас хүргэлт хүртэл, аюулгүй, хурдан, хялбар.
+            Зараас тохиролцоо хүртэл ойлгомжтой, хяналттай, хурдан.
           </p>
         </div>
 

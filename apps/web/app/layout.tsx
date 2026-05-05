@@ -3,6 +3,7 @@ import './globals.css'
 import { Navbar } from '@/components/shared/Navbar'
 import { BottomNav } from '@/components/shared/BottomNav'
 import { Footer } from '@/components/shared/Footer'
+import { ThemeProvider } from '@/components/shared/ThemeProvider'
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -10,8 +11,8 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'DeerSwaply — Солилцоё, Худалдаалъя',
-  description: 'Хувцас, арьс засал, будалт, аксессуарыг second-hand аргаар солих, зарах платформ.',
+  title: 'Swaply — Солилц, тохиролц, үнэ цэн бүтээ',
+  description: 'Хувцас, арьс арчилгаа, будалт, аксессуарыг солих, зарах, мөнгөн нэмэлттэй тохиролцох платформ.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -27,12 +28,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         `}} />
       </head>
       <body>
-        <Navbar />
-        <main className="min-h-screen pb-20 md:pb-0">
-          {children}
-        </main>
-        <Footer />
-        <BottomNav />
+        <ThemeProvider>
+          <Navbar />
+          <main className="min-h-screen pb-20 md:pb-0">
+            {children}
+          </main>
+          <Footer />
+          <BottomNav />
+        </ThemeProvider>
       </body>
     </html>
   )

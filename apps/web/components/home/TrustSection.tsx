@@ -6,8 +6,8 @@ const LEFT_STATS = [
       </svg>
     ),
     color: 'text-primary bg-primary/10',
-    value: '50К+',
-    label: 'Идэвхтэй хэрэглэгч',
+    value: 'Профайл',
+    label: 'Хэнтэй тохирч байгаагаа харах',
   },
   {
     icon: (
@@ -16,8 +16,8 @@ const LEFT_STATS = [
       </svg>
     ),
     color: 'text-green-600 bg-green-100',
-    value: '200К+',
-    label: 'Дуусгасан солилцоо',
+    value: 'Чат',
+    label: 'Нөхцөлөө бичгээр тохирох',
   },
   {
     icon: (
@@ -26,8 +26,8 @@ const LEFT_STATS = [
       </svg>
     ),
     color: 'text-primary bg-primary/10',
-    value: '0',
-    label: 'Луйврын тохиолдол',
+    value: 'Батлах',
+    label: 'Хүлээн авснаа хоёр тал батлах',
   },
 ]
 
@@ -40,9 +40,9 @@ const FEATURES = [
     ),
     color: 'text-primary bg-primary/10',
     title: 'Баталгаажсан хэрэглэгчид',
-    desc: 'Худалдагч бүр таниулах баталгаажилтанд хамрагдана. Хэнтэй арилжаа хийж байгаагаа яг мэдэх.',
-    stat: '50К+',
-    statLabel: 'Баталгаажсан хэрэглэгч',
+    desc: 'Профайл дээр нэр, зураг, үнэлгээ, солилцооны түүхийг нэг дор харуулж эрсдэлийг багасгана.',
+    stat: 'Алхам 1',
+    statLabel: 'Хэрэглэгчээ шалгах',
     statColor: 'text-primary',
   },
   {
@@ -53,9 +53,9 @@ const FEATURES = [
     ),
     color: 'text-green-600 bg-green-100',
     title: 'Аюулгүй төлбөр',
-    desc: 'Хоёр тал солилцоо эсвэл худалдааг баталгаажтал хөрөнгийг хадгалдаг.',
-    stat: '100%',
-    statLabel: 'Escrow хамгаалалт',
+    desc: 'Үнийн зөрүүтэй тохиролцоонд төлбөрийг баталгаажуулалтын урсгалтай холбож, нөхцөлийг ил тод болгоно.',
+    stat: 'Алхам 2',
+    statLabel: 'Саналаа баталгаажуулах',
     statColor: 'text-green-600',
   },
   {
@@ -66,9 +66,9 @@ const FEATURES = [
     ),
     color: 'text-amber-500 bg-amber-100',
     title: 'Үнэлгээ ба шүүмж',
-    desc: 'Хэрэглэгч бүрийн тунгалаг үнэлгээний систем. Шүүмж харж итгэлтэйгээр арилжаалаарай.',
-    stat: '4.9★',
-    statLabel: 'Дундаж үнэлгээ',
+    desc: 'Дууссан тохиролцооны дараа үнэлгээ үлдээж, дараагийн хэрэглэгчдэд итгэлийн дохио өгнө.',
+    stat: 'Алхам 3',
+    statLabel: 'Туршлагаа үлдээх',
     statColor: 'text-amber-500',
   },
   {
@@ -78,10 +78,10 @@ const FEATURES = [
       </svg>
     ),
     color: 'text-teal-600 bg-teal-100',
-    title: 'Шуурхай тохирох',
-    desc: 'Манай ухаалаг алгоритм таны бараанд хамгийн тохиромжтой солилцооны хамтрагчийг олдог.',
-    stat: '<24ц',
-    statLabel: 'Дундаж тохирох хугацаа',
+    title: 'Маргаан шийдэх мэдээлэл',
+    desc: 'Чат, саналын нөхцөл, баталгаажуулалтын түүх хадгалагдсанаар асуудал гарвал шалгах суурьтай.',
+    stat: 'Баримт',
+    statLabel: 'Тохиролцооны мөр',
     statColor: 'text-teal-600',
   },
 ]
@@ -95,14 +95,14 @@ export function TrustSection() {
           {/* Left */}
           <div className="flex-1 max-w-md">
             <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
-              ИТГЭЛЦЭЛД ЗОРИУЛСАН
+              ИТГЭЛТЭЙ СОЛИЛЦОО
             </p>
             <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mb-4 leading-tight">
-              Итгэлтэйгээр арилжаа хийгээрэй,{' '}
-              <span className="text-accent">хэзээд.</span>
+              Тохиролцоогоо эхнээс нь{' '}
+              <span className="text-accent">ил тод байлга.</span>
             </h2>
             <p className="text-muted-foreground text-sm md:text-base mb-8 leading-relaxed">
-              Swaply нь аюулгүй байдлыг үндэс болгон бүтээгдсэн. Баталгаажсан профайл, escrow төлбөр, жинхэнэ үнэлгээ нь та солилцох, худалдах, зарахдаа санаа зовохгүй байх боломжийг олгоно.
+              Swaply дээр итгэл гэдэг ганц badge биш. Профайл, саналын нөхцөл, чат, хүлээн авсан баталгааг хамтад нь харуулж байж хэрэглэгч шийдвэрээ тайван гаргана.
             </p>
 
             <div className="flex flex-col gap-3">
