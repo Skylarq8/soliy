@@ -5,7 +5,6 @@ import { supabaseAdmin } from '@swaply/db'
 import Stripe from 'stripe'
 import type { AppEnv } from '../types'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const app = new Hono<AppEnv>()
 
 const BOOST_PRICE_PER_DAY = 3000 // MNT
@@ -35,6 +34,7 @@ app.post('/', zValidator('json', z.object({
   if (listing.status !== 'active')
     return c.json({ error: 'Can only boost active listings' }, 400)
 
+  const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
   const intent = await stripe.paymentIntents.create({
     amount,
     currency: 'mnt',
@@ -44,7 +44,12 @@ app.post('/', zValidator('json', z.object({
   return c.json({ client_secret: intent.client_secret, amount })
 })
 
-export async function activateBoost(listingId: string, days: number, stripeId: string): Promise<void> {
+export async function activateBoost(
+  listingId: string,
+  days: number,
+  stripeId: string,
+  userId: string
+): Promise<void> {
   const endsAt = new Date(Date.now() + days * 86_400_000)
   await Promise.all([
     supabaseAdmin
@@ -55,7 +60,7 @@ export async function activateBoost(listingId: string, days: number, stripeId: s
       .from('boosts')
       .insert({
         listing_id: listingId,
-        user_id: '', // filled from metadata in webhook
+        user_id: userId,
         days,
         amount: days * BOOST_PRICE_PER_DAY,
         stripe_id: stripeId,

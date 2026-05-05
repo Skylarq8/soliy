@@ -2,6 +2,7 @@ import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
 import { supabaseAdmin } from '@swaply/db'
+import type { Json } from '@swaply/db'
 import type { AppEnv } from '../types'
 
 const app = new Hono<AppEnv>()
@@ -56,10 +57,15 @@ app.get('/:id', async (c) => {
 app.post('/', zValidator('json', createSchema), async (c) => {
   const userId = c.get('userId')
   const body = c.req.valid('json')
+  const insertBody = {
+    ...body,
+    category_meta: body.category_meta as Json | undefined,
+    user_id: userId,
+  }
 
   const { data, error } = await supabaseAdmin
     .from('listings')
-    .insert({ ...body, user_id: userId })
+    .insert(insertBody)
     .select()
     .single()
 
@@ -71,10 +77,14 @@ app.patch('/:id', zValidator('json', createSchema.partial()), async (c) => {
   const userId = c.get('userId')
   const { id } = c.req.param()
   const body = c.req.valid('json')
+  const updateBody = {
+    ...body,
+    category_meta: body.category_meta as Json | undefined,
+  }
 
   const { data, error } = await supabaseAdmin
     .from('listings')
-    .update(body)
+    .update(updateBody)
     .eq('id', id)
     .eq('user_id', userId)
     .select()

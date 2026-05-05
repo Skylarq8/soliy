@@ -9,21 +9,32 @@ async function getToken(): Promise<string | null> {
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const token = await getToken()
+  const isFormData = init?.body instanceof FormData
   const res = await fetch(`${API_URL}${path}`, {
     ...init,
     headers: {
-      'Content-Type': 'application/json',
+      ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...init?.headers,
     },
   })
 
-  const data = await res.json()
+  const data = await res.json().catch(() => ({}))
   if (!res.ok) throw new Error(data.error ?? `HTTP ${res.status}`)
   return data as T
 }
 
 export const api = {
+  auth: {
+    register: (body: unknown) =>
+      apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(body) }),
+    resolveLogin: (identifier: string) =>
+      apiFetch<{ email: string }>('/auth/resolve-login', {
+        method: 'POST',
+        body: JSON.stringify({ identifier }),
+      }),
+  },
+
   // Listings
   listings: {
     list: (params?: Record<string, string>) =>
@@ -35,6 +46,15 @@ export const api = {
       apiFetch(`/api/listings/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
     remove: (id: string) =>
       apiFetch(`/api/listings/${id}`, { method: 'DELETE' }),
+  },
+
+  // Uploads
+  uploads: {
+    image: (file: File) => {
+      const body = new FormData()
+      body.append('file', file)
+      return apiFetch('/api/uploads/image', { method: 'POST', body })
+    },
   },
 
   // Proposals

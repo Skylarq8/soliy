@@ -5,7 +5,6 @@ import { supabaseAdmin } from '@swaply/db'
 import Stripe from 'stripe'
 import type { AppEnv } from '../types'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 const app = new Hono<AppEnv>()
 
 const proposalSchema = z.object({
@@ -68,6 +67,7 @@ app.post('/', zValidator('json', proposalSchema), async (c) => {
   let escrowId: string | undefined
 
   if (body.money_offer !== 0) {
+    const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
     const intent = await stripe.paymentIntents.create({
       amount: Math.abs(body.money_offer),
       currency: 'mnt',
@@ -108,6 +108,7 @@ app.patch('/:id/accept', async (c) => {
     return c.json({ error: 'Not found' }, 404)
 
   if (proposal.escrow_id) {
+    const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
     await stripe.paymentIntents.capture(proposal.escrow_id)
   }
 
@@ -136,6 +137,7 @@ app.patch('/:id/decline', async (c) => {
     return c.json({ error: 'Not found' }, 404)
 
   if (proposal.escrow_id) {
+    const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
     await stripe.paymentIntents.cancel(proposal.escrow_id)
   }
 
@@ -178,6 +180,7 @@ app.patch('/:id/confirm-receipt', async (c) => {
 
   if (bothConfirmed) {
     if (proposal.escrow_id) {
+      const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
       const intent = await stripe.paymentIntents.retrieve(proposal.escrow_id)
       const fee = Math.floor(intent.amount * 0.05)
       await stripe.paymentIntents.update(proposal.escrow_id, {

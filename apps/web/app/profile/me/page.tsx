@@ -196,6 +196,7 @@ export default function MyProfilePage() {
   }
 
   const initial = user.nickname[0].toUpperCase()
+  const displayName = user.name?.trim() || user.nickname
   const isTopSeller = user.swap_count >= 20
   const trustLabel = user.safe_score >= 80 ? 'Итгэлтэй хэрэглэгч' : user.safe_score >= 50 ? 'Хэвийн хэрэглэгч' : 'Шинэ хэрэглэгч'
   const avatarSrc = avatarPreview ?? user.avatar_url
@@ -327,7 +328,8 @@ export default function MyProfilePage() {
               </div>
 
               <div>
-                <h2 className="text-xl font-bold">{user.nickname}</h2>
+                <h2 className="text-xl font-bold">{displayName}</h2>
+                <p className="text-sm text-muted-foreground mt-0.5">@{user.nickname}</p>
                 {user.bio && <p className="text-sm text-muted-foreground mt-0.5">{user.bio}</p>}
                 <p className="text-xs text-muted-foreground/70 mt-1">{email}</p>
               </div>

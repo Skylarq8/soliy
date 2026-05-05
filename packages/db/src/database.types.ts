@@ -9,7 +9,9 @@ export type Database = {
       users: {
         Row: {
           id: string
+          name: string | null
           nickname: string
+          phone: string | null
           avatar_url: string | null
           bio: string | null
           safe_score: number
@@ -19,7 +21,9 @@ export type Database = {
         }
         Insert: {
           id: string
+          name?: string | null
           nickname: string
+          phone?: string | null
           avatar_url?: string | null
           bio?: string | null
           safe_score?: number
@@ -29,7 +33,9 @@ export type Database = {
         }
         Update: {
           id?: string
+          name?: string | null
           nickname?: string
+          phone?: string | null
           avatar_url?: string | null
           bio?: string | null
           safe_score?: number

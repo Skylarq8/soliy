@@ -1,7 +1,9 @@
 -- Users (linked to Supabase Auth)
 CREATE TABLE users (
   id          UUID PRIMARY KEY REFERENCES auth.users(id),
+  name        TEXT,
   nickname    TEXT UNIQUE NOT NULL,
+  phone       TEXT UNIQUE,
   avatar_url  TEXT,
   bio         TEXT,
   safe_score  NUMERIC(5,2) DEFAULT 0,
