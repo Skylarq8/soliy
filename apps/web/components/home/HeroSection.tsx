@@ -2,13 +2,12 @@ import Link from 'next/link'
 
 export function HeroSection() {
   return (
-    <section className="py-14 md:py-20 overflow-hidden bg-gradient-to-br from-violet-100/80 via-white to-teal-50/80 dark:from-[#0a1628] dark:via-[#0d2438] dark:to-[#091e18]">
+    <section className="py-14 md:py-20 overflow-hidden bg-gradient-to-br from-violet-100/80 via-white to-white dark:from-[#0a1628] dark:via-[#0d2438] dark:to-[#0d2438]">
       {/* Glow */}
       <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-violet-400/30 rounded-full blur-[120px] opacity-40 pointer-events-none" />
-      <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-teal-400/30 rounded-full blur-[120px] opacity-40 pointer-events-none" />
 
       {/* Mesh */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(139,92,246,0.15),transparent_40%),radial-gradient(circle_at_70%_80%,rgba(20,184,166,0.15),transparent_40%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(139,92,246,0.15),transparent_40%)] pointer-events-none" />
       <div className="max-w-screen-xl mx-auto px-4 md:px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
         {/* Left — text */}

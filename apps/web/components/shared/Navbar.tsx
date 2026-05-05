@@ -67,8 +67,14 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="text-xl font-bold text-primary flex-shrink-0 tracking-tight">
-          DeerSwaply
+          Swaply
         </Link>
+
+        {/* Center nav — desktop only, flex-1 to push icons right */}
+        <div className="hidden md:flex flex-1 justify-center items-center gap-0.5">
+          {navLink('/', 'Нүүр', true)}
+          {navLink('/explore', 'Бараа')}
+        </div>
 
         {/* Search — flex-1 on mobile, fixed width on desktop */}
         <form onSubmit={handleSearch} className="hidden md:flex md:flex-none md:w-72">
@@ -84,12 +90,6 @@ export function Navbar() {
             />
           </div>
         </form>
-
-        {/* Center nav — desktop only, flex-1 to push icons right */}
-        <div className="hidden md:flex flex-1 justify-center items-center gap-0.5">
-          {navLink('/', 'Нүүр', true)}
-          {navLink('/explore', 'Бараа')}
-        </div>
 
         {/* Right icons */}
         <div className="flex items-center gap-1.5 ml-auto">
