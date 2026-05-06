@@ -12,17 +12,19 @@ export function ImageGallery({ photos, title, verified }: Props) {
   const [active, setActive] = useState(0)
 
   return (
-    <div className="flex gap-3 flex-shrink-0">
+    <div className="flex w-full flex-col-reverse gap-3 md:w-auto md:flex-row md:flex-shrink-0">
       {/* Thumbnails */}
       {photos.length > 1 && (
-        <div className="flex flex-col gap-2 w-16">
+        <div className="flex w-full gap-2 overflow-x-auto pb-1 md:w-16 md:flex-col md:overflow-visible md:pb-0">
           {photos.slice(0, 5).map((url, i) => (
             <button
               key={i}
               onClick={() => setActive(i)}
-              className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-colors ${
+              className={`relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-xl border-2 transition-colors ${
                 active === i ? 'border-primary' : 'border-transparent'
               }`}
+              type="button"
+              aria-label={`Зураг ${i + 1}`}
             >
               <Image src={url} alt="" fill className="object-cover" />
             </button>
@@ -31,7 +33,7 @@ export function ImageGallery({ photos, title, verified }: Props) {
       )}
 
       {/* Main image */}
-      <div className="relative w-80 md:w-96 aspect-[3/4] rounded-2xl overflow-hidden bg-muted flex-shrink-0">
+      <div className="relative w-full overflow-hidden rounded-2xl bg-muted aspect-[4/5] sm:aspect-[3/4] md:w-96 md:flex-shrink-0">
         {photos[active] ? (
           <Image src={photos[active]} alt={title} fill className="object-cover" priority />
         ) : (

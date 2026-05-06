@@ -7,6 +7,7 @@ import type { Listing } from '@swaply/types'
 import { ProposalButton } from '@/components/swap/ProposalButton'
 import { ImageGallery } from '@/components/listing/ImageGallery'
 import { SimilarListings } from '@/components/listing/SimilarListings'
+import { BackButton } from '@/components/shared/BackButton'
 
 async function getListing(id: string): Promise<Listing | null> {
   const sb = createClient<Database>(
@@ -42,30 +43,36 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
   if (meta?.is_opened === false)           tags.push('Нээгдээгүй')
 
   return (
-    <div className="max-w-screen-xl mx-auto px-4 md:px-6 py-6">
-      <div className="flex gap-8">
+    <div className="mx-auto max-w-screen-xl px-4 py-4 md:px-6 md:py-6">
+      <div className="mb-4">
+        <BackButton fallbackHref="/explore" />
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,384px)_minmax(0,1fr)_208px] lg:gap-8">
         {/* Left: image gallery */}
         <ImageGallery photos={listing.photos} title={listing.title} verified={listing.verified} />
 
         {/* Center: details */}
-        <div className="flex-1 min-w-0 max-w-lg">
+        <div className="min-w-0">
           {brand && (
             <p className="text-xs font-bold tracking-widest text-muted-foreground uppercase mb-1">
               {brand}
             </p>
           )}
-          <h1 className="text-2xl font-bold text-foreground mb-2 leading-snug">
+          <h1 className="text-2xl font-bold text-foreground mb-2 leading-snug md:text-3xl">
             {listing.title}
           </h1>
 
-          <div className="flex items-center gap-3 mb-4">
+          <div className="mb-4 flex flex-wrap items-center gap-3">
             {listing.price && (
               <span className="text-2xl font-bold text-price">
                 {listing.price.toLocaleString()}₮
               </span>
             )}
             {listing.swap_enabled && (
-              <span className="text-sm text-muted-foreground">Солих боломжтой</span>
+              <span className="rounded-full bg-primary-light px-3 py-1 text-sm font-medium text-primary">
+                Солих боломжтой
+              </span>
             )}
           </div>
 
@@ -91,7 +98,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
           {listing.users && (
             <Link
               href={`/profile/${listing.users.nickname}`}
-              className="flex items-center gap-3 p-4 rounded-2xl border border-border hover:bg-muted/50 transition-colors mb-6"
+              className="mb-6 flex items-center gap-3 rounded-2xl border border-border p-4 transition-colors hover:bg-muted/50"
             >
               <div className="w-11 h-11 rounded-full bg-primary-light border border-primary/10 flex items-center justify-center text-primary font-bold flex-shrink-0">
                 {listing.users.nickname[0].toUpperCase()}
@@ -112,7 +119,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
                 </div>
               </div>
               {listing.verified && (
-                <span className="flex items-center gap-1 text-xs text-primary font-medium px-2.5 py-1 rounded-full bg-primary-light border border-primary/15">
+                <span className="hidden items-center gap-1 rounded-full border border-primary/15 bg-primary-light px-2.5 py-1 text-xs font-medium text-primary sm:flex">
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
                   </svg>
@@ -127,7 +134,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         </div>
 
         {/* Right: similar items — desktop only */}
-        <div className="hidden lg:block w-52 flex-shrink-0">
+        <div className="hidden lg:block">
           <SimilarListings category={listing.category} excludeId={listing.id} />
         </div>
       </div>

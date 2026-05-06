@@ -180,7 +180,7 @@ export function ListingForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid gap-6 lg:grid-cols-[280px_1fr]">
+    <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
       <aside className="h-fit rounded-3xl border border-border bg-card p-5">
         <div className="space-y-4">
           {steps.map((item, index) => {
@@ -449,7 +449,8 @@ export function ListingForm() {
             </button>
           ) : (
             <button
-              type="submit"
+              type="button"
+              onClick={handleSubmit(onSubmit)}
               disabled={loading || uploading}
               className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground transition hover:opacity-90 disabled:opacity-50"
             >
@@ -460,7 +461,7 @@ export function ListingForm() {
           )}
         </div>
       </section>
-    </form>
+    </div>
   )
 }
 
