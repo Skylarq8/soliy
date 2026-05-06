@@ -295,6 +295,39 @@ export type Database = {
         }
         Relationships: []
       }
+      saved_listings: {
+        Row: {
+          user_id: string
+          listing_id: string
+          created_at: string
+        }
+        Insert: {
+          user_id: string
+          listing_id: string
+          created_at?: string
+        }
+        Update: {
+          user_id?: string
+          listing_id?: string
+          created_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "saved_listings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "saved_listings_listing_id_fkey"
+            columns: ["listing_id"]
+            isOneToOne: false
+            referencedRelation: "listings"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       boosts: {
         Row: {
           id: string

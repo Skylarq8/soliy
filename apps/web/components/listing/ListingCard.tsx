@@ -1,9 +1,12 @@
 'use client'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Heart, Repeat2, ShieldCheck, UserRound, Zap } from 'lucide-react'
 import type { Listing } from '@swaply/types'
+import { api } from '@/lib/api'
+import { supabase } from '@/lib/supabase'
 
 interface Props {
   listing: Listing
@@ -11,11 +14,61 @@ interface Props {
 }
 
 export function ListingCard({ listing, size = 'default' }: Props) {
+  const router = useRouter()
   const [saved, setSaved] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [authed, setAuthed] = useState(false)
 
   const meta = listing.category_meta as Record<string, string> | null
   const brand = meta?.brand as string | undefined
   const conditionLabel = listing.condition ? CONDITION_LABELS[listing.condition] : null
+
+  useEffect(() => {
+    let mounted = true
+
+    supabase.auth.getSession().then(async ({ data }) => {
+      if (!mounted) return
+      const hasSession = Boolean(data.session)
+      setAuthed(hasSession)
+      if (!hasSession) return
+
+      try {
+        const result = await api.saved.status(listing.id)
+        if (mounted) setSaved(result.saved)
+      } catch {
+        // Keep the card usable even if saved status cannot be fetched.
+      }
+    })
+
+    return () => {
+      mounted = false
+    }
+  }, [listing.id])
+
+  async function toggleSaved(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault()
+    e.stopPropagation()
+
+    if (!authed) {
+      router.push('/auth/login')
+      return
+    }
+
+    const next = !saved
+    setSaved(next)
+    setSaving(true)
+    try {
+      if (next) {
+        await api.saved.add(listing.id)
+      } else {
+        await api.saved.remove(listing.id)
+      }
+    } catch {
+      setSaved(!next)
+    } finally {
+      setSaving(false)
+    }
+  }
 
   return (
     <Link
@@ -60,9 +113,11 @@ export function ListingCard({ listing, size = 'default' }: Props) {
 
         {/* Save heart */}
         <button
-          onClick={e => { e.preventDefault(); setSaved(s => !s) }}
-          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-card/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-card"
+          onClick={toggleSaved}
+          disabled={saving}
+          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-card/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-card disabled:opacity-60"
           aria-label={saved ? 'Хадгалснаас хасах' : 'Хадгалах'}
+          aria-pressed={saved}
         >
           <Heart size={16} className={saved ? 'fill-price text-price' : 'fill-none text-muted-foreground'} />
         </button>

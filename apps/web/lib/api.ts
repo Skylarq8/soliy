@@ -113,6 +113,13 @@ export const api = {
       apiFetch('/api/users/me/notifications/read-all', { method: 'PATCH' }),
   },
 
+  saved: {
+    list: () => apiFetch('/api/saved'),
+    status: (listingId: string) => apiFetch<{ saved: boolean }>(`/api/saved/${listingId}`),
+    add: (listingId: string) => apiFetch<{ saved: boolean }>(`/api/saved/${listingId}`, { method: 'POST' }),
+    remove: (listingId: string) => apiFetch<{ saved: boolean }>(`/api/saved/${listingId}`, { method: 'DELETE' }),
+  },
+
   // Reviews
   reviews: {
     create: (body: unknown) =>

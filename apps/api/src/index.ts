@@ -15,6 +15,7 @@ import admin     from './routes/admin'
 import webhooks  from './routes/webhooks'
 import uploads   from './routes/uploads'
 import auth      from './routes/auth'
+import saved     from './routes/saved'
 
 const app = new Hono<AppEnv>()
 
@@ -74,6 +75,7 @@ app.route('/api/verify',    verify)
 app.route('/api/uploads',   uploads)
 app.route('/api/boosts',    boosts)
 app.route('/api/reviews',   reviews)
+app.route('/api/saved',     saved)
 app.route('/api/admin',     admin)
 
 export default app

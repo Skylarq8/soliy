@@ -185,7 +185,7 @@ export function SwapProposalModal({ listing, onClose }: Props) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center p-0 sm:items-center sm:p-4">
+    <div className="fixed inset-0 z-[80] flex items-end justify-center p-0 sm:items-center sm:p-4">
       <button
         type="button"
         className="absolute inset-0 bg-foreground/35 backdrop-blur-sm"
@@ -193,7 +193,7 @@ export function SwapProposalModal({ listing, onClose }: Props) {
         aria-label="Хаах"
       />
 
-      <div className="relative flex max-h-[92vh] w-full flex-col overflow-hidden rounded-t-3xl bg-card shadow-2xl sm:max-w-2xl sm:rounded-3xl">
+      <div className="relative flex max-h-[calc(100dvh-0.75rem)] w-full flex-col overflow-hidden rounded-t-3xl bg-card shadow-2xl sm:max-h-[92vh] sm:max-w-2xl sm:rounded-3xl">
         <div className="border-b border-border px-4 py-4 sm:px-5">
           <div className="flex items-center justify-between gap-3">
             <button
@@ -211,15 +211,20 @@ export function SwapProposalModal({ listing, onClose }: Props) {
             <div className="h-9 w-9" />
           </div>
 
-          <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="relative mt-4 grid grid-cols-3 gap-1 sm:gap-2">
+            <div className="absolute left-[16.666%] right-[16.666%] top-4 h-px bg-border sm:top-3.5" />
+            <div
+              className="absolute left-[16.666%] top-4 h-px bg-primary transition-all sm:top-3.5"
+              style={{ width: step === 0 ? '0%' : step === 1 ? '33.333%' : '66.666%' }}
+            />
             {steps.map((item, index) => (
-              <div key={item} className="flex items-center gap-2">
-                <span className={`flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+              <div key={item} className="relative z-10 flex flex-col items-center gap-1 sm:flex-row sm:gap-2">
+                <span className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold sm:h-7 sm:w-7 ${
                   index <= step ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
                 }`}>
                   {index < step ? <Check size={14} /> : index + 1}
                 </span>
-                <span className={`hidden text-xs font-medium md:block ${index <= step ? 'text-foreground' : 'text-muted-foreground'}`}>
+                <span className={`hidden text-center text-xs font-medium leading-tight sm:block ${index <= step ? 'text-foreground' : 'text-muted-foreground'}`}>
                   {item}
                 </span>
               </div>
@@ -397,7 +402,7 @@ export function SwapProposalModal({ listing, onClose }: Props) {
           )}
         </div>
 
-        <div className="border-t border-border bg-card px-4 py-4 sm:px-5">
+        <div className="border-t border-border bg-card px-4 pb-[calc(0.875rem+env(safe-area-inset-bottom))] pt-3 sm:px-5 sm:py-4">
           {step < 2 ? (
             <button
               type="button"
