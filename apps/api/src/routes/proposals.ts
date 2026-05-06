@@ -14,6 +14,67 @@ const proposalSchema = z.object({
   money_offer:     z.number().int().default(0),
 })
 
+type ProposalRow = {
+  id: string
+  sender_id: string
+  receiver_id: string
+  offered_items: string[] | null
+  requested_items: string[] | null
+}
+
+async function enrichProposals<T extends ProposalRow>(proposals: T[]) {
+  if (proposals.length === 0) return []
+
+  const userIds = [...new Set(proposals.flatMap(p => [p.sender_id, p.receiver_id]))]
+  const listingIds = [
+    ...new Set(
+      proposals.flatMap(p => [
+        ...((p.offered_items ?? []) as string[]),
+        ...((p.requested_items ?? []) as string[]),
+      ])
+    ),
+  ]
+  const proposalIds = proposals.map(p => p.id)
+
+  const [usersRes, listingsRes, messagesRes] = await Promise.all([
+    supabaseAdmin
+      .from('users')
+      .select('id, name, nickname, avatar_url, safe_score, swap_count')
+      .in('id', userIds),
+    listingIds.length
+      ? supabaseAdmin
+          .from('listings')
+          .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
+          .in('id', listingIds)
+      : Promise.resolve({ data: [] }),
+    supabaseAdmin
+      .from('messages')
+      .select('*, users!messages_sender_id_fkey(nickname, avatar_url)')
+      .in('proposal_id', proposalIds)
+      .order('created_at', { ascending: false })
+      .limit(Math.max(proposalIds.length * 4, 12)),
+  ])
+
+  const usersById = new Map((usersRes.data ?? []).map(user => [user.id, user]))
+  const listingsById = new Map((listingsRes.data ?? []).map(listing => [listing.id, listing]))
+  const latestMessageByProposal = new Map<string, unknown>()
+
+  for (const message of messagesRes.data ?? []) {
+    if (!latestMessageByProposal.has(message.proposal_id)) {
+      latestMessageByProposal.set(message.proposal_id, message)
+    }
+  }
+
+  return proposals.map(proposal => ({
+    ...proposal,
+    sender: usersById.get(proposal.sender_id) ?? null,
+    receiver: usersById.get(proposal.receiver_id) ?? null,
+    offered_listings: (proposal.offered_items ?? []).map(id => listingsById.get(id)).filter(Boolean),
+    requested_listings: (proposal.requested_items ?? []).map(id => listingsById.get(id)).filter(Boolean),
+    latest_message: latestMessageByProposal.get(proposal.id) ?? null,
+  }))
+}
+
 app.get('/', async (c) => {
   const userId = c.get('userId')
   const { status } = c.req.query()
@@ -28,7 +89,8 @@ app.get('/', async (c) => {
 
   const { data, error } = await query
   if (error) return c.json({ error }, 500)
-  return c.json({ proposals: data })
+  const proposals = await enrichProposals(data ?? [])
+  return c.json({ proposals })
 })
 
 app.get('/:id', async (c) => {
@@ -45,7 +107,8 @@ app.get('/:id', async (c) => {
   if (data.sender_id !== userId && data.receiver_id !== userId)
     return c.json({ error: 'Forbidden' }, 403)
 
-  return c.json({ proposal: data })
+  const [proposal] = await enrichProposals([data])
+  return c.json({ proposal })
 })
 
 app.post('/', zValidator('json', proposalSchema), async (c) => {
@@ -66,7 +129,7 @@ app.post('/', zValidator('json', proposalSchema), async (c) => {
 
   let escrowId: string | undefined
 
-  if (body.money_offer > 0) {
+  if (body.money_offer > 0 && c.env.STRIPE_SECRET_KEY) {
     const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
     const intent = await stripe.paymentIntents.create({
       amount: body.money_offer,
@@ -104,10 +167,20 @@ app.patch('/:id/accept', async (c) => {
     .eq('id', id)
     .single()
 
-  if (!proposal || proposal.receiver_id !== userId)
+  if (!proposal || (proposal.sender_id !== userId && proposal.receiver_id !== userId))
     return c.json({ error: 'Not found' }, 404)
 
-  if (proposal.escrow_id) {
+  const meta = (proposal.category_meta as Record<string, unknown> | null) ?? {}
+  const canAccept =
+    proposal.status === 'pending'
+      ? proposal.receiver_id === userId
+      : proposal.status === 'countered'
+        ? meta.counter_by !== userId
+        : false
+
+  if (!canAccept) return c.json({ error: 'Та энэ саналыг зөвшөөрөх боломжгүй байна' }, 403)
+
+  if (proposal.escrow_id && c.env.STRIPE_SECRET_KEY) {
     const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
     await stripe.paymentIntents.capture(proposal.escrow_id)
   }
@@ -133,10 +206,14 @@ app.patch('/:id/decline', async (c) => {
     .eq('id', id)
     .single()
 
-  if (!proposal || proposal.receiver_id !== userId)
+  if (!proposal || (proposal.sender_id !== userId && proposal.receiver_id !== userId))
     return c.json({ error: 'Not found' }, 404)
 
-  if (proposal.escrow_id) {
+  if (!['pending', 'countered'].includes(proposal.status)) {
+    return c.json({ error: 'Энэ санал хаагдсан байна' }, 400)
+  }
+
+  if (proposal.escrow_id && c.env.STRIPE_SECRET_KEY) {
     const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
     await stripe.paymentIntents.cancel(proposal.escrow_id)
   }
@@ -147,12 +224,28 @@ app.patch('/:id/decline', async (c) => {
 })
 
 app.patch('/:id/counter', zValidator('json', z.object({ money_offer: z.number().int() })), async (c) => {
+  const userId = c.get('userId')
   const { id } = c.req.param()
   const { money_offer } = c.req.valid('json')
 
+  const { data: proposal } = await supabaseAdmin
+    .from('proposals')
+    .select('sender_id, receiver_id, status, category_meta')
+    .eq('id', id)
+    .single()
+
+  if (!proposal || (proposal.sender_id !== userId && proposal.receiver_id !== userId))
+    return c.json({ error: 'Not found' }, 404)
+
+  if (!['pending', 'countered'].includes(proposal.status)) {
+    return c.json({ error: 'Энэ саналд counter хийх боломжгүй байна' }, 400)
+  }
+
+  const meta = (proposal.category_meta as Record<string, unknown> | null) ?? {}
+
   await supabaseAdmin
     .from('proposals')
-    .update({ status: 'countered', money_offer })
+    .update({ status: 'countered', money_offer, category_meta: { ...meta, counter_by: userId } })
     .eq('id', id)
 
   return c.json({ ok: true })
@@ -179,7 +272,7 @@ app.patch('/:id/confirm-receipt', async (c) => {
     !!confirmed[`confirmed_${proposal.receiver_id}`]
 
   if (bothConfirmed) {
-    if (proposal.escrow_id) {
+    if (proposal.escrow_id && c.env.STRIPE_SECRET_KEY) {
       const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
       const intent = await stripe.paymentIntents.retrieve(proposal.escrow_id)
       const fee = Math.floor(intent.amount * 0.05)

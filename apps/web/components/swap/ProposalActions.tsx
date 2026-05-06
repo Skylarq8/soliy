@@ -15,7 +15,22 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
   const [showCounter, setShowCounter] = useState(false)
 
   const isReceiver = proposal.receiver_id === userId
-  const canAct = isReceiver && proposal.status === 'pending'
+  const isParticipant = proposal.sender_id === userId || proposal.receiver_id === userId
+  const meta = (proposal.category_meta as Record<string, unknown> | null) ?? {}
+  const counterBy = typeof meta.counter_by === 'string' ? meta.counter_by : null
+  const canAccept =
+    proposal.status === 'pending'
+      ? isReceiver
+      : proposal.status === 'countered'
+        ? isParticipant && counterBy !== userId
+        : false
+  const canDecline = isParticipant && ['pending', 'countered'].includes(proposal.status)
+  const canCounter =
+    proposal.status === 'pending'
+      ? isReceiver
+      : proposal.status === 'countered'
+        ? isParticipant && counterBy !== userId
+        : false
   const canConfirm = proposal.status === 'accepted'
   const moneyText =
     proposal.money_offer > 0
@@ -65,33 +80,39 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
         )}
       </div>
 
-      {canAct && (
+      {(canAccept || canDecline || canCounter) && (
         <>
           <div className="flex gap-2">
-            <button
-              onClick={() => act(() => api.proposals.accept(proposal.id))}
-              disabled={loading}
-              className="flex-1 rounded-xl bg-emerald-600 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 disabled:opacity-50 transition-colors"
-            >
-              Зөвшөөрөх
-            </button>
-            <button
-              onClick={() => act(() => api.proposals.decline(proposal.id))}
-              disabled={loading}
-              className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50 transition-colors"
-            >
-              Татгалзах
-            </button>
+            {canAccept && (
+              <button
+                onClick={() => act(() => api.proposals.accept(proposal.id))}
+                disabled={loading}
+                className="flex-1 rounded-xl bg-emerald-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
+              >
+                Зөвшөөрөх
+              </button>
+            )}
+            {canDecline && (
+              <button
+                onClick={() => act(() => api.proposals.decline(proposal.id))}
+                disabled={loading}
+                className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+              >
+                Татгалзах
+              </button>
+            )}
           </div>
 
-          <button
-            onClick={() => setShowCounter(v => !v)}
-            className="w-full rounded-xl border border-border py-2 text-sm text-muted-foreground hover:bg-muted transition-colors"
-          >
-            Counter offer
-          </button>
+          {canCounter && (
+            <button
+              onClick={() => setShowCounter(v => !v)}
+              className="w-full rounded-xl border border-border py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+            >
+              Counter санал илгээх
+            </button>
+          )}
 
-          {showCounter && (
+          {canCounter && showCounter && (
             <div className="flex gap-2">
               <input
                 type="number"
@@ -101,8 +122,8 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
                 className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
               <button
-                onClick={() => act(() => api.proposals.counter(proposal.id, parseInt(counterAmount)))}
-                disabled={loading || !counterAmount}
+                onClick={() => act(() => api.proposals.counter(proposal.id, parseInt(counterAmount, 10)))}
+                disabled={loading || !counterAmount || Number.isNaN(parseInt(counterAmount, 10))}
                 className="rounded-xl bg-primary px-4 text-sm text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
               >
                 Илгээх

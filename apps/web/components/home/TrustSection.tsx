@@ -1,3 +1,5 @@
+import { ScrollReveal } from '@/components/shared/ScrollReveal'
+
 const LEFT_STATS = [
   {
     icon: (
@@ -90,10 +92,10 @@ export function TrustSection() {
   return (
     <section className="py-14 md:py-20">
       <div className="max-w-screen-xl mx-auto px-4 md:px-6">
-        <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
+        <div className="grid gap-10 lg:grid-cols-[0.9fr_1.4fr] lg:gap-14">
 
           {/* Left */}
-          <div className="flex-1 max-w-md">
+          <ScrollReveal direction="left" className="flex h-full flex-col">
             <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
               ИТГЭЛТЭЙ СОЛИЛЦОО
             </p>
@@ -105,9 +107,14 @@ export function TrustSection() {
               Swaply дээр итгэл гэдэг ганц badge биш. Профайл, саналын нөхцөл, чат, хүлээн авсан баталгааг хамтад нь харуулж байж хэрэглэгч шийдвэрээ тайван гаргана.
             </p>
 
-            <div className="flex flex-col gap-3">
-              {LEFT_STATS.map(s => (
-                <div key={s.label} className="flex items-center gap-4 p-4 bg-card rounded-xl border border-border">
+            <div className="mt-auto flex flex-col gap-3">
+              {LEFT_STATS.map((s, index) => (
+                <ScrollReveal
+                  key={s.label}
+                  direction="up"
+                  delay={120 + index * 90}
+                  className="flex min-h-[88px] items-center gap-4 rounded-xl border border-border bg-card p-4"
+                >
                   <div className={`w-10 h-10 rounded-xl ${s.color} flex items-center justify-center flex-shrink-0`}>
                     {s.icon}
                   </div>
@@ -115,23 +122,30 @@ export function TrustSection() {
                     <p className="text-xl font-extrabold text-foreground">{s.value}</p>
                     <p className="text-xs text-muted-foreground">{s.label}</p>
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right — 2x2 feature grid */}
-          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {FEATURES.map(f => (
-              <div key={f.title} className="bg-card rounded-2xl border border-border p-6">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {FEATURES.map((f, index) => (
+              <ScrollReveal
+                key={f.title}
+                direction={index % 2 === 0 ? 'up' : 'right'}
+                delay={index * 90}
+                className="flex min-h-[250px] flex-col rounded-2xl border border-border bg-card p-6"
+              >
                 <div className={`w-11 h-11 rounded-xl ${f.color} flex items-center justify-center mb-4`}>
                   {f.icon}
                 </div>
                 <h3 className="font-bold text-foreground mb-2">{f.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4 leading-relaxed">{f.desc}</p>
-                <p className={`text-xl font-extrabold ${f.statColor}`}>{f.stat}</p>
-                <p className="text-xs text-muted-foreground">{f.statLabel}</p>
-              </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">{f.desc}</p>
+                <div className="mt-auto pt-5">
+                  <p className={`text-xl font-extrabold ${f.statColor}`}>{f.stat}</p>
+                  <p className="text-xs text-muted-foreground">{f.statLabel}</p>
+                </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

@@ -25,7 +25,7 @@ app.get('/verifications', async (c) => {
   const { status = 'pending' } = c.req.query()
   const { data } = await supabaseAdmin
     .from('verifications')
-    .select('*, listings(title, photos, category, users(nickname))')
+    .select('*, listings!verifications_listing_id_fkey(title, photos, category, users!listings_user_id_fkey(nickname))')
     .eq('status', status)
     .order('created_at')
   return c.json({ verifications: data })
@@ -98,7 +98,7 @@ app.get('/listings', async (c) => {
   const { status = 'active', page = '1' } = c.req.query()
   const { data } = await supabaseAdmin
     .from('listings')
-    .select('*, users(nickname)')
+    .select('*, users!listings_user_id_fkey(nickname)')
     .eq('status', status)
     .order('created_at', { ascending: false })
     .range((+page - 1) * 20, +page * 20 - 1)

@@ -1,3 +1,5 @@
+import { ScrollReveal } from '@/components/shared/ScrollReveal'
+
 const FEATURES = [
   {
     label: 'Үнэ тэнцүүлэх',
@@ -25,7 +27,7 @@ export function SwapSmarterSection() {
       <div className="max-w-screen-xl mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-12 items-start">
 
-          <div className="lg:sticky lg:top-24">
+          <ScrollReveal direction="left" className="lg:sticky lg:top-24">
             <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
               SWAPLY АРГА
             </p>
@@ -38,19 +40,24 @@ export function SwapSmarterSection() {
             </p>
 
             <div className="grid gap-3">
-              {FEATURES.map(item => (
-                <div key={item.label} className="flex gap-3 rounded-2xl border border-border bg-card p-4 shadow-card">
+              {FEATURES.map((item, index) => (
+                <ScrollReveal
+                  key={item.label}
+                  direction="up"
+                  delay={120 + index * 90}
+                  className="flex gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
+                >
                   <div className="mt-1 w-2.5 h-2.5 rounded-full bg-primary flex-shrink-0" />
                   <div>
                     <h3 className="font-bold text-foreground">{item.label}</h3>
                     <p className="text-sm text-muted-foreground mt-0.5">{item.desc}</p>
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
-          <div className="rounded-[1.75rem] border border-border bg-card shadow-[0_24px_70px_rgb(15_23_42/0.12)] overflow-hidden">
+          <ScrollReveal direction="right" delay={120} className="rounded-[1.75rem] border border-border bg-card shadow-[0_24px_70px_rgb(15_23_42/0.12)] overflow-hidden">
             <div className="bg-primary text-primary-foreground px-5 md:px-7 py-5">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
@@ -110,7 +117,7 @@ export function SwapSmarterSection() {
                   <p className="text-sm font-bold text-foreground mb-3">Тохиролцооны түүх</p>
                   <div className="space-y-3">
                     {TIMELINE.map((item, index) => (
-                      <div key={item.label} className="flex gap-3">
+                      <ScrollReveal key={item.label} delay={index * 80} className="flex gap-3">
                         <div className="flex flex-col items-center">
                           <span className="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center">
                             {index + 1}
@@ -121,7 +128,7 @@ export function SwapSmarterSection() {
                           <p className="text-xs text-muted-foreground">{item.label}</p>
                           <p className="text-sm font-semibold text-foreground">{item.value}</p>
                         </div>
-                      </div>
+                      </ScrollReveal>
                     ))}
                   </div>
                 </div>
@@ -142,7 +149,7 @@ export function SwapSmarterSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

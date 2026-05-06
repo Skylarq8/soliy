@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Heart } from 'lucide-react'
 import type { Listing } from '@swaply/types'
 import { ListingCard } from '@/components/listing/ListingCard'
+import { BackButton } from '@/components/shared/BackButton'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 
@@ -37,6 +38,10 @@ export default function SavedPage() {
 
   return (
     <main className="mx-auto max-w-screen-xl px-4 py-6 md:px-6">
+      <div className="mb-4">
+        <BackButton fallbackHref="/explore" />
+      </div>
+
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold">Хадгалсан</h1>

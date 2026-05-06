@@ -1,11 +1,14 @@
 import Link from 'next/link'
+import { ScrollReveal } from '@/components/shared/ScrollReveal'
 
 export function CtaBanner() {
   return (
     <section className="py-10 md:py-16 px-4 md:px-6">
       <div className="max-w-screen-xl mx-auto">
-        <div
+        <ScrollReveal
+          direction="up"
           className="relative overflow-hidden rounded-3xl px-6 py-14 md:py-20 text-center border border-primary/20"
+          duration={750}
           style={{ background: 'linear-gradient(135deg, hsl(166 55% 30%) 0%, hsl(166 45% 24%) 52%, hsl(12 82% 58%) 100%)' }}
         >
           <div className="absolute inset-x-0 top-0 h-px bg-white/30" />
@@ -54,7 +57,7 @@ export function CtaBanner() {
               <span>Хүлээлцээд батална</span>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   )

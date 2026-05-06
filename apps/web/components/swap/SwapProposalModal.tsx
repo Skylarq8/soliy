@@ -112,7 +112,7 @@ export function SwapProposalModal({ listing, onClose }: Props) {
 
       const { data, error: listError } = await supabase
         .from('listings')
-        .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+        .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
         .eq('user_id', session.user.id)
         .eq('status', 'active')
         .neq('id', listing.id)

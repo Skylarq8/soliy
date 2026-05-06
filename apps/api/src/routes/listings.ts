@@ -25,7 +25,7 @@ app.get('/', async (c) => {
 
   let query = supabaseAdmin
     .from('listings')
-    .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+    .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
     .eq('status', 'active')
     .order('boost_until', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false })
@@ -46,7 +46,7 @@ app.get('/:id', async (c) => {
   const { id } = c.req.param()
   const { data, error } = await supabaseAdmin
     .from('listings')
-    .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+    .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
     .eq('id', id)
     .single()
 

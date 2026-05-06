@@ -7,6 +7,8 @@ import { LiveActivitySection } from '@/components/home/LiveActivitySection'
 import { TrustSection } from '@/components/home/TrustSection'
 import { CtaBanner } from '@/components/home/CtaBanner'
 
+export const dynamic = 'force-dynamic'
+
 export default function HomePage() {
   return (
     <>
@@ -16,7 +18,7 @@ export default function HomePage() {
       </Suspense>
       <HowItWorksSection />
       <SwapSmarterSection />
-      <LiveActivitySection />
+      {/* <LiveActivitySection /> */}
       <TrustSection />
       <CtaBanner />
     </>

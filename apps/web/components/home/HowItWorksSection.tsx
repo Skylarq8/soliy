@@ -1,3 +1,5 @@
+import { ScrollReveal } from '@/components/shared/ScrollReveal'
+
 const STEPS = [
   {
     num: '01',
@@ -55,7 +57,7 @@ export function HowItWorksSection() {
       <div className="max-w-screen-xl mx-auto px-4 md:px-6">
 
         {/* Header */}
-        <div className="text-center mb-12 md:mb-16">
+        <ScrollReveal className="text-center mb-12 md:mb-16">
           <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
             ЭНГИЙН ПРОЦЕСС
           </p>
@@ -65,7 +67,7 @@ export function HowItWorksSection() {
           <p className="text-muted-foreground max-w-md mx-auto text-sm md:text-base">
             Зараас тохиролцоо хүртэл ойлгомжтой, хяналттай, хурдан.
           </p>
-        </div>
+        </ScrollReveal>
 
         {/* Steps */}
         <div className="relative">
@@ -73,8 +75,13 @@ export function HowItWorksSection() {
           <div className="hidden lg:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-border z-0" />
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-            {STEPS.map(step => (
-              <div key={step.num} className="relative z-10 flex flex-col items-center text-center">
+            {STEPS.map((step, index) => (
+              <ScrollReveal
+                key={step.num}
+                direction="up"
+                delay={index * 130}
+                className="relative z-10 flex flex-col items-center text-center"
+              >
                 {/* Icon box with number badge */}
                 <div className="relative mb-5">
                   <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center bg-card border border-border shadow-card`}>
@@ -87,7 +94,7 @@ export function HowItWorksSection() {
 
                 <h3 className="font-bold text-foreground mb-2">{step.title}</h3>
                 <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
         </div>

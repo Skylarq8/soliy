@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ScrollReveal } from '@/components/shared/ScrollReveal'
 
 const DEAL_POINTS = [
   { value: '0₮', label: 'Зар оруулах' },
@@ -12,10 +13,10 @@ export function HeroSection() {
       <div className="absolute inset-x-0 bottom-0 h-px bg-border" />
       <div className="max-w-screen-xl mx-auto px-4 md:px-6 grid lg:grid-cols-[1fr_0.95fr] gap-10 lg:gap-16 items-center">
 
-        <div className="max-w-2xl text-center lg:text-left">
+        <ScrollReveal direction="left" className="max-w-2xl text-center lg:text-left">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/20 bg-card/70 text-primary text-sm font-semibold mb-6 shadow-sm">
             <span className="w-1.5 h-1.5 rounded-full bg-primary inline-block" />
-            Баталгаажсан хэрэглэгчидтэй хамгаалалттай солилцоо
+            Хэрэгцээгүй зүйлээ үнэ цэнэ болго
           </div>
 
           <h1 className="text-4xl md:text-5xl lg:text-[58px] font-extrabold leading-[1.06] tracking-tight mb-5">
@@ -44,16 +45,21 @@ export function HeroSection() {
           </div>
 
           <div className="grid grid-cols-3 gap-3 max-w-xl mx-auto lg:mx-0">
-            {DEAL_POINTS.map(s => (
-              <div key={s.label} className="rounded-2xl border border-border bg-card/70 px-3 py-3 shadow-sm">
+            {DEAL_POINTS.map((s, index) => (
+              <ScrollReveal
+                key={s.label}
+                direction="up"
+                delay={180 + index * 80}
+                className="rounded-2xl border border-border bg-card/70 px-3 py-3 shadow-sm flex flex-col justify-center items-center"
+              >
                 <p className="text-lg md:text-xl font-extrabold text-foreground">{s.value}</p>
                 <p className="text-[11px] md:text-xs text-muted-foreground mt-0.5">{s.label}</p>
-              </div>
+              </ScrollReveal>
             ))}
           </div>
-        </div>
+        </ScrollReveal>
 
-        <div className="w-full max-w-xl mx-auto">
+        <ScrollReveal direction="right" delay={120} className="w-full max-w-xl mx-auto">
           <div className="rounded-[2rem] border border-border bg-card/75 p-3 md:p-4 shadow-card">
             <div className="rounded-[1.5rem] overflow-hidden bg-background border border-border">
               <div className="flex items-center justify-between px-4 py-3 border-b border-border">
@@ -106,7 +112,7 @@ export function HeroSection() {
               </div>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </div>
     </section>
   )

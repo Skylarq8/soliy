@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ScrollReveal } from '@/components/shared/ScrollReveal'
 
 const FEED = [
   { user: 'solongo', avatar: 'С', color: 'bg-primary', action: 'пальтогоо пүүз + 35,000₮ саналтай солихоор тохирч байна', type: 'Санал', typeCls: 'bg-primary/10 text-primary', state: 'Чат' },
@@ -47,7 +48,7 @@ export function LiveActivitySection() {
         <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
 
           {/* Left */}
-          <div className="flex-1">
+          <ScrollReveal direction="left" className="flex-1">
             <div className="flex items-center gap-2 mb-4">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
               <p className="text-xs font-bold tracking-widest text-green-600 uppercase">
@@ -65,8 +66,13 @@ export function LiveActivitySection() {
             </p>
 
             <div className="flex flex-col gap-3">
-              {STATS.map(s => (
-                <div key={s.label} className="flex items-center gap-4 p-4 bg-background rounded-xl border border-border">
+              {STATS.map((s, index) => (
+                <ScrollReveal
+                  key={s.label}
+                  direction="up"
+                  delay={index * 85}
+                  className="flex items-center gap-4 p-4 bg-background rounded-xl border border-border"
+                >
                   <div className={`w-10 h-10 rounded-xl ${s.bg} flex items-center justify-center flex-shrink-0`}>
                     {s.icon}
                   </div>
@@ -74,13 +80,13 @@ export function LiveActivitySection() {
                     <p className="text-xl font-extrabold text-foreground">{s.value}</p>
                     <p className="text-xs text-muted-foreground">{s.label}</p>
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
-          </div>
+          </ScrollReveal>
 
           {/* Right — Live Feed */}
-          <div className="flex-1 w-full bg-background rounded-2xl border border-border overflow-hidden shadow-card">
+          <ScrollReveal direction="right" delay={100} className="flex-1 w-full bg-background rounded-2xl border border-border overflow-hidden shadow-card">
             {/* Feed header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
               <div className="flex items-center gap-2">
@@ -93,7 +99,12 @@ export function LiveActivitySection() {
             {/* Feed items */}
             <div className="divide-y divide-border">
               {FEED.map((item, i) => (
-                <div key={i} className="flex items-center gap-3 px-5 py-3.5 hover:bg-muted/50 transition-colors">
+                <ScrollReveal
+                  key={item.user}
+                  direction="up"
+                  delay={160 + i * 70}
+                  className="flex items-center gap-3 px-5 py-3.5 hover:bg-muted/50 transition-colors"
+                >
                   <div className={`w-8 h-8 rounded-full ${item.color} flex items-center justify-center text-white text-xs font-bold flex-shrink-0`}>
                     {item.avatar}
                   </div>
@@ -109,7 +120,7 @@ export function LiveActivitySection() {
                     </span>
                     <span className="text-[11px] text-muted-foreground whitespace-nowrap">{item.state}</span>
                   </div>
-                </div>
+                </ScrollReveal>
               ))}
             </div>
 
@@ -122,7 +133,7 @@ export function LiveActivitySection() {
                 Бараа болон саналуудыг харах →
               </Link>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

@@ -18,7 +18,7 @@ async function getListings(params: Record<string, string>): Promise<Listing[]> {
 
   let query = sb
     .from('listings')
-    .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+    .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
     .eq('status', 'active')
     .order('boost_until', { ascending: false, nullsFirst: false })
     .order('created_at', { ascending: false })

@@ -11,7 +11,7 @@ async function getFeatured(): Promise<Listing[]> {
   )
   const { data } = await sb
     .from('listings')
-    .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+    .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
     .eq('status', 'active')
     .not('boost_until', 'is', null)
     .gt('boost_until', new Date().toISOString())
@@ -22,7 +22,7 @@ async function getFeatured(): Promise<Listing[]> {
   if (!data || data.length === 0) {
     const { data: recent } = await sb
       .from('listings')
-      .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+      .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
       .eq('status', 'active')
       .order('created_at', { ascending: false })
       .limit(8)

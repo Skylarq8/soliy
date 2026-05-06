@@ -203,7 +203,7 @@ export default function MyProfilePage() {
 
   return (
     <div className="min-h-screen bg-background pb-24 md:pb-8">
-      <div className="max-w-screen-xl mx-auto px-4 md:px-6 pt-6">
+      <div className="max-w-[1480px] mx-auto px-4 md:px-6 pt-6">
 
         {/* Edit modal */}
         {editing && (
@@ -302,7 +302,7 @@ export default function MyProfilePage() {
         )}
 
         {/* Desktop: 2-column, Mobile: stacked */}
-        <div className="lg:grid lg:grid-cols-[300px_1fr] lg:gap-8 xl:grid-cols-[340px_1fr]">
+        <div className="lg:grid lg:grid-cols-[380px_1fr] lg:gap-8">
 
           {/* LEFT SIDEBAR */}
           <div className="space-y-4">

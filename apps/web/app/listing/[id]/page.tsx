@@ -16,7 +16,7 @@ async function getListing(id: string): Promise<Listing | null> {
   )
   const { data } = await sb
     .from('listings')
-    .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+    .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
     .eq('id', id)
     .single()
   return data as Listing | null

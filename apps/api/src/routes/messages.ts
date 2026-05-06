@@ -71,7 +71,7 @@ app.get('/:proposalId', async (c) => {
 
   let query = supabaseAdmin
     .from('messages')
-    .select('*, users:sender_id(nickname, avatar_url)')
+    .select('*, users!messages_sender_id_fkey(nickname, avatar_url)')
     .eq('proposal_id', proposalId)
     .order('created_at', { ascending: false })
     .limit(parseInt(limit))

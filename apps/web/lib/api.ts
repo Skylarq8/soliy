@@ -5,6 +5,22 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL ?? (
 )
 const API_BASE_URL = API_URL.replace(/\/+$/, '')
 
+function errorMessage(error: unknown, fallback: string) {
+  if (typeof error === 'string') return error
+  if (error && typeof error === 'object') {
+    const maybe = error as { message?: unknown; error?: unknown; details?: unknown }
+    if (typeof maybe.message === 'string') return maybe.message
+    if (typeof maybe.error === 'string') return maybe.error
+    if (typeof maybe.details === 'string') return maybe.details
+    try {
+      return JSON.stringify(error)
+    } catch {
+      return fallback
+    }
+  }
+  return fallback
+}
+
 async function getToken(): Promise<string | null> {
   const { data } = await supabase.auth.getSession()
   return data.session?.access_token ?? null
@@ -36,7 +52,7 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
     if (res.status === 404) {
       throw new Error('API endpoint олдсонгүй. NEXT_PUBLIC_API_URL нь web URL биш, deploy хийсэн API URL байх ёстой.')
     }
-    throw new Error(data.error ?? `HTTP ${res.status}`)
+    throw new Error(errorMessage(data.error ?? data, `HTTP ${res.status}`))
   }
   return data as T
 }

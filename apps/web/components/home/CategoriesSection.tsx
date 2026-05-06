@@ -8,12 +8,15 @@ async function getListings(): Promise<Listing[]> {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   )
-  const { data } = await sb
+  const { data, error } = await sb
     .from('listings')
-    .select('*, users(nickname, avatar_url, safe_score, swap_count)')
+    .select('*, users!listings_user_id_fkey(nickname, avatar_url, safe_score, swap_count)')
     .eq('status', 'active')
     .order('created_at', { ascending: false })
     .limit(16)
+  if (error) {
+    console.error('Home listings query failed:', error.message)
+  }
   return (data as Listing[]) ?? []
 }
 

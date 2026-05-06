@@ -7,6 +7,13 @@ export type Listing = Tables['listings']['Row'] & {
   users?: Pick<User, 'nickname' | 'avatar_url' | 'safe_score' | 'swap_count'> | null
 }
 export type Proposal = Tables['proposals']['Row']
+export type EnrichedProposal = Proposal & {
+  sender?: Pick<User, 'id' | 'name' | 'nickname' | 'avatar_url' | 'safe_score' | 'swap_count'> | null
+  receiver?: Pick<User, 'id' | 'name' | 'nickname' | 'avatar_url' | 'safe_score' | 'swap_count'> | null
+  offered_listings?: Listing[]
+  requested_listings?: Listing[]
+  latest_message?: Message | null
+}
 export type Message = Tables['messages']['Row'] & {
   users?: Pick<User, 'nickname' | 'avatar_url'> | null
 }
