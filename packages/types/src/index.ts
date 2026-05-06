@@ -21,6 +21,7 @@ export type Review = Tables['reviews']['Row']
 export type Verification = Tables['verifications']['Row']
 export type Follow = Tables['follows']['Row']
 export type SavedListing = Tables['saved_listings']['Row']
+export type MessageRead = Tables['message_reads']['Row']
 export type Boost = Tables['boosts']['Row']
 export type Notification = Tables['notifications']['Row']
 

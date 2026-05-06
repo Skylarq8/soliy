@@ -66,13 +66,13 @@ export function SwapRoom({ proposalId }: { proposalId: string }) {
   }
 
   return (
-    <div className="mx-auto grid h-[calc(100dvh-4.25rem)] max-w-screen-2xl grid-cols-1 overflow-hidden border-x border-border bg-background lg:grid-cols-[380px_1fr]">
-      <aside className="hidden overflow-y-auto border-r border-border bg-card/50 p-4 lg:block">
+    <div className="mx-auto grid h-[calc(100dvh-8.25rem)] max-w-screen-2xl grid-cols-1 overflow-hidden border-x border-border bg-background md:h-[calc(100dvh-4.25rem)] lg:grid-cols-[360px_minmax(0,1fr)] xl:grid-cols-[400px_minmax(0,1fr)]">
+      <aside className="hidden overflow-y-auto border-r border-border bg-card/50 p-4 lg:block xl:p-5">
         <RoomSummary proposal={proposal} myId={myId} otherUser={otherUser} />
       </aside>
 
       <section className="flex min-h-0 flex-col">
-        <div className="flex items-center gap-3 border-b border-border bg-card px-3 py-3 sm:px-5">
+        <div className="flex min-h-[65px] items-center gap-3 border-b border-border bg-card px-3 py-3 sm:px-5">
           <Link
             href="/messages"
             className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border border-border bg-background text-foreground transition hover:bg-muted"
@@ -93,11 +93,11 @@ export function SwapRoom({ proposalId }: { proposalId: string }) {
           </span>
         </div>
 
-        <div className="border-b border-border bg-card/70 px-3 py-3 lg:hidden">
+        <div className="border-b border-border bg-card/70 px-3 py-2.5 lg:hidden">
           <MobileSummary proposal={proposal} myId={myId} />
         </div>
 
-        <div className="min-h-0 flex-1">
+        <div className="min-h-0 flex-1 overflow-hidden">
           <SwapChat proposalId={proposal.id} />
         </div>
 
@@ -184,13 +184,13 @@ function MobileSummary({ proposal, myId }: { proposal: EnrichedProposal; myId: s
   const requested = proposal.requested_listings?.[0] ?? null
 
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2">
+    <div className="grid grid-cols-[minmax(0,1fr)_44px_minmax(0,1fr)] items-center gap-2">
       <MobileItem listing={offered} />
       <div className="text-center">
         <div className="mx-auto flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
           <Repeat2 size={17} />
         </div>
-        <p className="mt-1 whitespace-nowrap text-[11px] font-bold text-primary">{moneyText(proposal, myId)}</p>
+        <p className="mx-auto mt-1 max-w-[76px] truncate text-[10px] font-bold text-primary">{moneyText(proposal, myId)}</p>
       </div>
       <MobileItem listing={requested} />
     </div>
@@ -216,8 +216,8 @@ function ListingMini({ label, listing }: { label: string; listing: Listing | nul
 
 function MobileItem({ listing }: { listing: Listing | null }) {
   return (
-    <div className="flex min-w-0 items-center gap-2">
-      <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
+    <div className="flex min-w-0 items-center gap-2 overflow-hidden rounded-2xl bg-background/70 p-1.5">
+      <div className="relative h-11 w-11 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
         {listing?.photos?.[0] && <Image src={listing.photos[0]} alt={listing.title} fill className="object-cover" />}
       </div>
       <div className="min-w-0">

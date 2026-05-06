@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'next/navigation'
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { useTheme } from '@/components/shared/ThemeProvider'
+import { useUnreadMessages } from '@/hooks/useUnreadMessages'
 
 export function Navbar() {
   const pathname = usePathname()
@@ -11,6 +12,7 @@ export function Navbar() {
   const [search, setSearch] = useState('')
   const { theme, toggle } = useTheme()
   const [user, setUser] = useState<{ id: string } | null>(null)
+  const { count: unreadMessages } = useUnreadMessages()
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setUser(data.user ? { id: data.user.id } : null))
@@ -40,8 +42,8 @@ export function Navbar() {
     )
   }
 
-  const iconBtn    = 'w-9 h-9 flex     items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex-shrink-0'
-  const iconBtnMd = 'w-9 h-9 hidden md:flex items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex-shrink-0'
+  const iconBtn    = 'relative w-9 h-9 flex     items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex-shrink-0'
+  const iconBtnMd = 'relative w-9 h-9 hidden md:flex items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground hover:bg-muted transition-colors flex-shrink-0'
 
   return (
     <nav className="sticky top-0 z-50 bg-card border-b border-border shadow-sm">
@@ -132,6 +134,7 @@ export function Navbar() {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                 </svg>
+                <UnreadBadge count={unreadMessages} />
               </Link>
 
               {/* Profile */}
@@ -171,5 +174,14 @@ export function Navbar() {
         </div>
       </div>
     </nav>
+  )
+}
+
+function UnreadBadge({ count }: { count: number }) {
+  if (count <= 0) return null
+  return (
+    <span className="absolute -right-1 -top-1 flex min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-black leading-4 text-white ring-2 ring-card">
+      {count > 9 ? '9+' : count}
+    </span>
   )
 }

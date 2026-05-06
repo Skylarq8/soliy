@@ -109,6 +109,9 @@ export const api = {
 
   // Messages
   messages: {
+    unread: () => apiFetch<{ total: number; by_proposal: Record<string, number> }>('/api/messages/unread'),
+    markRead: (proposalId: string) =>
+      apiFetch<{ ok: boolean }>(`/api/messages/${proposalId}/read`, { method: 'POST' }),
     list: (proposalId: string, params?: Record<string, string>) =>
       apiFetch(`/api/messages/${proposalId}?${new URLSearchParams(params)}`),
     send: (proposal_id: string, content: string) =>

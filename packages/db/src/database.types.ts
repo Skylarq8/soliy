@@ -202,6 +202,39 @@ export type Database = {
           }
         ]
       }
+      message_reads: {
+        Row: {
+          proposal_id: string
+          user_id: string
+          last_read_at: string
+        }
+        Insert: {
+          proposal_id: string
+          user_id: string
+          last_read_at?: string
+        }
+        Update: {
+          proposal_id?: string
+          user_id?: string
+          last_read_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_reads_proposal_id_fkey"
+            columns: ["proposal_id"]
+            isOneToOne: false
+            referencedRelation: "proposals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_reads_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
       reviews: {
         Row: {
           id: string

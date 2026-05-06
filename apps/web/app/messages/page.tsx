@@ -63,18 +63,18 @@ export default function MessagesPage() {
   }, [activeFilter, myId, proposals])
 
   return (
-    <main className="min-h-[calc(100dvh-4rem)] bg-background px-4 py-5 md:px-6 md:py-8">
+    <main className="min-h-[calc(100dvh-4rem)] bg-background px-3 pb-24 pt-4 sm:px-4 md:px-6 md:py-8">
       <div className="mx-auto max-w-screen-lg">
-        <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="mb-5 flex flex-col gap-4 sm:mb-6 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-widest text-primary">Swap chat</p>
-            <h1 className="mt-1 text-2xl font-extrabold text-foreground md:text-3xl">Чат ба солилцооны хүсэлт</h1>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <h1 className="mt-1 text-xl font-extrabold text-foreground sm:text-2xl md:text-3xl">Чат ба солилцооны хүсэлт</h1>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
               Илгээсэн болон хүлээн авсан swap request-үүдээ нэг дор удирдана.
             </p>
           </div>
 
-          <div className="flex rounded-full border border-border bg-card p-1">
+          <div className="grid grid-cols-3 rounded-full border border-border bg-card p-1 sm:flex">
             {filters.map(filter => (
               <button
                 key={filter.key}
@@ -127,7 +127,7 @@ function ConversationCard({ proposal, myId }: { proposal: EnrichedProposal; myId
   return (
     <Link
       href={`/swap/${proposal.id}`}
-      className="group grid gap-4 rounded-3xl border border-border bg-card p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-card md:grid-cols-[1fr_auto]"
+      className="group grid gap-3 rounded-3xl border border-border bg-card p-3 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-card sm:p-4 md:grid-cols-[1fr_auto]"
     >
       <div className="min-w-0">
         <div className="mb-3 flex items-center gap-3">
@@ -150,11 +150,11 @@ function ConversationCard({ proposal, myId }: { proposal: EnrichedProposal; myId
           </div>
         </div>
 
-        <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-2 rounded-2xl border border-border bg-background p-2">
+        <div className="grid gap-2 rounded-2xl border border-border bg-background p-2 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-center">
           <ListingLine listing={offered} label={proposal.sender_id === myId ? 'Таны бараа' : 'Тэдний бараа'} />
-          <div className="flex flex-col items-center gap-1 px-1 text-primary">
+          <div className="flex items-center justify-center gap-2 rounded-xl bg-primary/10 px-2 py-1.5 text-primary sm:flex-col sm:bg-transparent sm:px-1 sm:py-0">
             <Repeat2 size={18} />
-            <span className="whitespace-nowrap rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold">
+            <span className="whitespace-nowrap rounded-full text-[10px] font-bold sm:bg-primary/10 sm:px-2 sm:py-0.5">
               {moneyText(proposal, myId)}
             </span>
           </div>
@@ -169,7 +169,7 @@ function ConversationCard({ proposal, myId }: { proposal: EnrichedProposal; myId
         </div>
       </div>
 
-      <div className="flex items-center justify-end">
+      <div className="hidden items-center justify-end md:flex">
         <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background text-muted-foreground transition group-hover:border-primary group-hover:text-primary">
           <ArrowRight size={18} />
         </div>
@@ -180,8 +180,8 @@ function ConversationCard({ proposal, myId }: { proposal: EnrichedProposal; myId
 
 function ListingLine({ listing, label }: { listing: Listing | null; label: string }) {
   return (
-    <div className="flex min-w-0 items-center gap-2">
-      <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
+    <div className="flex min-w-0 items-center gap-2 rounded-xl bg-card/60 p-1.5 sm:bg-transparent sm:p-0">
+      <div className="relative h-11 w-11 flex-shrink-0 overflow-hidden rounded-xl bg-muted sm:h-12 sm:w-12">
         {listing?.photos?.[0] && <Image src={listing.photos[0]} alt={listing.title} fill className="object-cover" />}
       </div>
       <div className="min-w-0">

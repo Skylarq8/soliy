@@ -52,20 +52,20 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
 
   if (proposal.status === 'completed') {
     return (
-      <div className="text-center py-4 text-emerald-600 font-medium text-sm">
+      <div className="border-t border-border bg-card px-3 py-3 text-center text-sm font-medium text-emerald-600">
         ✓ Swap дууссан
       </div>
     )
   }
 
   if (proposal.status === 'declined') {
-    return <div className="text-center py-4 text-muted-foreground text-sm">Proposal татгалзсан</div>
+    return <div className="border-t border-border bg-card px-3 py-3 text-center text-sm text-muted-foreground">Proposal татгалзсан</div>
   }
 
   return (
-    <div className="border-t border-border p-4 space-y-3">
+    <div className="space-y-3 border-t border-border bg-card p-3 sm:p-4">
       {/* Status badge */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-center justify-between gap-2">
         <span className={`text-xs px-2 py-1 rounded-full font-medium capitalize ${
           proposal.status === 'accepted' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300' :
           proposal.status === 'countered' ? 'bg-amber-100 text-amber-700' :
@@ -82,12 +82,12 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
 
       {(canAccept || canDecline || canCounter) && (
         <>
-          <div className="flex gap-2">
+          <div className="grid grid-cols-2 gap-2">
             {canAccept && (
               <button
                 onClick={() => act(() => api.proposals.accept(proposal.id))}
                 disabled={loading}
-                className="flex-1 rounded-xl bg-emerald-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
+                className="min-h-11 rounded-xl bg-emerald-600 px-3 py-2.5 text-sm font-medium text-white transition-colors hover:bg-emerald-700 disabled:opacity-50"
               >
                 Зөвшөөрөх
               </button>
@@ -96,7 +96,7 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
               <button
                 onClick={() => act(() => api.proposals.decline(proposal.id))}
                 disabled={loading}
-                className="flex-1 rounded-xl bg-red-600 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
+                className="min-h-11 rounded-xl bg-red-600 px-3 py-2.5 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:opacity-50"
               >
                 Татгалзах
               </button>
@@ -106,25 +106,25 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
           {canCounter && (
             <button
               onClick={() => setShowCounter(v => !v)}
-              className="w-full rounded-xl border border-border py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+              className="min-h-11 w-full rounded-xl border border-border px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
             >
               Counter санал илгээх
             </button>
           )}
 
           {canCounter && showCounter && (
-            <div className="flex gap-2">
+            <div className="grid gap-2 sm:grid-cols-[1fr_auto]">
               <input
                 type="number"
                 value={counterAmount}
                 onChange={e => setCounterAmount(e.target.value)}
                 placeholder="+ бол санал илгээгч өгнө, - бол авна"
-                className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
+                className="min-h-11 rounded-xl border border-border bg-background px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/30"
               />
               <button
                 onClick={() => act(() => api.proposals.counter(proposal.id, parseInt(counterAmount, 10)))}
                 disabled={loading || !counterAmount || Number.isNaN(parseInt(counterAmount, 10))}
-                className="rounded-xl bg-primary px-4 text-sm text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
+                className="min-h-11 rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 Илгээх
               </button>
@@ -136,9 +136,9 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
       {canConfirm && (
         <button
           onClick={() => act(() => api.proposals.confirmReceipt(proposal.id))}
-          disabled={loading}
-          className="w-full rounded-xl bg-primary py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
-        >
+        disabled={loading}
+        className="min-h-11 w-full rounded-xl bg-primary px-3 py-2.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+      >
           Хүлээн авсан баталгаажуулах
         </button>
       )}

@@ -23,6 +23,11 @@ export function SwapChat({ proposalId }: Props) {
   }, [])
 
   useEffect(() => {
+    if (!myId) return
+    void api.messages.markRead(proposalId)
+  }, [messages.length, myId, proposalId])
+
+  useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages])
 
