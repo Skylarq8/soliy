@@ -15,11 +15,23 @@ export function Navbar() {
   const { count: unreadMessages } = useUnreadMessages()
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUser(data.user ? { id: data.user.id } : null))
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, session) => {
-      setUser(session?.user ? { id: session.user.id } : null)
-    })
-    return () => subscription.unsubscribe()
+    let subscription: { unsubscribe: () => void } | null = null
+
+    try {
+      supabase.auth
+        .getUser()
+        .then(({ data }) => setUser(data.user ? { id: data.user.id } : null))
+        .catch(() => setUser(null))
+
+      const result = supabase.auth.onAuthStateChange((_e, session) => {
+        setUser(session?.user ? { id: session.user.id } : null)
+      })
+      subscription = result.data.subscription
+    } catch {
+      setUser(null)
+    }
+
+    return () => subscription?.unsubscribe()
   }, [])
 
   function handleSearch(e: React.SyntheticEvent<HTMLFormElement>) {

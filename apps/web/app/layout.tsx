@@ -21,9 +21,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: `
           (function(){
-            var s = localStorage.getItem('theme');
-            var sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            document.documentElement.classList.toggle('dark', (s ?? sys) === 'dark');
+            try {
+              var s = null;
+              try { s = window.localStorage && localStorage.getItem('theme'); } catch (e) {}
+              var sys = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+              document.documentElement.classList.toggle('dark', (s || sys) === 'dark');
+            } catch (e) {}
           })();
         `}} />
       </head>

@@ -23,31 +23,48 @@ export function useUnreadMessages() {
   }
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      const id = data.user?.id ?? null
-      setUserId(id)
-      void refresh(id)
-    })
+    let subscription: { unsubscribe: () => void } | null = null
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      const id = session?.user?.id ?? null
-      setUserId(id)
-      void refresh(id)
-    })
+    try {
+      supabase.auth
+        .getUser()
+        .then(({ data }) => {
+          const id = data.user?.id ?? null
+          setUserId(id)
+          void refresh(id)
+        })
+        .catch(() => {
+          setUserId(null)
+          setCount(0)
+        })
 
-    return () => subscription.unsubscribe()
+      const result = supabase.auth.onAuthStateChange((_event, session) => {
+        const id = session?.user?.id ?? null
+        setUserId(id)
+        void refresh(id)
+      })
+      subscription = result.data.subscription
+    } catch {
+      setUserId(null)
+      setCount(0)
+    }
+
+    return () => subscription?.unsubscribe()
   }, [])
 
   useEffect(() => {
     if (!userId) return
 
-    const channel = supabase
-      .channel(`unread-messages:${userId}`)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-        const row = payload.new as { sender_id?: string } | null
-        if (row?.sender_id && row.sender_id !== userId) void refresh(userId)
-      })
-      .subscribe()
+    let channel: ReturnType<typeof supabase.channel> | null = null
+    try {
+      channel = supabase
+        .channel(`unread-messages:${userId}`)
+        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+          const row = payload.new as { sender_id?: string } | null
+          if (row?.sender_id && row.sender_id !== userId) void refresh(userId)
+        })
+        .subscribe()
+    } catch {}
 
     const interval = window.setInterval(() => void refresh(userId), 30000)
     const onFocus = () => void refresh(userId)
@@ -56,7 +73,7 @@ export function useUnreadMessages() {
     window.addEventListener('swaply:messages-read', onRead)
 
     return () => {
-      supabase.removeChannel(channel)
+      if (channel) void supabase.removeChannel(channel)
       window.clearInterval(interval)
       window.removeEventListener('focus', onFocus)
       window.removeEventListener('swaply:messages-read', onRead)

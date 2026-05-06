@@ -13,14 +13,20 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   function applyTheme(next: Theme) {
     document.documentElement.classList.toggle('dark', next === 'dark')
-    localStorage.setItem('theme', next)
+    try {
+      localStorage.setItem('theme', next)
+    } catch {}
     setTheme(next)
   }
 
   useEffect(() => {
-    const saved = localStorage.getItem('theme') as Theme | null
-    const sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-    const current = document.documentElement.classList.contains('dark') ? 'dark' : sys
+    let saved: Theme | null = null
+    try {
+      const stored = localStorage.getItem('theme')
+      saved = stored === 'dark' || stored === 'light' ? stored : null
+    } catch {}
+    const sys = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+    const current: Theme = document.documentElement.classList.contains('dark') ? 'dark' : sys
     const t = saved ?? current
     setTheme(t)
     document.documentElement.classList.toggle('dark', t === 'dark')

@@ -41,7 +41,12 @@ export function ScrollReveal({
     const node = ref.current
     if (!node) return
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
+    if (!('IntersectionObserver' in window)) {
+      setShown(true)
+      return
+    }
+
     if (prefersReducedMotion) {
       setShown(true)
       return
