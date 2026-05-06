@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { ArrowLeft, ArrowRight, Check, Loader2, Repeat2, X } from 'lucide-react'
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, Loader2, Minus, Repeat2, X } from 'lucide-react'
 import type { Listing } from '@swaply/types'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
@@ -18,6 +18,39 @@ const steps = [
   'Санал баталгаажуулах',
 ] as const
 
+const moneyTones = {
+  receive: {
+    box: 'border-emerald-600/35 bg-emerald-500/10',
+    soft: 'bg-emerald-500/10',
+    text: 'text-emerald-600 dark:text-emerald-400',
+    icon: 'bg-emerald-600 text-white',
+    badge: 'bg-emerald-600 text-white',
+    pill: 'bg-emerald-600 text-white',
+    slider: 'accent-emerald-600',
+    buttonActive: 'border-emerald-600 bg-emerald-600 text-white',
+  },
+  give: {
+    box: 'border-red-600/35 bg-red-500/10',
+    soft: 'bg-red-500/10',
+    text: 'text-red-600 dark:text-red-400',
+    icon: 'bg-red-600 text-white',
+    badge: 'bg-red-600 text-white',
+    pill: 'bg-red-600 text-white',
+    slider: 'accent-red-600',
+    buttonActive: 'border-red-600 bg-red-600 text-white',
+  },
+  even: {
+    box: 'border-border bg-muted/40',
+    soft: 'bg-muted/50',
+    text: 'text-muted-foreground',
+    icon: 'bg-muted text-muted-foreground',
+    badge: 'bg-muted text-foreground',
+    pill: 'bg-muted text-foreground',
+    slider: 'accent-muted-foreground',
+    buttonActive: 'border-muted-foreground bg-muted text-foreground',
+  },
+} as const
+
 export function SwapProposalModal({ listing, onClose }: Props) {
   const router = useRouter()
   const [step, setStep] = useState(0)
@@ -31,9 +64,40 @@ export function SwapProposalModal({ listing, onClose }: Props) {
 
   const targetPrice = listing.price ?? 0
   const selectedPrice = selected?.price ?? 0
-  const suggestedCash = Math.max(0, targetPrice - selectedPrice)
-  const remainingDiff = Math.max(0, targetPrice - selectedPrice - moneyOffer)
-  const maxCash = Math.max(targetPrice, suggestedCash, 10000)
+  const priceBalance = selectedPrice - targetPrice
+  const suggestedCash = -priceBalance
+  const exactDiff = Math.abs(priceBalance)
+  const roundedDiff = Math.ceil(exactDiff / 1000) * 1000
+  const buffer = Math.max(10000, Math.ceil(Math.max(targetPrice, selectedPrice) * 0.2 / 1000) * 1000)
+  const receiveLimit = Math.max(roundedDiff + buffer, 10000)
+  const giveLimit = Math.max(roundedDiff + buffer, 10000)
+  const zeroPosition = (receiveLimit / (receiveLimit + giveLimit)) * 100
+  const autoCalcText =
+    priceBalance > 0
+      ? `Таны бараа (${selectedPrice.toLocaleString()}₮) нөгөөгөөс ${exactDiff.toLocaleString()}₮ өндөр тул ${exactDiff.toLocaleString()}₮ авах санал тавигдлаа. Та өөрчилж болно.`
+      : priceBalance < 0
+        ? `Сонирхож байгаа бараа (${targetPrice.toLocaleString()}₮) таныхаас ${exactDiff.toLocaleString()}₮ өндөр тул ${exactDiff.toLocaleString()}₮ өгөх санал тавигдлаа. Та өөрчилж болно.`
+        : 'Хоёр барааны үнэ тэнцүү тул мөнгөний зөрүүгүй swap санал тавигдлаа. Та өөрчилж болно.'
+  const moneyMode = moneyOffer < 0 ? 'receive' : moneyOffer > 0 ? 'give' : 'even'
+  const moneyTone = moneyTones[moneyMode]
+  const moneyLabel =
+    moneyOffer > 0
+      ? `${moneyOffer.toLocaleString()}₮ нэмнэ`
+      : moneyOffer < 0
+        ? `${Math.abs(moneyOffer).toLocaleString()}₮ авна`
+        : 'Тэнцүү swap'
+  const suggestionTitle =
+    moneyMode === 'receive'
+      ? `Та ${Math.abs(moneyOffer).toLocaleString()}₮ авах саналтай`
+      : moneyMode === 'give'
+        ? `Та ${moneyOffer.toLocaleString()}₮ нэмэх саналтай`
+        : 'Тэнцүү swap'
+  const suggestionText =
+    moneyMode === 'receive'
+      ? 'Таны санал болгож байгаа бараа илүү үнэтэй тул нөгөө талаас зөрүү хүсэж болно.'
+      : moneyMode === 'give'
+        ? 'Сонирхож байгаа бараа таныхаас үнэтэй тул зөрүүг нөхнө.'
+        : 'Slider 0₮ дээр байгаа тул зөвхөн бараагаар солилцох санал илгээгдэнэ.'
 
   useEffect(() => {
     let mounted = true
@@ -222,30 +286,71 @@ export function SwapProposalModal({ listing, onClose }: Props) {
             <div className="space-y-4">
               <ComparisonCard listing={listing} selected={selected} moneyOffer={moneyOffer} />
 
-              {remainingDiff > 0 && (
-                <div className="rounded-2xl border border-primary/25 bg-primary-light px-4 py-3">
-                  <p className="text-sm font-semibold text-primary">+{remainingDiff.toLocaleString()}₮ нэмэх шаардлагатай</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Үнийн зөрүүг нөхөхийн тулд нэмэлт мөнгөө тохируулна.</p>
+              <div className={`rounded-2xl border px-4 py-3 ${moneyTone.box}`}>
+                <div className="flex gap-3">
+                  <span className={`mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full ${moneyTone.icon}`}>
+                    {moneyMode === 'receive' ? <ArrowUp size={17} /> : moneyMode === 'give' ? <ArrowDown size={17} /> : <Minus size={17} />}
+                  </span>
+                  <div>
+                    <p className={`text-sm font-semibold ${moneyTone.text}`}>{suggestionTitle}</p>
+                    <p className="mt-1 text-xs text-muted-foreground">{suggestionText}</p>
+                  </div>
                 </div>
-              )}
+              </div>
 
               <div className="rounded-2xl border border-border bg-background p-4">
                 <div className="flex items-center justify-between">
-                  <label className="text-sm font-semibold">Нэмэлт мөнгө</label>
-                  <span className="text-sm font-bold text-price">{moneyOffer.toLocaleString()}₮</span>
+                  <label className="text-sm font-semibold">Зөрүү мөнгө</label>
+                  <span className={`rounded-full px-2.5 py-1 text-xs font-bold ${moneyTone.badge}`}>{moneyLabel}</span>
                 </div>
                 <input
                   type="range"
-                  min={0}
-                  max={maxCash}
+                  min={-receiveLimit}
+                  max={giveLimit}
                   step={1000}
                   value={moneyOffer}
                   onChange={e => setMoneyOffer(parseInt(e.target.value, 10))}
-                  className="mt-4 w-full accent-primary"
+                  className={`mt-4 w-full ${moneyTone.slider}`}
                 />
-                <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-                  <span>0₮</span>
-                  <span>{maxCash.toLocaleString()}₮</span>
+                <div className="relative mt-2 h-5 text-xs text-muted-foreground">
+                  <span className="absolute left-0">Max авах: {receiveLimit.toLocaleString()}₮</span>
+                  <span className="absolute -translate-x-1/2 font-semibold text-foreground" style={{ left: `${zeroPosition}%` }}>
+                    0₮ · тэнцүү swap
+                  </span>
+                  <span className="absolute right-0">Max өгөх: {giveLimit.toLocaleString()}₮</span>
+                </div>
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setMoneyOffer(-exactDiff)}
+                    className={`rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+                      moneyMode === 'receive' ? moneyTones.receive.buttonActive : 'border-border hover:border-emerald-500 hover:text-emerald-600'
+                    }`}
+                  >
+                    Зөрүү авах
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMoneyOffer(0)}
+                    className={`rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+                      moneyMode === 'even' ? moneyTones.even.buttonActive : 'border-border hover:border-muted-foreground hover:text-foreground'
+                    }`}
+                  >
+                    Тэнцүү
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMoneyOffer(exactDiff)}
+                    className={`rounded-xl border px-3 py-2 text-xs font-semibold transition ${
+                      moneyMode === 'give' ? moneyTones.give.buttonActive : 'border-border hover:border-red-500 hover:text-red-600'
+                    }`}
+                  >
+                    Зөрүү өгөх
+                  </button>
+                </div>
+                <div className={`mt-4 rounded-2xl px-4 py-3 ${moneyTone.soft}`}>
+                  <p className={`text-xs font-bold uppercase tracking-wide ${moneyTone.text}`}>Автомат тооцоолол</p>
+                  <p className="mt-1 text-sm leading-relaxed text-foreground/80">{autoCalcText}</p>
                 </div>
               </div>
 
@@ -272,6 +377,16 @@ export function SwapProposalModal({ listing, onClose }: Props) {
                 <p className="mt-1 text-sm text-muted-foreground">Илгээсний дараа нөгөө тал хариу өгөх хүртэл swap өрөөнд хүлээнэ.</p>
               </div>
               <ComparisonCard listing={listing} selected={selected} moneyOffer={moneyOffer} compact />
+              <div className={`rounded-2xl border px-4 py-3 text-left ${moneyTone.box}`}>
+                <p className={`text-sm font-semibold ${moneyTone.text}`}>{moneyLabel}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {moneyOffer < 0
+                    ? 'Санал зөвшөөрөгдвөл нөгөө талаас энэ зөрүүг авах нөхцөлтэй.'
+                    : moneyOffer > 0
+                      ? 'Санал зөвшөөрөгдвөл та энэ зөрүүг нэмж өгөх нөхцөлтэй.'
+                      : 'Хоёр тал зөвхөн бараагаа солих нөхцөлтэй.'}
+                </p>
+              </div>
               {message.trim() && (
                 <div className="rounded-2xl border border-border bg-background p-4 text-left">
                   <p className="text-xs font-semibold uppercase text-muted-foreground">Мессеж</p>
@@ -337,20 +452,27 @@ function ComparisonCard({
   moneyOffer: number
   compact?: boolean
 }) {
+  const mode = moneyOffer < 0 ? 'receive' : moneyOffer > 0 ? 'give' : 'even'
+  const tone = moneyTones[mode]
+  const pillText =
+    moneyOffer < 0
+      ? `-${Math.abs(moneyOffer).toLocaleString()}₮`
+      : moneyOffer > 0
+        ? `+${moneyOffer.toLocaleString()}₮`
+        : '0₮ тэнцүү'
+
   return (
     <div className={`rounded-2xl border border-border bg-background ${compact ? 'p-3' : 'p-4'}`}>
       <p className="mb-3 text-center text-xs font-bold uppercase tracking-wide text-muted-foreground">Солилцооны харьцуулалт</p>
       <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-3">
         <MiniItem listing={selected} />
         <div className="flex flex-col items-center gap-1">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-light text-primary">
+          <div className={`flex h-10 w-10 items-center justify-center rounded-full ${tone.icon}`}>
             <Repeat2 size={20} />
           </div>
-          {moneyOffer > 0 && (
-            <span className="whitespace-nowrap rounded-full bg-primary-light px-2 py-0.5 text-[11px] font-bold text-primary">
-              +{moneyOffer.toLocaleString()}₮
-            </span>
-          )}
+          <span className={`whitespace-nowrap rounded-full px-2 py-0.5 text-[11px] font-bold ${tone.pill}`}>
+            {pillText}
+          </span>
         </div>
         <MiniItem listing={listing} />
       </div>

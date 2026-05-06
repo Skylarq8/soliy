@@ -66,10 +66,10 @@ app.post('/', zValidator('json', proposalSchema), async (c) => {
 
   let escrowId: string | undefined
 
-  if (body.money_offer !== 0) {
+  if (body.money_offer > 0) {
     const stripe = new Stripe(c.env.STRIPE_SECRET_KEY)
     const intent = await stripe.paymentIntents.create({
-      amount: Math.abs(body.money_offer),
+      amount: body.money_offer,
       currency: 'mnt',
       capture_method: 'manual',
       metadata: { type: 'swap_escrow', sender_id: senderId },

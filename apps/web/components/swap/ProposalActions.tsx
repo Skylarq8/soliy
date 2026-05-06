@@ -17,6 +17,16 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
   const isReceiver = proposal.receiver_id === userId
   const canAct = isReceiver && proposal.status === 'pending'
   const canConfirm = proposal.status === 'accepted'
+  const moneyText =
+    proposal.money_offer > 0
+      ? isReceiver
+        ? `Та ${proposal.money_offer.toLocaleString()}₮ авна`
+        : `Та ${proposal.money_offer.toLocaleString()}₮ өгнө`
+      : proposal.money_offer < 0
+        ? isReceiver
+          ? `Та ${Math.abs(proposal.money_offer).toLocaleString()}₮ өгнө`
+          : `Та ${Math.abs(proposal.money_offer).toLocaleString()}₮ авна`
+        : ''
 
   async function act(action: () => Promise<unknown>) {
     setLoading(true)
@@ -50,7 +60,7 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
         </span>
         {proposal.money_offer !== 0 && (
           <span className="text-sm font-semibold">
-            {proposal.money_offer > 0 ? '+' : ''}{proposal.money_offer.toLocaleString()}₮
+            {moneyText}
           </span>
         )}
       </div>
@@ -87,13 +97,13 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
                 type="number"
                 value={counterAmount}
                 onChange={e => setCounterAmount(e.target.value)}
-                placeholder="0 (+ та өгнө, - та хүсдэг)"
-                className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-violet-500"
+                placeholder="+ бол санал илгээгч өгнө, - бол авна"
+                className="flex-1 rounded-xl border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
               />
               <button
                 onClick={() => act(() => api.proposals.counter(proposal.id, parseInt(counterAmount)))}
                 disabled={loading || !counterAmount}
-                className="rounded-xl bg-violet-600 px-4 text-sm text-white hover:bg-violet-700 disabled:opacity-50 transition-colors"
+                className="rounded-xl bg-primary px-4 text-sm text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
               >
                 Илгээх
               </button>
@@ -106,7 +116,7 @@ export function ProposalActions({ proposal, userId, onUpdate }: Props) {
         <button
           onClick={() => act(() => api.proposals.confirmReceipt(proposal.id))}
           disabled={loading}
-          className="w-full rounded-xl bg-violet-600 py-2.5 text-sm font-medium text-white hover:bg-violet-700 disabled:opacity-50 transition-colors"
+          className="w-full rounded-xl bg-primary py-2.5 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
         >
           Хүлээн авсан баталгаажуулах
         </button>

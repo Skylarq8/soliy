@@ -2,6 +2,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { Heart, Repeat2, ShieldCheck, UserRound, Zap } from 'lucide-react'
 import type { Listing } from '@swaply/types'
 
 interface Props {
@@ -14,22 +15,23 @@ export function ListingCard({ listing, size = 'default' }: Props) {
 
   const meta = listing.category_meta as Record<string, string> | null
   const brand = meta?.brand as string | undefined
+  const conditionLabel = listing.condition ? CONDITION_LABELS[listing.condition] : null
 
   return (
     <Link
       href={`/listing/${listing.id}`}
-      className={`group block bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-card-hover transition-shadow ${
-        size === 'featured' ? 'w-44 flex-shrink-0' : ''
+      className={`group block overflow-hidden rounded-xl border border-border/70 bg-card shadow-[0_10px_26px_rgba(20,16,12,0.07)] transition-all hover:-translate-y-0.5 hover:shadow-[0_14px_32px_rgba(20,16,12,0.11)] dark:shadow-card dark:hover:shadow-card-hover ${
+        size === 'featured' ? 'w-40 flex-shrink-0' : ''
       }`}
     >
       {/* Image */}
-      <div className={`relative bg-muted ${size === 'featured' ? 'aspect-[3/4]' : 'aspect-square'}`}>
+      <div className={`relative overflow-hidden bg-muted ${size === 'featured' ? 'aspect-[3/4]' : 'aspect-[5/4] sm:aspect-square'}`}>
         {listing.photos[0] ? (
           <Image
             src={listing.photos[0]}
             alt={listing.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
             sizes={size === 'featured' ? '176px' : '(max-width: 768px) 50vw, 25vw'}
           />
         ) : (
@@ -41,17 +43,16 @@ export function ListingCard({ listing, size = 'default' }: Props) {
         )}
 
         {/* Top badges */}
-        <div className="absolute top-2 left-2 flex flex-col gap-1">
+        <div className="absolute left-2.5 top-2.5 flex flex-col gap-1">
           {listing.verified && (
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-foreground/80 text-card text-[10px] font-medium backdrop-blur-sm">
-              <svg className="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clipRule="evenodd" />
-              </svg>
+            <span className="inline-flex items-center gap-1 rounded-full bg-card/92 px-2 py-0.5 text-[10px] font-bold text-primary shadow-sm backdrop-blur-sm">
+              <ShieldCheck size={12} />
               Баталгаа
             </span>
           )}
           {listing.boost_until && new Date(listing.boost_until) > new Date() && (
-            <span className="px-2 py-0.5 rounded-full bg-amber-500/90 text-white text-[10px] font-medium">
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/95 px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">
+              <Zap size={11} />
               Онцлох
             </span>
           )}
@@ -60,48 +61,62 @@ export function ListingCard({ listing, size = 'default' }: Props) {
         {/* Save heart */}
         <button
           onClick={e => { e.preventDefault(); setSaved(s => !s) }}
-          className="absolute top-2 right-2 w-7 h-7 rounded-full bg-card/80 backdrop-blur-sm flex items-center justify-center shadow-sm hover:bg-card transition-colors"
+          className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-card/80 shadow-sm backdrop-blur-sm transition-colors hover:bg-card"
+          aria-label={saved ? 'Хадгалснаас хасах' : 'Хадгалах'}
         >
-          <svg className={`w-4 h-4 transition-colors ${saved ? 'fill-price text-price' : 'fill-none text-muted-foreground'}`} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-          </svg>
+          <Heart size={16} className={saved ? 'fill-price text-price' : 'fill-none text-muted-foreground'} />
         </button>
 
         {/* Swap badge */}
         {listing.swap_enabled && (
-          <div className="absolute bottom-2 right-2">
-            <span className="px-2 py-0.5 rounded-full bg-card/80 backdrop-blur-sm text-primary text-[10px] font-medium border border-primary/20">
-              ⇄ Солих
+          <div className="absolute bottom-2.5 right-2.5">
+            <span className="inline-flex items-center gap-1 rounded-full border border-primary/15 bg-card/92 px-2 py-0.5 text-[11px] font-bold text-primary shadow-sm backdrop-blur-sm">
+              <Repeat2 size={12} />
+              Солих
             </span>
           </div>
         )}
       </div>
 
       {/* Info */}
-      <div className="p-3">
-        {brand && (
-          <p className="text-[10px] font-semibold tracking-widest text-muted-foreground uppercase mb-0.5">
+      <div className={size === 'featured' ? 'p-3' : 'p-3.5'}>
+        {brand && size !== 'featured' && (
+          <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
             {brand}
           </p>
         )}
-        <p className="text-sm font-medium text-foreground leading-snug line-clamp-2 mb-1.5">
+        <p className={`line-clamp-2 font-semibold leading-snug text-foreground ${size === 'featured' ? 'text-sm' : 'text-[15px]'}`}>
           {listing.title}
         </p>
-        <div className="flex items-center justify-between">
+        <div className="mt-2.5 flex items-center justify-between gap-2">
           {listing.price ? (
-            <span className="text-sm font-bold text-price">
+            <span className={`font-bold text-price ${size === 'featured' ? 'text-base' : 'text-lg'}`}>
               {listing.price.toLocaleString()}₮
             </span>
           ) : (
             <span className="text-xs text-muted-foreground">Зөвхөн солилцоо</span>
           )}
+          {conditionLabel && (
+            <span className={`rounded-full bg-primary-light font-semibold text-primary ${size === 'featured' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-0.5 text-[11px]'}`}>
+              {conditionLabel}
+            </span>
+          )}
         </div>
         {listing.users?.nickname && (
-          <p className="text-[11px] text-muted-foreground mt-1 truncate">
+          <p className={`flex items-center gap-1.5 truncate font-medium text-muted-foreground ${size === 'featured' ? 'mt-2 text-xs' : 'mt-3 text-[13px]'}`}>
+            <UserRound size={size === 'featured' ? 13 : 14} className="flex-shrink-0 text-primary" />
             @{listing.users.nickname}
           </p>
         )}
       </div>
     </Link>
   )
+}
+
+const CONDITION_LABELS: Record<number, string> = {
+  1: 'Элэгдсэн',
+  2: 'Дундаж',
+  3: 'Сайн',
+  4: 'Маш сайн',
+  5: 'Шинэ',
 }
