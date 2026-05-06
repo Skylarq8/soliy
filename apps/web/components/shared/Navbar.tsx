@@ -137,7 +137,7 @@ export function Navbar() {
               {/* Profile */}
               <Link
                 href="/profile/me"
-                className="flex w-9 h-9 rounded-full border border-border bg-primary/10 items-center justify-center hover:bg-primary/20 transition-colors flex-shrink-0"
+                className="hidden w-9 h-9 rounded-full border border-border bg-primary/10 items-center justify-center hover:bg-primary/20 transition-colors flex-shrink-0 md:flex"
                 aria-label="Профайл"
               >
                 <svg className="w-4 h-4 text-primary" fill="currentColor" viewBox="0 0 24 24">
@@ -148,13 +148,13 @@ export function Navbar() {
               {/* Add listing */}
               <Link
                 href="/listing/new"
-                className="h-9 w-9 sm:w-auto sm:px-3 flex items-center justify-center gap-1.5 rounded-full bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity flex-shrink-0"
+                className="hidden h-9 items-center justify-center gap-1.5 rounded-full bg-primary px-3 text-sm font-semibold text-primary-foreground transition-opacity hover:opacity-90 md:flex"
                 aria-label="Зар нэмэх"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.8}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 5v14m7-7H5" />
                 </svg>
-                <span className="hidden sm:inline">Нэмэх</span>
+                <span>Нэмэх</span>
               </Link>
 
             </>
