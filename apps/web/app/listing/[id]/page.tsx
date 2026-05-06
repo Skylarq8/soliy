@@ -48,7 +48,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         <BackButton fallbackHref="/explore" />
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,384px)_minmax(0,1fr)_208px] lg:gap-8">
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,464px)_minmax(0,1fr)] lg:gap-8 xl:grid-cols-[minmax(0,464px)_minmax(0,1fr)_208px]">
         {/* Left: image gallery */}
         <ImageGallery photos={listing.photos} title={listing.title} verified={listing.verified} />
 
@@ -134,7 +134,7 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
         </div>
 
         {/* Right: similar items — desktop only */}
-        <div className="hidden lg:block">
+        <div className="hidden xl:block">
           <SimilarListings category={listing.category} excludeId={listing.id} />
         </div>
       </div>

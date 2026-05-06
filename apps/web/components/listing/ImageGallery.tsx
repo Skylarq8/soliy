@@ -12,7 +12,7 @@ export function ImageGallery({ photos, title, verified }: Props) {
   const [active, setActive] = useState(0)
 
   return (
-    <div className="flex w-full flex-col-reverse gap-3 md:w-auto md:flex-row md:flex-shrink-0">
+    <div className="flex w-full flex-col-reverse gap-3 md:w-[464px] md:flex-row md:flex-shrink-0">
       {/* Thumbnails */}
       {photos.length > 1 && (
         <div className="flex w-full gap-2 overflow-x-auto pb-1 md:w-16 md:flex-col md:overflow-visible md:pb-0">
