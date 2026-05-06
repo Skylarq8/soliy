@@ -24,7 +24,9 @@ export function SwapChat({ proposalId }: Props) {
 
   useEffect(() => {
     if (!myId) return
-    void api.messages.markRead(proposalId)
+    api.messages.markRead(proposalId)
+      .then(() => window.dispatchEvent(new Event('swaply:messages-read')))
+      .catch(() => {})
   }, [messages.length, myId, proposalId])
 
   useEffect(() => {

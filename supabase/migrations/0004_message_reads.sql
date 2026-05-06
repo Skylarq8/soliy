@@ -23,5 +23,3 @@ CREATE POLICY "message_reads_own_insert" ON message_reads FOR INSERT
 CREATE POLICY "message_reads_own_update" ON message_reads FOR UPDATE
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
-
-ALTER PUBLICATION supabase_realtime ADD TABLE message_reads;
