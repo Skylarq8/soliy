@@ -27,35 +27,37 @@ export function SwapSmarterSection() {
       <div className="max-w-screen-xl mx-auto px-4 md:px-6">
         <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-8 lg:gap-12 items-start">
 
-          <ScrollReveal direction="left" className="lg:sticky lg:top-24">
-            <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
-              SWAPLY АРГА
-            </p>
-            <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-4 leading-tight">
-              Саналаа чат биш,{' '}
-              <span className="text-accent">тохиролцооны самбар</span> дээр шийд.
-            </h2>
-            <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-6">
-              Хоёр тал ямар бараа солих, хэн хэдэн төгрөг нэмэх, counter хийх эсэхээ нэг дэлгэц дээр тодорхой харна.
-            </p>
+          <div className="lg:sticky lg:top-24">
+            <ScrollReveal direction="left">
+              <p className="text-xs font-bold tracking-widest text-primary uppercase mb-3">
+                SWAPLY АРГА
+              </p>
+              <h2 className="text-3xl md:text-5xl font-extrabold text-foreground mb-4 leading-tight">
+                Саналаа чат биш,{' '}
+                <span className="text-accent">тохиролцооны самбар</span> дээр шийд.
+              </h2>
+              <p className="text-muted-foreground text-sm md:text-base leading-relaxed mb-6">
+                Хоёр тал ямар бараа солих, хэн хэдэн төгрөг нэмэх, counter хийх эсэхээ нэг дэлгэц дээр тодорхой харна.
+              </p>
 
-            <div className="grid gap-3">
-              {FEATURES.map((item, index) => (
-                <ScrollReveal
-                  key={item.label}
-                  direction="up"
-                  delay={120 + index * 90}
-                  className="flex gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
-                >
-                  <div className="mt-1 w-2.5 h-2.5 rounded-full bg-primary flex-shrink-0" />
-                  <div>
-                    <h3 className="font-bold text-foreground">{item.label}</h3>
-                    <p className="text-sm text-muted-foreground mt-0.5">{item.desc}</p>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </ScrollReveal>
+              <div className="grid gap-3">
+                {FEATURES.map((item, index) => (
+                  <ScrollReveal
+                    key={item.label}
+                    direction="up"
+                    delay={120 + index * 90}
+                    className="flex gap-3 rounded-2xl border border-border bg-card p-4 shadow-card"
+                  >
+                    <div className="mt-1 w-2.5 h-2.5 rounded-full bg-primary flex-shrink-0" />
+                    <div>
+                      <h3 className="font-bold text-foreground">{item.label}</h3>
+                      <p className="text-sm text-muted-foreground mt-0.5">{item.desc}</p>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+            </ScrollReveal>
+          </div>
 
           <ScrollReveal direction="right" delay={120} className="rounded-[1.75rem] border border-border bg-card shadow-[0_24px_70px_rgb(15_23_42/0.12)] overflow-hidden">
             <div className="bg-primary text-primary-foreground px-5 md:px-7 py-5">
