@@ -1,7 +1,7 @@
 'use client'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
-import { CheckCheck, ImagePlus, Loader2, SendHorizonal } from 'lucide-react'
+import { Check, CheckCheck, ImagePlus, Loader2, SendHorizonal } from 'lucide-react'
 import { useSwapChat } from '@/hooks/useSwapChat'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
@@ -32,6 +32,8 @@ export function SwapChat({ proposalId, otherUser }: Props) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const [myId, setMyId] = useState<string | null>(null)
+  // Timestamp of the last time the OTHER user read messages — drives single vs double tick
+  const [peerReadAt, setPeerReadAt] = useState<Date | null>(null)
   const messagesRef = useRef<HTMLDivElement>(null)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -39,6 +41,20 @@ export function SwapChat({ proposalId, otherUser }: Props) {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => setMyId(data.user?.id ?? null))
   }, [])
+
+  // Fetch (and poll) peer's last_read_at so we can show correct tick status
+  useEffect(() => {
+    let active = true
+    async function fetchPeerRead() {
+      try {
+        const data = await api.messages.peerRead(proposalId)
+        if (active && data.last_read_at) setPeerReadAt(new Date(data.last_read_at))
+      } catch { /* non-critical */ }
+    }
+    void fetchPeerRead()
+    const interval = window.setInterval(fetchPeerRead, 5_000)
+    return () => { active = false; window.clearInterval(interval) }
+  }, [proposalId])
 
   useEffect(() => {
     if (!myId) return
@@ -192,7 +208,11 @@ export function SwapChat({ proposalId, otherUser }: Props) {
 
                 <div className={`flex items-center gap-1 px-0.5 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
                   <span className="text-[11px] text-muted-foreground">{time}</span>
-                  {isMe && <CheckCheck size={12} className="text-muted-foreground/60" />}
+                  {isMe && (
+                    peerReadAt && new Date(msg.created_at) <= peerReadAt
+                      ? <CheckCheck size={12} className="text-primary/80" />
+                      : <Check size={12} className="text-muted-foreground/50" />
+                  )}
                 </div>
               </div>
             </div>

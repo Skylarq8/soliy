@@ -55,6 +55,32 @@ app.get('/unread', async (c) => {
   return c.json({ total, by_proposal: byProposal })
 })
 
+// Returns the OTHER participant's last_read_at so the sender can show seen ticks
+app.get('/:proposalId/peer-read', async (c) => {
+  const userId = c.get('userId')
+  const { proposalId } = c.req.param()
+
+  const { data: proposal } = await supabaseAdmin
+    .from('proposals')
+    .select('sender_id, receiver_id')
+    .eq('id', proposalId)
+    .single()
+
+  if (!proposal || (proposal.sender_id !== userId && proposal.receiver_id !== userId))
+    return c.json({ error: 'Forbidden' }, 403)
+
+  const peerId = proposal.sender_id === userId ? proposal.receiver_id : proposal.sender_id
+
+  const { data } = await supabaseAdmin
+    .from('message_reads')
+    .select('last_read_at')
+    .eq('proposal_id', proposalId)
+    .eq('user_id', peerId)
+    .maybeSingle()
+
+  return c.json({ last_read_at: data?.last_read_at ?? null })
+})
+
 app.post('/:proposalId/read', async (c) => {
   const userId = c.get('userId')
   const { proposalId } = c.req.param()

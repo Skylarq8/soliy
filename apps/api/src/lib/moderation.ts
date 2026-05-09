@@ -13,6 +13,8 @@ function isTrustedCdnUrl(text: string): boolean {
   }
 }
 
+const SOCIAL = '(?:facebook|fb|ig|insta(?:gram)?|telegram|tg|tiktok|snap(?:chat)?|viber|вайбер|телеграм|фейсбүүк)'
+
 const PATTERNS: RegExp[] = [
   // Mongolian mobile numbers — exactly 8 digits starting with 6–9.
   // \b ensures the digits are not embedded mid-word (e.g. v99001234 in a URL has no \b before 9).
@@ -31,9 +33,16 @@ const PATTERNS: RegExp[] = [
   // Direct links to messaging / social platforms
   /(?:t(?:elegram)?\.me|wa\.me|instagram\.com|facebook\.com|fb\.(?:com|me)|tiktok\.com|snapchat\.com|signal\.group|viber\.com|line\.me)\/[\w@%+.\-]{1,}/gi,
 
-  // "platform : username" patterns — someone telling the other to add them elsewhere
+  // "platform: username" explicit colon style
   // Covers Mongolian keywords (утас, дугаар, нэмэх) and Latin social platform names
   /(?:phone|утас|дугаар|нэмэх|ig|insta(?:gram)?|fb|facebook|telegram|tg|viber|signal|snap(?:chat)?|tiktok|вайбер|телеграм|фейсбүүк)\s*[:：]\s*[\w@+.\-]{3,}/gi,
+
+  // "minii/my <platform> ..." — natural language contact sharing ("minii ig account the_skylarq")
+  new RegExp(`(?:minii|миний|my|манай)\\s+${SOCIAL}\\b`, 'gi'),
+
+  // "<platform> account <handle_with_underscore_or_dot>" — e.g. "ig account the_skylarq"
+  // Identifier must contain _ or . (typical username format) to avoid false-positives on requests like "accountaa uguuch"
+  new RegExp(`${SOCIAL}\\s+(?:(?:account|profile|нэр|handle)\\b\\s+)?(?:\\w+[._]\\w+)`, 'gi'),
 ]
 
 export function containsContactInfo(text: string): boolean {

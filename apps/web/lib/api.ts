@@ -110,6 +110,8 @@ export const api = {
   // Messages
   messages: {
     unread: () => apiFetch<{ total: number; by_proposal: Record<string, number> }>('/api/messages/unread'),
+    peerRead: (proposalId: string) =>
+      apiFetch<{ last_read_at: string | null }>(`/api/messages/${proposalId}/peer-read`),
     markRead: (proposalId: string) =>
       apiFetch<{ ok: boolean }>(`/api/messages/${proposalId}/read`, { method: 'POST' }),
     list: (proposalId: string, params?: Record<string, string>) =>
