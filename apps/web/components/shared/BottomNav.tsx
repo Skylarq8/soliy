@@ -74,8 +74,8 @@ function NavItem({
       <span className="relative">
         {icon}
         {badge > 0 && (
-          <span className="absolute -right-2 -top-1 flex min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-black leading-4 text-white ring-2 ring-card">
-            {badge > 9 ? '9+' : badge}
+          <span className="absolute -right-2 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-extrabold leading-none text-primary-foreground ring-2 ring-card">
+            {badge > 99 ? '99+' : badge}
           </span>
         )}
       </span>

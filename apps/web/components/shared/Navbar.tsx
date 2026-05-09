@@ -192,8 +192,8 @@ export function Navbar() {
 function UnreadBadge({ count }: { count: number }) {
   if (count <= 0) return null
   return (
-    <span className="absolute -right-1 -top-1 flex min-w-4 items-center justify-center rounded-full bg-red-500 px-1 text-[10px] font-black leading-4 text-white ring-2 ring-card">
-      {count > 9 ? '9+' : count}
+    <span className="absolute -right-1.5 -top-1.5 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-extrabold leading-none text-primary-foreground ring-2 ring-card">
+      {count > 99 ? '99+' : count}
     </span>
   )
 }

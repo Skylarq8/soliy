@@ -1,27 +1,29 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 
 export function useUnreadMessages() {
   const [count, setCount] = useState(0)
   const [userId, setUserId] = useState<string | null>(null)
+  // Keep userId in a ref so interval callbacks always have the latest value
+  const userIdRef = useRef<string | null>(null)
 
-  async function refresh(nextUserId: string | null) {
-    if (!nextUserId) {
+  async function refresh(uid: string | null) {
+    if (!uid) {
       setCount(0)
       return
     }
-
     try {
       const data = await api.messages.unread()
       setCount(data.total ?? 0)
     } catch {
-      setCount(0)
+      // silently keep previous count on transient errors
     }
   }
 
+  // Auth init — runs once
   useEffect(() => {
     let subscription: { unsubscribe: () => void } | null = null
 
@@ -30,21 +32,25 @@ export function useUnreadMessages() {
         .getUser()
         .then(({ data }) => {
           const id = data.user?.id ?? null
+          userIdRef.current = id
           setUserId(id)
           void refresh(id)
         })
         .catch(() => {
+          userIdRef.current = null
           setUserId(null)
           setCount(0)
         })
 
       const result = supabase.auth.onAuthStateChange((_event, session) => {
         const id = session?.user?.id ?? null
+        userIdRef.current = id
         setUserId(id)
         void refresh(id)
       })
       subscription = result.data.subscription
     } catch {
+      userIdRef.current = null
       setUserId(null)
       setCount(0)
     }
@@ -52,9 +58,11 @@ export function useUnreadMessages() {
     return () => subscription?.unsubscribe()
   }, [])
 
+  // Listeners & polling — re-runs when userId changes
   useEffect(() => {
     if (!userId) return
 
+    // Realtime — best-effort; may be filtered by RLS
     let channel: ReturnType<typeof supabase.channel> | null = null
     try {
       channel = supabase
@@ -66,19 +74,27 @@ export function useUnreadMessages() {
         .subscribe()
     } catch {}
 
-    const interval = window.setInterval(() => void refresh(userId), 30000)
+    // Poll every 10 s so counts stay fresh even if realtime is filtered by RLS
+    const interval = window.setInterval(() => void refresh(userId), 10_000)
+
     const onFocus = () => void refresh(userId)
     const onRead = () => void refresh(userId)
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') void refresh(userId)
+    }
+
     window.addEventListener('focus', onFocus)
     window.addEventListener('swaply:messages-read', onRead)
+    document.addEventListener('visibilitychange', onVisible)
 
     return () => {
       if (channel) void supabase.removeChannel(channel)
       window.clearInterval(interval)
       window.removeEventListener('focus', onFocus)
       window.removeEventListener('swaply:messages-read', onRead)
+      document.removeEventListener('visibilitychange', onVisible)
     }
   }, [userId])
 
-  return { count, refresh }
+  return { count, refresh: () => void refresh(userIdRef.current) }
 }
