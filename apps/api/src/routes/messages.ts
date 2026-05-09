@@ -14,7 +14,6 @@ app.get('/unread', async (c) => {
     .from('proposals')
     .select('id')
     .or(`sender_id.eq.${userId},receiver_id.eq.${userId}`)
-    .in('status', ['pending', 'countered', 'accepted'])
 
   if (proposalError) return c.json({ error: proposalError }, 500)
 

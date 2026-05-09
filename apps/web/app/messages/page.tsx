@@ -71,6 +71,40 @@ export default function MessagesPage() {
     return () => window.removeEventListener('swaply:messages-read', handler)
   }, [])
 
+  useEffect(() => {
+    if (!myId) return
+
+    const refreshUnread = () => {
+      api.messages.unread()
+        .then(data => setUnreadByProposal(data.by_proposal ?? {}))
+        .catch(() => {})
+    }
+
+    const channel = supabase
+      .channel(`messages-page-unread:${myId}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'notifications',
+          filter: `user_id=eq.${myId}`,
+        },
+        payload => {
+          const row = payload.new as { type?: string } | null
+          if (row?.type === 'new_message') refreshUnread()
+        }
+      )
+      .subscribe()
+
+    const interval = window.setInterval(refreshUnread, 5_000)
+
+    return () => {
+      void supabase.removeChannel(channel)
+      window.clearInterval(interval)
+    }
+  }, [myId])
+
   const filtered = useMemo(() => {
     if (!myId) return proposals
     if (activeFilter === 'received') return proposals.filter(item => item.receiver_id === myId)

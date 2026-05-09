@@ -62,8 +62,9 @@ export function useUnreadMessages() {
   useEffect(() => {
     if (!userId) return
 
-    // Realtime — best-effort; may be filtered by RLS
+    // Realtime — notifications are owner-scoped and more reliable for unread refreshes than raw message rows.
     let channel: ReturnType<typeof supabase.channel> | null = null
+    let notificationChannel: ReturnType<typeof supabase.channel> | null = null
     try {
       channel = supabase
         .channel(`unread-messages:${userId}`)
@@ -72,10 +73,27 @@ export function useUnreadMessages() {
           if (row?.sender_id && row.sender_id !== userId) void refresh(userId)
         })
         .subscribe()
+
+      notificationChannel = supabase
+        .channel(`unread-notifications:${userId}`)
+        .on(
+          'postgres_changes',
+          {
+            event: 'INSERT',
+            schema: 'public',
+            table: 'notifications',
+            filter: `user_id=eq.${userId}`,
+          },
+          payload => {
+            const row = payload.new as { type?: string } | null
+            if (row?.type === 'new_message') void refresh(userId)
+          }
+        )
+        .subscribe()
     } catch {}
 
-    // Poll every 10 s so counts stay fresh even if realtime is filtered by RLS
-    const interval = window.setInterval(() => void refresh(userId), 10_000)
+    // Poll every 5 s so counts stay fresh even if realtime is filtered by RLS
+    const interval = window.setInterval(() => void refresh(userId), 5_000)
 
     const onFocus = () => void refresh(userId)
     const onRead = () => void refresh(userId)
@@ -89,6 +107,7 @@ export function useUnreadMessages() {
 
     return () => {
       if (channel) void supabase.removeChannel(channel)
+      if (notificationChannel) void supabase.removeChannel(notificationChannel)
       window.clearInterval(interval)
       window.removeEventListener('focus', onFocus)
       window.removeEventListener('swaply:messages-read', onRead)

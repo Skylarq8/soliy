@@ -1,7 +1,7 @@
 'use client'
 import { useState, useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
-import { Check, CheckCheck, ImagePlus, Loader2, SendHorizonal, X, ZoomIn } from 'lucide-react'
+import { Check, Eye, ImagePlus, Loader2, SendHorizonal, X, ZoomIn } from 'lucide-react'
 import { useSwapChat } from '@/hooks/useSwapChat'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
@@ -163,14 +163,10 @@ export function SwapChat({ proposalId, otherUser }: Props) {
   }
 
   // Group consecutive messages by sender
-  const lastMineMessageId = myId
-    ? [...messages].reverse().find(message => message.sender_id === myId)?.id
-    : null
   const groupedMessages = messages.map((msg, idx) => {
     const next = messages[idx + 1]
     const isLastInGroup = !next || next.sender_id !== msg.sender_id
-    const isLastMine = msg.id === lastMineMessageId
-    return { msg, isLastInGroup, isLastMine }
+    return { msg, isLastInGroup }
   })
 
   return (
@@ -202,7 +198,7 @@ export function SwapChat({ proposalId, otherUser }: Props) {
           </div>
         )}
 
-        {groupedMessages.map(({ msg, isLastInGroup, isLastMine }) => {
+        {groupedMessages.map(({ msg, isLastInGroup }) => {
           const isMe = msg.sender_id === myId
           const time = new Date(msg.created_at).toLocaleTimeString('mn-MN', { hour: '2-digit', minute: '2-digit' })
           const imageUrl = !msg.blocked ? getImageMessageUrl(msg.content) : null
@@ -210,9 +206,6 @@ export function SwapChat({ proposalId, otherUser }: Props) {
 
           return (
             <div key={msg.id} className={`flex items-end gap-1.5 ${isMe ? 'justify-end' : 'justify-start'}`}>
-              {/* Spacer on my side */}
-              {isMe && <div className="w-6 flex-shrink-0" />}
-
               {/* Other person avatar */}
               {!isMe && (
                 <div className="mb-0.5 w-6 flex-shrink-0">
@@ -261,18 +254,10 @@ export function SwapChat({ proposalId, otherUser }: Props) {
 
                 <div className={`flex items-center gap-1 px-0.5 ${isMe ? 'flex-row-reverse' : 'flex-row'}`}>
                   <span className="text-[11px] text-muted-foreground">{time}</span>
-                  {isMe && (
-                    seen
-                      ? <CheckCheck size={12} className="text-primary/80" />
-                      : <Check size={12} className="text-muted-foreground/50" />
-                  )}
-                  {isLastMine && (
-                    <span className="text-[11px] text-muted-foreground">
-                      {seen ? 'Үзсэн' : 'Илгээгдсэн'}
-                    </span>
-                  )}
                 </div>
               </div>
+
+              {isMe && <MessageStatusIcon seen={seen} />}
             </div>
           )
         })}
@@ -362,6 +347,22 @@ export function SwapChat({ proposalId, otherUser }: Props) {
         </div>
       </div>
     </div>
+  )
+}
+
+function MessageStatusIcon({ seen }: { seen: boolean }) {
+  return (
+    <span
+      className={`mb-5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full border ${
+        seen
+          ? 'border-primary/25 bg-primary/10 text-primary'
+          : 'border-border bg-background text-muted-foreground'
+      }`}
+      title={seen ? 'Үзсэн' : 'Илгээгдсэн'}
+      aria-label={seen ? 'Үзсэн' : 'Илгээгдсэн'}
+    >
+      {seen ? <Eye size={13} /> : <Check size={13} />}
+    </span>
   )
 }
 
