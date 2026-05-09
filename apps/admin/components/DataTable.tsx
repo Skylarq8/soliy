@@ -1,14 +1,16 @@
 import Link from 'next/link'
 
-interface Column<T> {
-  key: keyof T
-  label: string
-  render?: (value: T[keyof T]) => string
-}
+export type Column<T, K extends keyof T = keyof T> = {
+  [P in K]: {
+    key: P
+    label: string
+    render?: (value: T[P]) => string
+  }
+}[K]
 
 interface Props<T extends { id: string }> {
   data: T[]
-  columns: Column<T>[]
+  columns: readonly Column<T>[]
   rowHref?: (id: string) => string
 }
 
@@ -32,17 +34,16 @@ export function DataTable<T extends { id: string }>({ data, columns, rowHref }: 
         <tbody className="divide-y divide-border">
           {data.map(row => {
             const href = rowHref?.(row.id)
-            const Wrapper = href ? Link : 'tr'
             return (
               <tr key={row.id} className="hover:bg-muted/30 transition-colors">
                 {columns.map(col => (
                   <td key={String(col.key)} className="px-4 py-3">
                     {href && col === columns[0] ? (
                       <Link href={href} className="hover:text-violet-400 transition-colors">
-                        {col.render ? col.render(row[col.key]) : String(row[col.key] ?? '—')}
+                        {renderCell(row, col)}
                       </Link>
                     ) : (
-                      col.render ? col.render(row[col.key]) : String(row[col.key] ?? '—')
+                      renderCell(row, col)
                     )}
                   </td>
                 ))}
@@ -53,4 +54,9 @@ export function DataTable<T extends { id: string }>({ data, columns, rowHref }: 
       </table>
     </div>
   )
+}
+
+function renderCell<T, K extends keyof T>(row: T, col: Column<T, K>) {
+  const value = row[col.key]
+  return col.render ? col.render(value) : String(value ?? '—')
 }

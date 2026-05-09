@@ -14,6 +14,8 @@ const createSchema = z.object({
   photos:        z.array(z.string().url()).min(1).max(8),
   condition:     z.number().int().min(1).max(5),
   price:         z.number().int().positive().optional(),
+  city:          z.string().trim().min(2).max(80),
+  district:      z.string().trim().max(80).optional(),
   swap_enabled:  z.boolean().default(true),
   category_meta: z.record(z.unknown()).optional(),
 })
@@ -57,9 +59,10 @@ app.get('/:id', async (c) => {
 app.post('/', zValidator('json', createSchema), async (c) => {
   const userId = c.get('userId')
   const body = c.req.valid('json')
+  const { city, district, category_meta, ...listingFields } = body
   const insertBody = {
-    ...body,
-    category_meta: body.category_meta as Json | undefined,
+    ...listingFields,
+    category_meta: listingCategoryMeta(category_meta, city, district),
     user_id: userId,
   }
 
@@ -77,9 +80,11 @@ app.patch('/:id', zValidator('json', createSchema.partial()), async (c) => {
   const userId = c.get('userId')
   const { id } = c.req.param()
   const body = c.req.valid('json')
+  const { city, district, category_meta, ...listingFields } = body
+  const nextMeta = listingCategoryMeta(category_meta, city, district)
   const updateBody = {
-    ...body,
-    category_meta: body.category_meta as Json | undefined,
+    ...listingFields,
+    ...(nextMeta ? { category_meta: nextMeta } : {}),
   }
 
   const { data, error } = await supabaseAdmin
@@ -108,3 +113,17 @@ app.delete('/:id', async (c) => {
 })
 
 export default app
+
+function listingCategoryMeta(
+  meta?: Record<string, unknown>,
+  city?: string,
+  district?: string,
+): Json | undefined {
+  if (!meta && !city && !district) return undefined
+
+  return {
+    ...(meta ?? {}),
+    ...(city ? { location_city: city } : {}),
+    ...(district ? { location_district: district } : {}),
+  } as Json
+}

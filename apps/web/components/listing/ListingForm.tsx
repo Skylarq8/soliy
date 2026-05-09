@@ -8,6 +8,7 @@ import {
   Check,
   ImagePlus,
   Loader2,
+  MapPin,
   ShieldCheck,
   Sparkles,
   Trash2,
@@ -23,6 +24,8 @@ interface FormData {
   category: Category
   condition: number
   price: number | null
+  city: string
+  district: string
   swap_enabled: boolean
   photos: string[]
   category_meta: Record<string, unknown>
@@ -49,6 +52,31 @@ const conditionOptions = [
   { value: 1, label: 'Элэгдсэн' },
 ]
 
+const cityOptions = [
+  'Улаанбаатар',
+  'Архангай',
+  'Баян-Өлгий',
+  'Баянхонгор',
+  'Булган',
+  'Говь-Алтай',
+  'Говьсүмбэр',
+  'Дархан-Уул',
+  'Дорноговь',
+  'Дорнод',
+  'Дундговь',
+  'Завхан',
+  'Орхон',
+  'Өвөрхангай',
+  'Өмнөговь',
+  'Сүхбаатар',
+  'Сэлэнгэ',
+  'Төв',
+  'Увс',
+  'Ховд',
+  'Хөвсгөл',
+  'Хэнтий',
+] as const
+
 const inputClass =
   'w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10'
 
@@ -71,6 +99,8 @@ export function ListingForm() {
     defaultValues: {
       swap_enabled: true,
       condition: 4,
+      city: 'Улаанбаатар',
+      district: '',
       photos: [],
       category_meta: {},
     },
@@ -135,9 +165,9 @@ export function ListingForm() {
     }
 
     if (step === 1) {
-      const ok = await trigger(['title', 'category', 'condition'])
+      const ok = await trigger(['title', 'category', 'condition', 'city'])
       if (!ok) {
-        setError('Гарчиг, категори, нөхцөлөө бүрэн бөглөнө үү')
+        setError('Гарчиг, категори, нөхцөл, байршлаа бүрэн бөглөнө үү')
         return
       }
       setStep(2)
@@ -156,6 +186,8 @@ export function ListingForm() {
         ...data,
         price: Number.isFinite(data.price) && data.price ? data.price : undefined,
         description: data.description?.trim() || undefined,
+        city: data.city.trim(),
+        district: data.district?.trim() || undefined,
         category_meta: {
           ...data.category_meta,
           cash_balance_enabled: Boolean(data.category_meta?.cash_balance_enabled),
@@ -355,6 +387,32 @@ export function ListingForm() {
               />
             </div>
 
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="space-y-1.5">
+                <label className="flex items-center gap-1.5 text-sm font-medium">
+                  <MapPin size={15} className="text-primary" />
+                  Хот / аймаг *
+                </label>
+                <select {...register('city', { required: true })} className={inputClass}>
+                  {cityOptions.map(city => (
+                    <option key={city} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </select>
+                {errors.city && <p className="text-xs text-accent">Байршил сонгоно уу.</p>}
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-sm font-medium">Дүүрэг / сум</label>
+                <input
+                  {...register('district')}
+                  placeholder="Жишээ: Сүхбаатар дүүрэг"
+                  className={inputClass}
+                />
+              </div>
+            </div>
+
             {category && (
               <div className="rounded-2xl border border-border bg-background p-4">
                 <h3 className="mb-4 text-sm font-semibold">
@@ -421,6 +479,7 @@ export function ListingForm() {
                 <CheckLine ok={photos.length >= 1} text={`${photos.length}/8 зураг`} />
                 <CheckLine ok={Boolean(title?.trim())} text={title?.trim() || 'Гарчиг оруулаагүй'} />
                 <CheckLine ok={Boolean(category)} text={category ? categories.find(item => item.value === category)?.label ?? category : 'Категори сонгоогүй'} />
+                <CheckLine ok={Boolean(watch('city'))} text={watch('district') ? `${watch('city')}, ${watch('district')}` : watch('city') || 'Байршил сонгоогүй'} />
               </div>
             </div>
           </div>

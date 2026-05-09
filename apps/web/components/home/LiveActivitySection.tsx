@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ScrollReveal } from '@/components/shared/ScrollReveal'
 
 const FEED = [
-  { user: 'solongo', avatar: 'С', color: 'bg-primary', action: 'пальтогоо пүүз + 35,000₮ саналтай солихоор тохирч байна', type: 'Санал', typeCls: 'bg-primary/10 text-primary', state: 'Чат' },
+  { user: 'aminaa', avatar: 'С', color: 'bg-primary', action: 'пальтогоо пүүз + 35,000₮ саналтай солихоор тохирч байна', type: 'Санал', typeCls: 'bg-primary/10 text-primary', state: 'Чат' },
   { user: 'mira', avatar: 'М', color: 'bg-accent', action: 'арьс арчилгааны багцаа үнэртэнтэй солих хүсэлт авлаа', type: 'Шинэ', typeCls: 'bg-green-100 text-green-700', state: 'Хүсэлт' },
   { user: 'temka', avatar: 'Т', color: 'bg-amber-500', action: 'пүүзний үнээ мөнгөн нэмэлттэй саналд нээлттэй болголоо', type: 'Үнэ', typeCls: 'bg-amber-100 text-amber-700', state: 'Нээлттэй' },
   { user: 'anujin', avatar: 'А', color: 'bg-rose-500', action: 'цүнхний зараа зөвхөн баталгаажсан профайлд харагдахаар тохирууллаа', type: 'Итгэл', typeCls: 'bg-primary/10 text-primary', state: 'Баталгаа' },

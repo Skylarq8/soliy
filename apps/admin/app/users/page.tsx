@@ -1,4 +1,5 @@
 import { DataTable } from '@/components/DataTable'
+import type { Column } from '@/components/DataTable'
 import type { User } from '@swaply/types'
 
 async function getUsers(q?: string): Promise<User[]> {
@@ -31,7 +32,7 @@ export default async function UsersPage({
     { key: 'swap_count', label: 'Swaps' },
     { key: 'created_at', label: 'Бүртгэгдсэн', render: (v: string) => new Date(v).toLocaleDateString('mn-MN') },
     { key: 'is_admin', label: 'Admin', render: (v: boolean) => v ? '✓' : '—' },
-  ]
+  ] satisfies Column<User>[]
 
   return (
     <div className="p-8">

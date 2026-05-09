@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Heart, Repeat2, ShieldCheck, UserRound, Zap } from 'lucide-react'
+import { Heart, MapPin, Repeat2, ShieldCheck, UserRound, Zap } from 'lucide-react'
 import type { Listing } from '@swaply/types'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
@@ -22,6 +22,7 @@ export function ListingCard({ listing, size = 'default' }: Props) {
   const meta = listing.category_meta as Record<string, string> | null
   const brand = meta?.brand as string | undefined
   const conditionLabel = listing.condition ? CONDITION_LABELS[listing.condition] : null
+  const location = formatLocation(meta?.location_city, meta?.location_district) || 'Байршил оруулаагүй'
 
   useEffect(() => {
     let mounted = true
@@ -163,9 +164,21 @@ export function ListingCard({ listing, size = 'default' }: Props) {
             @{listing.users.nickname}
           </p>
         )}
+        <p className={`flex items-center gap-1.5 truncate font-medium text-muted-foreground ${size === 'featured' ? 'mt-1.5 text-xs' : 'mt-1.5 text-[13px]'}`}>
+          <MapPin size={size === 'featured' ? 13 : 14} className="flex-shrink-0 text-primary" />
+          {location}
+        </p>
       </div>
     </Link>
   )
+}
+
+function formatLocation(city?: string | null, district?: string | null) {
+  const parts = [city, district]
+    .map(part => part?.trim())
+    .filter(Boolean)
+
+  return parts.join(', ')
 }
 
 const CONDITION_LABELS: Record<number, string> = {

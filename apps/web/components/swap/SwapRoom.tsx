@@ -98,7 +98,7 @@ export function SwapRoom({ proposalId }: { proposalId: string }) {
         </div>
 
         <div className="min-h-0 flex-1 overflow-hidden">
-          <SwapChat proposalId={proposal.id} />
+          <SwapChat proposalId={proposal.id} otherUser={otherUser} />
         </div>
 
         <ProposalActions proposal={proposal} userId={myId} onUpdate={load} />
