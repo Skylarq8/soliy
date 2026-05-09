@@ -225,7 +225,7 @@ function ConversationCard({
         <div className="mt-3 flex items-center gap-2">
           <MessageCircle size={14} className={hasUnread ? 'text-primary' : 'text-muted-foreground'} />
           <p className={`truncate text-sm ${hasUnread ? 'font-semibold text-foreground' : 'text-muted-foreground'}`}>
-            {latest?.content ?? 'Одоогоор мессеж байхгүй. Swap room руу орж нөхцөлөө бичээрэй.'}
+            {messagePreview(latest?.content)}
           </p>
         </div>
       </div>
@@ -241,6 +241,25 @@ function ConversationCard({
       </div>
     </Link>
   )
+}
+
+function messagePreview(content?: string | null) {
+  if (!content) return 'Одоогоор мессеж байхгүй. Swap room руу орж нөхцөлөө бичээрэй.'
+  if (isImageContent(content)) return 'Зураг илгээсэн'
+  return content
+}
+
+function isImageContent(content: string) {
+  const text = content.trim().replace(/^image:/, '')
+  try {
+    const url = new URL(text)
+    return url.protocol === 'https:' && (
+      url.hostname.includes('cloudinary.com') ||
+      /\.(jpg|jpeg|png|gif|webp|avif)(\?.*)?$/i.test(url.pathname)
+    )
+  } catch {
+    return false
+  }
 }
 
 function ListingLine({ listing, label }: { listing: Listing | null; label: string }) {

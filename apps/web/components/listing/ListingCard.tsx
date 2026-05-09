@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Heart, MapPin, Repeat2, ShieldCheck, UserRound, Zap } from 'lucide-react'
+import { Heart, MapPin, Repeat2, ShieldCheck, Zap } from 'lucide-react'
 import type { Listing } from '@swaply/types'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
@@ -23,6 +23,9 @@ export function ListingCard({ listing, size = 'default' }: Props) {
   const brand = meta?.brand as string | undefined
   const conditionLabel = listing.condition ? CONDITION_LABELS[listing.condition] : null
   const location = formatLocation(meta?.location_city, meta?.location_district) || 'Байршил оруулаагүй'
+  const cardMeta = [listing.users?.nickname ? `@${listing.users.nickname}` : null, location]
+    .filter(Boolean)
+    .join(' · ')
 
   useEffect(() => {
     let mounted = true
@@ -79,7 +82,7 @@ export function ListingCard({ listing, size = 'default' }: Props) {
       }`}
     >
       {/* Image */}
-      <div className={`relative overflow-hidden bg-muted ${size === 'featured' ? 'aspect-[3/4]' : 'aspect-[5/4] sm:aspect-square'}`}>
+      <div className={`relative overflow-hidden bg-muted ${size === 'featured' ? 'aspect-[3/4]' : 'aspect-[4/3] sm:aspect-square'}`}>
         {listing.photos[0] ? (
           <Image
             src={listing.photos[0]}
@@ -135,38 +138,32 @@ export function ListingCard({ listing, size = 'default' }: Props) {
       </div>
 
       {/* Info */}
-      <div className={size === 'featured' ? 'p-3' : 'p-3.5'}>
+      <div className={size === 'featured' ? 'p-2.5 sm:p-3' : 'p-2.5 sm:p-3.5'}>
         {brand && size !== 'featured' && (
-          <p className="mb-1 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+          <p className="mb-1 hidden text-[11px] font-medium uppercase tracking-wide text-muted-foreground sm:block">
             {brand}
           </p>
         )}
-        <p className={`line-clamp-2 font-semibold leading-snug text-foreground ${size === 'featured' ? 'text-sm' : 'text-[15px]'}`}>
+        <p className={`line-clamp-1 font-semibold leading-snug text-foreground sm:line-clamp-2 ${size === 'featured' ? 'text-sm' : 'text-sm sm:text-[15px]'}`}>
           {listing.title}
         </p>
-        <div className="mt-2.5 flex items-center justify-between gap-2">
+        <div className="mt-1.5 flex items-center justify-between gap-2 sm:mt-2.5">
           {listing.price ? (
-            <span className={`font-bold text-price ${size === 'featured' ? 'text-base' : 'text-lg'}`}>
+            <span className={`font-bold text-price ${size === 'featured' ? 'text-base' : 'text-base sm:text-lg'}`}>
               {listing.price.toLocaleString()}₮
             </span>
           ) : (
             <span className="text-xs text-muted-foreground">Зөвхөн солилцоо</span>
           )}
           {conditionLabel && (
-            <span className={`rounded-full bg-primary-light font-semibold text-primary ${size === 'featured' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-0.5 text-[11px]'}`}>
+            <span className={`rounded-full bg-primary-light font-semibold text-primary ${size === 'featured' ? 'px-2 py-0.5 text-[10px]' : 'px-2 py-0.5 text-[10px] sm:px-2.5 sm:text-[11px]'}`}>
               {conditionLabel}
             </span>
           )}
         </div>
-        {listing.users?.nickname && (
-          <p className={`flex items-center gap-1.5 truncate font-medium text-muted-foreground ${size === 'featured' ? 'mt-2 text-xs' : 'mt-3 text-[13px]'}`}>
-            <UserRound size={size === 'featured' ? 13 : 14} className="flex-shrink-0 text-primary" />
-            @{listing.users.nickname}
-          </p>
-        )}
-        <p className={`flex items-center gap-1.5 truncate font-medium text-muted-foreground ${size === 'featured' ? 'mt-1.5 text-xs' : 'mt-1.5 text-[13px]'}`}>
+        <p className={`flex items-center gap-1.5 truncate font-medium text-muted-foreground ${size === 'featured' ? 'mt-1.5 text-xs' : 'mt-2 text-xs sm:text-[13px]'}`}>
           <MapPin size={size === 'featured' ? 13 : 14} className="flex-shrink-0 text-primary" />
-          {location}
+          {cardMeta}
         </p>
       </div>
     </Link>
