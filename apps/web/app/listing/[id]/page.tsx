@@ -26,6 +26,259 @@ const CONDITION_LABELS: Record<number, string> = {
   1: 'Муу', 2: 'Дунд', 3: 'Сайн', 4: 'Маш сайн', 5: 'Шинэ'
 }
 
+function MetaChip({ children, className = '' }: { children: React.ReactNode; className?: string }) {
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium border border-border bg-card ${className}`}>
+      {children}
+    </span>
+  )
+}
+
+function UsageRingSVG({ value }: { value: number }) {
+  const RADIUS = 38
+  const CIRCUMFERENCE = 2 * Math.PI * RADIUS
+  const clamped = Math.max(0, Math.min(100, value))
+  const offset = CIRCUMFERENCE * (1 - clamped / 100)
+  const color = clamped >= 70 ? '#4ade80' : clamped >= 40 ? '#fb923c' : clamped >= 20 ? '#f97316' : '#ef4444'
+  const label = clamped >= 80 ? 'Бараг шинэ' : clamped >= 50 ? 'Дундаас дээш' : clamped >= 20 ? 'Дунджаас доош' : 'Их хэрэглэсэн'
+
+  return (
+    <div className="flex items-center gap-4 p-4 rounded-2xl border border-border bg-card">
+      <div className="relative w-20 h-20 flex-shrink-0">
+        <svg viewBox="0 0 88 88" className="w-full h-full -rotate-90">
+          <circle cx="44" cy="44" r={RADIUS} fill="none" stroke="#e5e7eb" strokeWidth="8" />
+          <circle
+            cx="44" cy="44" r={RADIUS}
+            fill="none" stroke={color} strokeWidth="8" strokeLinecap="round"
+            strokeDasharray={CIRCUMFERENCE}
+            strokeDashoffset={offset}
+          />
+        </svg>
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <span className="text-lg font-bold leading-none" style={{ color }}>{clamped}</span>
+          <span className="text-xs text-muted-foreground">%</span>
+        </div>
+      </div>
+      <div>
+        <p className="text-sm font-semibold mb-0.5" style={{ color }}>{label}</p>
+        <p className="text-xs text-muted-foreground">Үлдсэн хэмжээ</p>
+      </div>
+    </div>
+  )
+}
+
+function PerfumeBottleSVG({ value }: { value: number }) {
+  const clamped = Math.max(0, Math.min(100, value))
+  const fillHeight = (clamped / 100) * 64
+  const fillY = 94 - fillHeight
+  const color = clamped >= 60 ? '#a855f7' : clamped >= 30 ? '#ec4899' : '#f43f5e'
+  const label = clamped >= 80 ? 'Бараг дүүрэн' : clamped >= 50 ? 'Хагасаас дээш' : clamped >= 20 ? 'Бага үлдсэн' : 'Бараг дуусcан'
+
+  return (
+    <div className="flex items-center gap-4 p-4 rounded-2xl border border-border bg-card">
+      <svg viewBox="0 0 60 120" width="52" height="104" className="flex-shrink-0">
+        <defs>
+          <linearGradient id="detail-pf-g" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity="0.9" />
+            <stop offset="100%" stopColor={color} stopOpacity="0.6" />
+          </linearGradient>
+          <clipPath id="detail-pf-c">
+            <rect x="10" y="30" width="40" height="66" rx="6" />
+          </clipPath>
+        </defs>
+        <rect x="18" y="6" width="24" height="10" rx="3" fill="#9ca3af" />
+        <rect x="22" y="15" width="16" height="16" rx="2" fill="none" stroke="#d1d5db" strokeWidth="1.5" />
+        <rect x="10" y="30" width="40" height="66" rx="6" fill="none" stroke="#d1d5db" strokeWidth="1.5" />
+        <rect x="10" y={fillY} width="40" height={fillHeight} rx="6"
+          fill="url(#detail-pf-g)" clipPath="url(#detail-pf-c)" />
+        <rect x="15" y="35" width="5" height="20" rx="2.5" fill="white" opacity="0.2" />
+      </svg>
+      <div>
+        <p className="text-2xl font-bold leading-none mb-1" style={{ color }}>{clamped}%</p>
+        <p className="text-sm text-muted-foreground">{label}</p>
+      </div>
+    </div>
+  )
+}
+
+const PRESET_COLOR_MAP: Record<string, { label: string; hex: string }> = {
+  black:  { label: 'Хар',        hex: '#1c1c1e' },
+  white:  { label: 'Цагаан',     hex: '#e8e8e0' },
+  gray:   { label: 'Саарал',     hex: '#8e8e93' },
+  beige:  { label: 'Бэйж',       hex: '#d4b896' },
+  brown:  { label: 'Бор',        hex: '#8b5e3c' },
+  navy:   { label: 'Хар цэнхэр', hex: '#1d3461' },
+  blue:   { label: 'Цэнхэр',    hex: '#3b82f6' },
+  green:  { label: 'Ногоон',     hex: '#22c55e' },
+  red:    { label: 'Улаан',      hex: '#ef4444' },
+  pink:   { label: 'Ягаан',      hex: '#ec4899' },
+  yellow: { label: 'Шар',        hex: '#eab308' },
+  purple: { label: 'Нил ягаан',  hex: '#a855f7' },
+}
+
+const ACCESSORY_TYPE_MAP: Record<string, string> = {
+  ring: '💍 Бөгж', necklace: '📿 Зүүлт', bracelet: '🔗 Браслет',
+  earrings: '✨ Ээмэг', watch: '⌚ Цаг', bag: '👜 Цүнх',
+  belt: '🪢 Бүс', hat: '🧢 Малгай', sunglasses: '🕶️ Нарны шил',
+  wallet: '👛 Түрийвч', scarf: '🧣 Дурдгар', other: '🛍️ Бусад',
+}
+
+const FRAGRANCE_MAP: Record<string, string> = {
+  floral: '🌸 Цэцэгт', woody: '🌲 Модон', oriental: '🏮 Дорнод',
+  fresh: '🍃 Свеж', citrus: '🍋 Жүрж', aquatic: '💧 Усан',
+  gourmand: '🍫 Солодтой', chypre: '🪨 Шипр',
+}
+
+const INSTRUMENT_TYPE_MAP: Record<string, string> = {
+  guitar: '🎸 Гитар', bass: '🎸 Басс', keyboard: '🎹 Клавиш',
+  piano: '🎹 Хуур', drums: '🥁 Бөмбөр', violin: '🎻 Хийл',
+  cello: '🎻 Чело', trumpet: '🎺 Бүрээ', saxophone: '🎷 Саксофон',
+  flute: '🪈 Лимбэ', ukulele: '🪗 Укулеле', synthesizer: '🎛️ Синтезатор',
+  other: '🎵 Бусад',
+}
+
+const SKIN_TYPE_MAP: Record<string, string> = {
+  all: '✨ Бүх', dry: '🌵 Хуурай', oily: '💧 Тослог',
+  combination: '🌗 Холимог', sensitive: '🌸 Мэдрэмтгий', normal: '☀️ Энгийн',
+}
+
+const FINISH_TYPE_MAP: Record<string, string> = {
+  matte: 'Матт', glossy: 'Гялалзсан', satin: 'Сатин',
+  shimmer: 'Гялбаатай', metallic: 'Металл', natural: 'Байгалийн',
+}
+
+const LONGEVITY_MAP: Record<string, string> = {
+  '1-3h': '1–3 цаг', '3-6h': '3–6 цаг', '6-8h': '6–8 цаг', '8h+': '8+ цаг',
+}
+
+const GENDER_MAP: Record<string, string> = {
+  women: '👩 Эмэгтэй', men: '👨 Эрэгтэй', unisex: '🧑 Хоёулаа', kids: '🧒 Хүүхэд',
+}
+
+const MATERIAL_MN: Record<string, string> = {
+  cotton: 'Хөвөн', polyester: 'Полиэстер', wool: 'Ноос', silk: 'Торго',
+  denim: 'Деним', linen: 'Зэгс', leather: 'Арьс', synthetic: 'Синтетик', mixed: 'Холимог',
+}
+
+function CategoryDetails({ category, meta }: { category: string; meta: Record<string, any> | null }) {
+  if (!meta) return null
+
+  if (category === 'clothing') {
+    const size = meta.size ?? meta.size_local ?? meta.size_intl
+    const colorEntry = meta.color ? PRESET_COLOR_MAP[meta.color as string] : null
+    return (
+      <div className="flex flex-wrap gap-2">
+        {size && (
+          <MetaChip className="border-primary/20 bg-primary-light text-primary font-bold">
+            Хэмжээ: {size}
+          </MetaChip>
+        )}
+        {colorEntry ? (
+          <MetaChip>
+            <span className="w-4 h-4 rounded-full border border-border flex-shrink-0" style={{ background: colorEntry.hex }} />
+            {colorEntry.label}
+          </MetaChip>
+        ) : meta.color ? (
+          <MetaChip>{meta.color as string}</MetaChip>
+        ) : null}
+        {meta.gender && GENDER_MAP[meta.gender as string] && (
+          <MetaChip>{GENDER_MAP[meta.gender as string]}</MetaChip>
+        )}
+        {meta.material && (
+          <MetaChip>🧵 {MATERIAL_MN[meta.material as string] ?? (meta.material as string)}</MetaChip>
+        )}
+      </div>
+    )
+  }
+
+  if (category === 'skincare' || category === 'makeup') {
+    const usagePct = meta.percent_used as number | undefined
+    return (
+      <div className="space-y-3">
+        {usagePct != null && <UsageRingSVG value={usagePct} />}
+        <div className="flex flex-wrap gap-2">
+          {category === 'skincare' && meta.skin_type && (
+            <MetaChip>{SKIN_TYPE_MAP[meta.skin_type as string] ?? (meta.skin_type as string)}</MetaChip>
+          )}
+          {category === 'makeup' && meta.shade && (
+            <MetaChip>🎨 {meta.shade as string}</MetaChip>
+          )}
+          {category === 'makeup' && meta.finish_type && (
+            <MetaChip>{FINISH_TYPE_MAP[meta.finish_type as string] ?? (meta.finish_type as string)}</MetaChip>
+          )}
+          {meta.expiry_date && (
+            <MetaChip>📅 {meta.expiry_date as string}</MetaChip>
+          )}
+          {meta.is_opened === false && (
+            <MetaChip className="border-green-200 text-green-700 bg-green-50">✅ Нээгдээгүй</MetaChip>
+          )}
+          {meta.is_opened === true && (
+            <MetaChip className="border-amber-200 text-amber-700 bg-amber-50">📦 Нээгдсэн</MetaChip>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  if (category === 'perfume') {
+    const volumePct = meta.percent_used as number | undefined
+    return (
+      <div className="space-y-3">
+        {volumePct != null && <PerfumeBottleSVG value={volumePct} />}
+        <div className="flex flex-wrap gap-2">
+          {meta.fragrance_type && (
+            <MetaChip>{FRAGRANCE_MAP[meta.fragrance_type as string] ?? (meta.fragrance_type as string)}</MetaChip>
+          )}
+          {meta.longevity && (
+            <MetaChip>⏱️ {LONGEVITY_MAP[meta.longevity as string] ?? (meta.longevity as string)}</MetaChip>
+          )}
+        </div>
+      </div>
+    )
+  }
+
+  if (category === 'accessories') {
+    return (
+      <div className="flex flex-wrap gap-2">
+        {meta.accessory_type && (
+          <MetaChip className="border-primary/20 bg-primary-light text-primary">
+            {ACCESSORY_TYPE_MAP[meta.accessory_type as string] ?? (meta.accessory_type as string)}
+          </MetaChip>
+        )}
+        {meta.material && <MetaChip>🧵 {meta.material as string}</MetaChip>}
+        {meta.dimensions && <MetaChip>📐 {meta.dimensions as string}</MetaChip>}
+      </div>
+    )
+  }
+
+  if (category === 'instruments') {
+    return (
+      <div className="space-y-3">
+        <div className="flex flex-wrap gap-2">
+          {meta.instrument_type && (
+            <MetaChip className="border-primary/20 bg-primary-light text-primary font-semibold">
+              {INSTRUMENT_TYPE_MAP[meta.instrument_type as string] ?? (meta.instrument_type as string)}
+            </MetaChip>
+          )}
+          {meta.year && <MetaChip>📅 {meta.year as number}</MetaChip>}
+        </div>
+        {meta.accessories_included && (
+          <p className="text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">Хамааралтай:</span> {meta.accessories_included as string}
+          </p>
+        )}
+        {meta.damage_notes && (
+          <p className="text-sm text-muted-foreground">
+            <span className="font-medium text-foreground">Гэмтлийн тэмдэглэл:</span> {meta.damage_notes as string}
+          </p>
+        )}
+      </div>
+    )
+  }
+
+  return null
+}
+
 export default async function ListingPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const listing = await getListing(id)
@@ -92,6 +345,16 @@ export default async function ListingPage({ params }: { params: Promise<{ id: st
             <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
               {listing.description}
             </p>
+          )}
+
+          {/* Category-specific details */}
+          {meta && (
+            <div className="mb-5">
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-3">
+                Бараа дэлгэрэнгүй
+              </p>
+              <CategoryDetails category={listing.category} meta={meta} />
+            </div>
           )}
 
           {/* Seller */}

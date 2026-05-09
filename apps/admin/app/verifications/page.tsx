@@ -1,57 +1,74 @@
-'use client'
-import { useEffect, useState } from 'react'
-import { VerifyQueueItem } from '@/components/VerifyQueueItem'
-import type { Verification } from '@swaply/types'
+import Link from 'next/link'
+import { ShieldCheck } from 'lucide-react'
+import { createAdminClient } from '@/lib/supabase'
+import { PageHeader } from '@/components/ui/page-header'
+import { EmptyState } from '@/components/ui/empty-state'
+import { VerifyCard } from './VerifyCard'
 
-type Filter = 'pending' | 'approved' | 'rejected'
-
-async function fetchVerifications(status: Filter): Promise<Verification[]> {
-  const res = await fetch(`/api/proxy/admin/verifications?status=${status}`)
-  if (!res.ok) return []
-  const { verifications } = await res.json()
-  return verifications ?? []
+async function getVerifications(status: string) {
+  const supabase = createAdminClient()
+  const { data } = await supabase
+    .from('verifications')
+    .select('*, listings!verifications_listing_id_fkey(title, photos, category, users!listings_user_id_fkey(nickname))')
+    .eq('status', status)
+    .order('created_at')
+  return data ?? []
 }
 
-export default function VerificationsPage() {
-  const [filter, setFilter] = useState<Filter>('pending')
-  const [items, setItems] = useState<Verification[]>([])
-  const [loading, setLoading] = useState(true)
+type Filter = 'pending' | 'approved' | 'rejected'
+const FILTERS: Filter[] = ['pending', 'approved', 'rejected']
 
-  async function load() {
-    setLoading(true)
-    setItems(await fetchVerifications(filter))
-    setLoading(false)
-  }
+const FILTER_LABELS: Record<Filter, string> = {
+  pending:  'Pending',
+  approved: 'Approved',
+  rejected: 'Rejected',
+}
 
-  useEffect(() => { load() }, [filter])
+export default async function VerificationsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>
+}) {
+  const { status = 'pending' } = await searchParams
+  const filter = (FILTERS.includes(status as Filter) ? status : 'pending') as Filter
+  const verifications = await getVerifications(filter)
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-semibold">Баталгаажуулалт</h1>
-        <div className="flex gap-2">
-          {(['pending', 'approved', 'rejected'] as const).map(s => (
-            <button
-              key={s}
-              onClick={() => setFilter(s)}
-              className={`px-3 py-1.5 rounded-lg text-sm capitalize transition-colors ${
-                filter === s ? 'bg-violet-600 text-white' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-              }`}
-            >
-              {s === 'pending' ? 'Хүлээж байгаа' : s === 'approved' ? 'Зөвшөөрсөн' : 'Татгалзсан'}
-            </button>
-          ))}
-        </div>
+    <div className="p-6 animate-fade-in">
+      <PageHeader
+        title="Verifications"
+        description="Review and approve listing verification requests"
+      />
+
+      {/* Filter tabs */}
+      <div className="flex items-center gap-1 p-1 rounded-xl bg-[hsl(var(--surface))] border border-[hsl(var(--border))] mb-5 w-fit">
+        {FILTERS.map(f => (
+          <Link
+            key={f}
+            href={`?status=${f}`}
+            className={[
+              'px-4 py-1.5 rounded-lg text-sm font-medium capitalize transition-colors',
+              filter === f
+                ? 'bg-violet-600 text-white shadow-sm'
+                : 'text-[hsl(var(--muted-foreground))] hover:text-[hsl(var(--foreground))]',
+            ].join(' ')}
+          >
+            {FILTER_LABELS[f]}
+            {f === 'pending' && verifications.length > 0 && filter !== 'pending' && null}
+          </Link>
+        ))}
       </div>
 
-      {loading ? (
-        <div className="text-muted-foreground">Уншиж байна…</div>
-      ) : items.length === 0 ? (
-        <p className="text-muted-foreground text-center py-16">Хоосон</p>
+      {verifications.length === 0 ? (
+        <EmptyState
+          icon={ShieldCheck}
+          title={`No ${filter} verifications`}
+          description={`There are no ${filter} verification requests at this time.`}
+        />
       ) : (
         <div className="space-y-4">
-          {items.map(item => (
-            <VerifyQueueItem key={item.id} verification={item} onAction={load} />
+          {verifications.map((v: any) => (
+            <VerifyCard key={v.id} verification={v} />
           ))}
         </div>
       )}

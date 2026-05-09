@@ -6,6 +6,7 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  ChevronDown,
   ImagePlus,
   Loader2,
   MapPin,
@@ -37,19 +38,21 @@ const steps = [
   { title: 'Үнэ & нийтлэх', caption: '3/3 · Үнэ, солилцоо' },
 ] as const
 
-const categories: { value: Category; label: string }[] = [
-  { value: 'clothing', label: 'Хувцас' },
-  { value: 'skincare', label: 'Skincare' },
-  { value: 'makeup', label: 'Makeup' },
-  { value: 'accessories', label: 'Accessories' },
+const categories: { value: Category; label: string; emoji: string }[] = [
+  { value: 'clothing',    label: 'Хувцас',   emoji: '👕' },
+  { value: 'skincare',    label: 'Skincare',  emoji: '✨' },
+  { value: 'makeup',      label: 'Makeup',    emoji: '💄' },
+  { value: 'accessories', label: 'Accessory', emoji: '💍' },
+  { value: 'perfume',     label: 'Perfume',   emoji: '🌸' },
+  { value: 'instruments', label: 'Хөгжим',   emoji: '🎸' },
 ]
 
 const conditionOptions = [
-  { value: 5, label: 'Шинэ' },
-  { value: 4, label: 'Маш сайн' },
-  { value: 3, label: 'Сайн' },
-  { value: 2, label: 'Дундаж' },
-  { value: 1, label: 'Элэгдсэн' },
+  { value: 5, label: 'Шинэ',     emoji: '⭐' },
+  { value: 4, label: 'Маш сайн', emoji: '✨' },
+  { value: 3, label: 'Сайн',     emoji: '👍' },
+  { value: 2, label: 'Дундаж',   emoji: '📦' },
+  { value: 1, label: 'Элэгдсэн', emoji: '🔧' },
 ]
 
 const cityOptions = [
@@ -79,6 +82,9 @@ const cityOptions = [
 
 const inputClass =
   'w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10'
+
+const selectClass =
+  'w-full appearance-none rounded-2xl border border-border bg-background px-4 py-3 pr-10 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 cursor-pointer'
 
 export function ListingForm() {
   const router = useRouter()
@@ -112,6 +118,7 @@ export function ListingForm() {
   const price = watch('price')
   const swapEnabled = watch('swap_enabled')
   const title = watch('title')
+  const city = watch('city')
 
   const marketHint = useMemo(() => {
     if (!price || !Number.isFinite(price)) return 'Үнэ оруулсны дараа санал харуулна'
@@ -338,18 +345,22 @@ export function ListingForm() {
                 {errors.title && <p className="text-xs text-accent">3-аас дээш тэмдэгт оруулна уу.</p>}
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 md:col-span-2">
                 <label className="text-sm font-medium">Категори *</label>
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                   {categories.map(item => (
                     <button
                       key={item.value}
                       type="button"
                       onClick={() => setValue('category', item.value, { shouldValidate: true })}
-                      className={`rounded-xl border px-3 py-2.5 text-sm font-medium transition ${
-                        category === item.value ? 'border-primary bg-primary-light text-primary' : 'border-border hover:border-primary/50'
-                      }`}
+                      className={[
+                        'flex flex-col items-center gap-1.5 rounded-xl border py-3 px-2 text-xs font-medium transition',
+                        category === item.value
+                          ? 'border-primary bg-primary-light text-primary'
+                          : 'border-border bg-card hover:border-primary/50',
+                      ].join(' ')}
                     >
+                      <span className="text-xl">{item.emoji}</span>
                       {item.label}
                     </button>
                   ))}
@@ -357,19 +368,25 @@ export function ListingForm() {
                 <input type="hidden" {...register('category', { required: true })} />
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 md:col-span-2">
                 <label className="text-sm font-medium">Нөхцөл *</label>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-5 gap-2">
                   {conditionOptions.map(item => (
                     <button
                       key={item.value}
                       type="button"
                       onClick={() => setValue('condition', item.value, { shouldValidate: true })}
-                      className={`rounded-full border px-3 py-2 text-sm font-medium transition ${
-                        condition === item.value ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:border-primary/50'
-                      }`}
+                      className={[
+                        'flex flex-col items-center gap-1.5 rounded-2xl border py-3 transition',
+                        condition === item.value
+                          ? 'border-primary bg-primary-light'
+                          : 'border-border bg-card hover:border-primary/50',
+                      ].join(' ')}
                     >
-                      {item.label}
+                      <span className="text-xl">{item.emoji}</span>
+                      <span className={`text-xs font-semibold ${condition === item.value ? 'text-primary' : 'text-foreground'}`}>
+                        {item.label}
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -387,40 +404,58 @@ export function ListingForm() {
               />
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className={`grid gap-4 ${city === 'Улаанбаатар' ? 'sm:grid-cols-2' : ''}`}>
               <div className="space-y-1.5">
                 <label className="flex items-center gap-1.5 text-sm font-medium">
                   <MapPin size={15} className="text-primary" />
                   Хот / аймаг *
                 </label>
-                <select {...register('city', { required: true })} className={inputClass}>
-                  {cityOptions.map(city => (
-                    <option key={city} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
+                <div className="relative">
+                  <select
+                    {...register('city', {
+                      required: true,
+                      onChange: e => {
+                        if (e.target.value !== 'Улаанбаатар') setValue('district', '')
+                      },
+                    })}
+                    className={selectClass}
+                  >
+                    {cityOptions.map(c => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={16} className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                </div>
                 {errors.city && <p className="text-xs text-accent">Байршил сонгоно уу.</p>}
               </div>
 
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium">Дүүрэг / сум</label>
-                <input
-                  {...register('district')}
-                  placeholder="Жишээ: Сүхбаатар дүүрэг"
-                  className={inputClass}
-                />
-              </div>
+              {city === 'Улаанбаатар' && (
+                <div>
+                  <label className="text-sm font-medium">Дүүрэг *</label>
+                  <div className="relative">
+                    <select {...register('district')} className={selectClass}>
+                      <option value="">Дүүрэг сонгох…</option>
+                      {['Баянгол', 'Баянзүрх', 'Хан-Уул', 'Сүхбаатар', 'Чингэлтэй', 'Сонгинохайрхан', 'Налайх', 'Багануур', 'Багахангай'].map(d => (
+                        <option key={d} value={d}>{d}</option>
+                      ))}
+                    </select>
+                    <ChevronDown size={16} className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  </div>
+                </div>
+              )}
             </div>
 
             {category && (
               <div className="rounded-2xl border border-border bg-background p-4">
                 <h3 className="mb-4 text-sm font-semibold">
-                  {category === 'clothing' ? 'Хувцасны мэдээлэл' :
-                   category === 'skincare' ? 'Skincare мэдээлэл' :
-                   category === 'makeup' ? 'Makeup мэдээлэл' : 'Accessories мэдээлэл'}
+                  {category === 'clothing'    ? 'Хувцасны мэдээлэл' :
+                   category === 'skincare'    ? 'Skincare мэдээлэл' :
+                   category === 'makeup'      ? 'Makeup мэдээлэл' :
+                   category === 'accessories' ? 'Accessories мэдээлэл' :
+                   category === 'perfume'     ? 'Үнэртний мэдээлэл' :
+                                               'Хөгжмийн зэмсгийн мэдээлэл'}
                 </h3>
-                <CategoryFields category={category} register={register} watch={watch} />
+                <CategoryFields category={category} register={register} watch={watch} setValue={setValue} />
               </div>
             )}
           </div>
@@ -478,7 +513,7 @@ export function ListingForm() {
               <div className="mt-3 space-y-2 text-sm">
                 <CheckLine ok={photos.length >= 1} text={`${photos.length}/8 зураг`} />
                 <CheckLine ok={Boolean(title?.trim())} text={title?.trim() || 'Гарчиг оруулаагүй'} />
-                <CheckLine ok={Boolean(category)} text={category ? categories.find(item => item.value === category)?.label ?? category : 'Категори сонгоогүй'} />
+                <CheckLine ok={Boolean(category)} text={category ? `${categories.find(item => item.value === category)?.emoji ?? ''} ${categories.find(item => item.value === category)?.label ?? category}`.trim() : 'Категори сонгоогүй'} />
                 <CheckLine ok={Boolean(watch('city'))} text={watch('district') ? `${watch('city')}, ${watch('district')}` : watch('city') || 'Байршил сонгоогүй'} />
               </div>
             </div>

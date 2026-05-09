@@ -5,9 +5,11 @@ import { useTransition } from 'react'
 const CATEGORIES = [
   { value: '',            label: 'Бүгд' },
   { value: 'clothing',    label: 'Хувцас' },
-  { value: 'accessories', label: 'Цүнх' },
   { value: 'skincare',    label: 'Арьс засал' },
   { value: 'makeup',      label: 'Будалт' },
+  { value: 'accessories', label: 'Цүнх' },
+  { value: 'perfume',     label: 'Үнэртэн' },
+  { value: 'instrument',  label: 'Хөгжмийн зэмсэг' },
 ]
 
 interface Props {

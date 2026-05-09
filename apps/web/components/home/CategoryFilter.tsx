@@ -11,6 +11,8 @@ const TABS = [
   { key: 'skincare',    label: 'Skincare',icon: '🧴' },
   { key: 'makeup',      label: 'Makeup',  icon: '💄' },
   { key: 'accessories', label: 'Аксессуар',icon: '👜' },
+  { key: 'perfume', label: 'Үнэртэн',icon: '🎀' },
+  { key: 'instrument', label: 'Хөгжмийн зэмсэг', icon: '🎹' },
 ]
 
 export function CategoryFilter({ listings }: { listings: Listing[] }) {

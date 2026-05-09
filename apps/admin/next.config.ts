@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: '*.supabase.co' },
+      { protocol: 'https', hostname: 'res.cloudinary.com' },
     ],
   },
   transpilePackages: ['@swaply/ui', '@swaply/db', '@swaply/types'],
