@@ -248,6 +248,13 @@ app.patch('/:id/counter', zValidator('json', z.object({ money_offer: z.number().
     .update({ status: 'countered', money_offer, category_meta: { ...meta, counter_by: userId } })
     .eq('id', id)
 
+  const otherUserId = proposal.sender_id === userId ? proposal.receiver_id : proposal.sender_id
+  await supabaseAdmin.from('notifications').insert({
+    user_id: otherUserId,
+    type: 'new_proposal',
+    payload: { proposal_id: id, sender_id: userId, counter: true },
+  })
+
   return c.json({ ok: true })
 })
 

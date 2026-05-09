@@ -22,7 +22,7 @@ app.get('/unread', async (c) => {
     return c.json({ total: 0, by_proposal: {} })
   }
 
-  const [readsRes, messagesRes] = await Promise.all([
+  const [readsRes, messagesRes, proposalNotificationsRes] = await Promise.all([
     supabaseAdmin
       .from('message_reads')
       .select('proposal_id, last_read_at')
@@ -33,10 +33,17 @@ app.get('/unread', async (c) => {
       .select('proposal_id, sender_id, created_at')
       .in('proposal_id', proposalIds)
       .neq('sender_id', userId),
+    supabaseAdmin
+      .from('notifications')
+      .select('payload, created_at')
+      .eq('user_id', userId)
+      .eq('read', false)
+      .in('type', ['new_proposal']),
   ])
 
   if (readsRes.error) return c.json({ error: readsRes.error }, 500)
   if (messagesRes.error) return c.json({ error: messagesRes.error }, 500)
+  if (proposalNotificationsRes.error) return c.json({ error: proposalNotificationsRes.error }, 500)
 
   const readAtByProposal = new Map(
     (readsRes.data ?? []).map(item => [item.proposal_id, new Date(item.last_read_at).getTime()])
@@ -48,6 +55,13 @@ app.get('/unread', async (c) => {
     if (new Date(message.created_at).getTime() > lastReadAt) {
       byProposal[message.proposal_id] = (byProposal[message.proposal_id] ?? 0) + 1
     }
+  }
+
+  for (const notification of proposalNotificationsRes.data ?? []) {
+    const payload = notification.payload as { proposal_id?: string } | null
+    const proposalId = payload?.proposal_id
+    if (!proposalId || !proposalIds.includes(proposalId)) continue
+    byProposal[proposalId] = Math.max(byProposal[proposalId] ?? 0, 1)
   }
 
   const total = Object.values(byProposal).reduce((sum, count) => sum + count, 0)

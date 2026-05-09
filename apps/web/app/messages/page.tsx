@@ -92,7 +92,7 @@ export default function MessagesPage() {
         },
         payload => {
           const row = payload.new as { type?: string } | null
-          if (row?.type === 'new_message') refreshUnread()
+          if (row?.type === 'new_message' || row?.type === 'new_proposal') refreshUnread()
         }
       )
       .subscribe()

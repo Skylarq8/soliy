@@ -22,10 +22,7 @@ export function ListingCard({ listing, size = 'default' }: Props) {
   const meta = listing.category_meta as Record<string, string> | null
   const brand = meta?.brand as string | undefined
   const conditionLabel = listing.condition ? CONDITION_LABELS[listing.condition] : null
-  const location = formatLocation(meta?.location_city, meta?.location_district) || 'Байршил оруулаагүй'
-  const cardMeta = [listing.users?.nickname ? `@${listing.users.nickname}` : null, location]
-    .filter(Boolean)
-    .join(' · ')
+  const location = formatLocation(meta?.location_city, meta?.location_district) || 'Байршилгүй'
 
   useEffect(() => {
     let mounted = true
@@ -129,9 +126,9 @@ export function ListingCard({ listing, size = 'default' }: Props) {
         {/* Swap badge */}
         {listing.swap_enabled && (
           <div className="absolute bottom-2.5 right-2.5">
-            <span className="inline-flex items-center gap-1 rounded-full border border-primary/15 bg-card/92 px-2 py-0.5 text-[11px] font-bold text-primary shadow-sm backdrop-blur-sm">
-              <Repeat2 size={12} />
-              Солих
+            <span className="inline-flex h-7 items-center gap-1 rounded-full border border-white/35 bg-primary/95 px-2 text-[10px] font-bold text-primary-foreground shadow-[0_6px_16px_rgba(0,0,0,0.28)] ring-1 ring-black/10 backdrop-blur-sm">
+              <Repeat2 size={11} strokeWidth={2.3} />
+              <span className="leading-none">Солих</span>
             </span>
           </div>
         )}
@@ -163,7 +160,7 @@ export function ListingCard({ listing, size = 'default' }: Props) {
         </div>
         <p className={`flex items-center gap-1.5 truncate font-medium text-muted-foreground ${size === 'featured' ? 'mt-1.5 text-xs' : 'mt-2 text-xs sm:text-[13px]'}`}>
           <MapPin size={size === 'featured' ? 13 : 14} className="flex-shrink-0 text-primary" />
-          {cardMeta}
+          {location}
         </p>
       </div>
     </Link>

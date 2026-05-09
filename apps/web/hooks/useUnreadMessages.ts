@@ -86,7 +86,7 @@ export function useUnreadMessages() {
           },
           payload => {
             const row = payload.new as { type?: string } | null
-            if (row?.type === 'new_message') void refresh(userId)
+            if (row?.type === 'new_message' || row?.type === 'new_proposal') void refresh(userId)
           }
         )
         .subscribe()
