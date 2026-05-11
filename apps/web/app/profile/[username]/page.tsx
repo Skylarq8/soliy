@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@swaply/db'
-import type { User } from '@swaply/types'
+import type { Database } from '@soliy/db'
+import type { User } from '@soliy/types'
 import { SafeScoreBadge } from '@/components/profile/SafeScoreBadge'
 import { FollowButton } from '@/components/profile/FollowButton'
 

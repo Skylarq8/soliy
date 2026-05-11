@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, Loader2, Minus, Repeat2, X } from 'lucide-react'
-import type { Listing } from '@swaply/types'
+import type { Listing } from '@soliy/types'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 

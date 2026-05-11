@@ -1,5 +1,5 @@
 {
-  "name": "@swaply/web",
+  "name": "@soliy/web",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,9 +12,9 @@
   "dependencies": {
     "@stripe/stripe-js": "^4.0.0",
     "@supabase/supabase-js": "^2.43.0",
-    "@swaply/db": "workspace:*",
-    "@swaply/types": "workspace:*",
-    "@swaply/ui": "workspace:*",
+    "@soliy/db": "workspace:*",
+    "@soliy/types": "workspace:*",
+    "@soliy/ui": "workspace:*",
     "lucide-react": "^1.14.0",
     "next": "^15.3.0",
     "react": "^19.0.0",

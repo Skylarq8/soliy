@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation'
 import { ArrowRight, Inbox, Loader2, MessageCircle, Repeat2 } from 'lucide-react'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
-import type { EnrichedProposal, Listing, User } from '@swaply/types'
+import type { EnrichedProposal, Listing, User } from '@soliy/types'
 
 const filters = [
   { key: 'all', label: 'Бүгд' },
@@ -67,8 +67,8 @@ export default function MessagesPage() {
         .then(data => setUnreadByProposal(data.by_proposal ?? {}))
         .catch(() => {})
     }
-    window.addEventListener('swaply:messages-read', handler)
-    return () => window.removeEventListener('swaply:messages-read', handler)
+    window.addEventListener('soliy:messages-read', handler)
+    return () => window.removeEventListener('soliy:messages-read', handler)
   }, [])
 
   useEffect(() => {

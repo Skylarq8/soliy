@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import { adminMiddleware } from '../middleware/auth'
-import { supabaseAdmin } from '@swaply/db'
+import { supabaseAdmin } from '@soliy/db'
 import type { AppEnv } from '../types'
 
 const app = new Hono<AppEnv>()

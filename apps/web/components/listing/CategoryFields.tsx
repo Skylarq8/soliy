@@ -1,6 +1,6 @@
 'use client'
 import type { UseFormRegister, UseFormWatch, UseFormSetValue } from 'react-hook-form'
-import type { Category } from '@swaply/types'
+import type { Category } from '@soliy/types'
 
 interface Props {
   category: Category

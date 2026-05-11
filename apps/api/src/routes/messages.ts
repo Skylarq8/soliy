@@ -1,7 +1,7 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
-import { supabaseAdmin } from '@swaply/db'
+import { supabaseAdmin } from '@soliy/db'
 import { containsContactInfo } from '../lib/moderation'
 import type { AppEnv } from '../types'
 

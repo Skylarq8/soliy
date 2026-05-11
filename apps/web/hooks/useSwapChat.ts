@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
 import { api } from '@/lib/api'
-import type { Message } from '@swaply/types'
+import type { Message } from '@soliy/types'
 
 export function useSwapChat(proposalId: string) {
   const [messages, setMessages] = useState<Message[]>([])

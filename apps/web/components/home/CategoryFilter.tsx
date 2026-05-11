@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Link from 'next/link'
-import type { Listing } from '@swaply/types'
+import type { Listing } from '@soliy/types'
 import { ListingCard } from '@/components/listing/ListingCard'
 import { ScrollReveal } from '@/components/shared/ScrollReveal'
 

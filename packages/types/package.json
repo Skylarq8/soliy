@@ -1,12 +1,12 @@
 {
-  "name": "@swaply/types",
+  "name": "@soliy/types",
   "version": "0.0.1",
   "private": true,
   "exports": {
     ".": "./src/index.ts"
   },
   "dependencies": {
-    "@swaply/db": "workspace:*"
+    "@soliy/db": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.4.0"

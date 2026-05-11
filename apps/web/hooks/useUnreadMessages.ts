@@ -102,7 +102,7 @@ export function useUnreadMessages() {
     }
 
     window.addEventListener('focus', onFocus)
-    window.addEventListener('swaply:messages-read', onRead)
+    window.addEventListener('soliy:messages-read', onRead)
     document.addEventListener('visibilitychange', onVisible)
 
     return () => {
@@ -110,7 +110,7 @@ export function useUnreadMessages() {
       if (notificationChannel) void supabase.removeChannel(notificationChannel)
       window.clearInterval(interval)
       window.removeEventListener('focus', onFocus)
-      window.removeEventListener('swaply:messages-read', onRead)
+      window.removeEventListener('soliy:messages-read', onRead)
       document.removeEventListener('visibilitychange', onVisible)
     }
   }, [userId])

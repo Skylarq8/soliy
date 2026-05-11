@@ -104,7 +104,7 @@ export function TrustSection() {
               <span className="text-accent">ил тод байлга.</span>
             </h2>
             <p className="text-muted-foreground text-sm md:text-base mb-8 leading-relaxed">
-              Swaply дээр итгэл гэдэг ганц badge биш. Профайл, саналын нөхцөл, чат, хүлээн авсан баталгааг хамтад нь харуулж байж хэрэглэгч шийдвэрээ тайван гаргана.
+              Soliy дээр итгэл гэдэг ганц badge биш. Профайл, саналын нөхцөл, чат, хүлээн авсан баталгааг хамтад нь харуулж байж хэрэглэгч шийдвэрээ тайван гаргана.
             </p>
 
             <div className="mt-auto flex flex-col gap-3">

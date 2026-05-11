@@ -8,7 +8,7 @@ import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 import { SwapChat } from './SwapChat'
 import { ProposalActions } from './ProposalActions'
-import type { EnrichedProposal, Listing, User } from '@swaply/types'
+import type { EnrichedProposal, Listing, User } from '@soliy/types'
 
 const statusLabels: Record<string, string> = {
   pending: 'Хариу хүлээж байна',

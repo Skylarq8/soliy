@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { api } from '@/lib/api'
-import type { User, Listing, VerificationStatus } from '@swaply/types'
+import type { User, Listing, VerificationStatus } from '@soliy/types'
 
 type Tab = 'active' | 'sold' | 'reviews'
 type ListingActionStatus = 'sold' | 'archived'

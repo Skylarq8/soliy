@@ -50,7 +50,7 @@ app.post('/image', async (c) => {
 
   const timestamp = Math.floor(Date.now() / 1000).toString()
   const params = {
-    folder: 'swaply/listings',
+    folder: 'soliy/listings',
     timestamp,
   }
   const signature = await cloudinarySignature(params, apiSecret)

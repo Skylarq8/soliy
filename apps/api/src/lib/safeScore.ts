@@ -1,4 +1,4 @@
-import { supabaseAdmin } from '@swaply/db'
+import { supabaseAdmin } from '@soliy/db'
 
 export async function recalcSafeScore(userId: string): Promise<void> {
   const [{ data: reviews }, { data: user }] = await Promise.all([

@@ -63,7 +63,7 @@ export function Navbar() {
 
         {/* Logo */}
         <Link href="/" className="text-xl font-bold text-primary flex-shrink-0 tracking-tight">
-          Swaply
+          Soliy
         </Link>
 
         {/* Center nav — desktop only, flex-1 to push icons right */}

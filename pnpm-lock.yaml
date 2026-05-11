@@ -20,18 +20,18 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.74.0(react@19.2.5))
+      '@soliy/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@soliy/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@soliy/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@supabase/supabase-js':
         specifier: ^2.43.0
         version: 2.104.1
-      '@swaply/db':
-        specifier: workspace:*
-        version: link:../../packages/db
-      '@swaply/types':
-        specifier: workspace:*
-        version: link:../../packages/types
-      '@swaply/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       '@tanstack/react-query':
         specifier: ^5.40.0
         version: 5.100.9(react@19.2.5)
@@ -99,10 +99,10 @@ importers:
       '@hono/zod-validator':
         specifier: ^0.2.2
         version: 0.2.2(hono@4.12.15)(zod@3.25.76)
-      '@swaply/db':
+      '@soliy/db':
         specifier: workspace:*
         version: link:../../packages/db
-      '@swaply/types':
+      '@soliy/types':
         specifier: workspace:*
         version: link:../../packages/types
       hono:
@@ -130,21 +130,21 @@ importers:
 
   apps/web:
     dependencies:
+      '@soliy/db':
+        specifier: workspace:*
+        version: link:../../packages/db
+      '@soliy/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@soliy/ui':
+        specifier: workspace:*
+        version: link:../../packages/ui
       '@stripe/stripe-js':
         specifier: ^4.0.0
         version: 4.10.0
       '@supabase/supabase-js':
         specifier: ^2.43.0
         version: 2.104.1
-      '@swaply/db':
-        specifier: workspace:*
-        version: link:../../packages/db
-      '@swaply/types':
-        specifier: workspace:*
-        version: link:../../packages/types
-      '@swaply/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       lucide-react:
         specifier: ^1.14.0
         version: 1.14.0(react@19.2.5)
@@ -198,7 +198,7 @@ importers:
 
   packages/types:
     dependencies:
-      '@swaply/db':
+      '@soliy/db':
         specifier: workspace:*
         version: link:../db
     devDependencies:

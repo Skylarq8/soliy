@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
 import { api } from '@/lib/api'
-import type { Proposal } from '@swaply/types'
+import type { Proposal } from '@soliy/types'
 
 interface Props {
   proposal: Proposal

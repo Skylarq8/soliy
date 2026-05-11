@@ -131,7 +131,7 @@ export default function RegisterPage() {
                     minLength={3}
                     maxLength={30}
                     pattern="[\w._-]+"
-                    placeholder="swaply_user"
+                    placeholder="soliy_user"
                     className={inputClass}
                   />
                 </div>

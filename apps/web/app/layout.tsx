@@ -11,7 +11,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'Swaply — Солилц, тохиролц, үнэ цэн бүтээ',
+  title: 'Soliy — Солилц, тохиролц, үнэ цэн бүтээ',
   description: 'Хувцас, арьс арчилгаа, будалт, аксессуарыг солих, зарах, мөнгөн нэмэлттэй тохиролцох платформ.',
 }
 

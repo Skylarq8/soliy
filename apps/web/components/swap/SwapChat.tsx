@@ -5,7 +5,7 @@ import { Check, Eye, ImagePlus, Loader2, SendHorizonal, X, ZoomIn } from 'lucide
 import { useSwapChat } from '@/hooks/useSwapChat'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
-import type { Message, User } from '@swaply/types'
+import type { Message, User } from '@soliy/types'
 
 interface Props {
   proposalId: string
@@ -78,7 +78,7 @@ export function SwapChat({ proposalId, otherUser }: Props) {
     if (document.visibilityState !== 'visible') return
 
     api.messages.markRead(proposalId)
-      .then(() => window.dispatchEvent(new Event('swaply:messages-read')))
+      .then(() => window.dispatchEvent(new Event('soliy:messages-read')))
       .catch(() => {})
   }, [messages.length, myId, proposalId])
 
@@ -91,7 +91,7 @@ export function SwapChat({ proposalId, otherUser }: Props) {
       if (!hasUnreadFromPeer) return
 
       api.messages.markRead(proposalId)
-        .then(() => window.dispatchEvent(new Event('swaply:messages-read')))
+        .then(() => window.dispatchEvent(new Event('soliy:messages-read')))
         .catch(() => {})
     }
 

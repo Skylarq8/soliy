@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import type { Listing } from '@swaply/types'
+import type { Listing } from '@soliy/types'
 import { api } from '@/lib/api'
 import { SwapProposalModal } from './SwapProposalModal'
 

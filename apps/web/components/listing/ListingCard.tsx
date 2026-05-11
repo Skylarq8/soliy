@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Heart, MapPin, Repeat2, ShieldCheck, Zap } from 'lucide-react'
-import type { Listing } from '@swaply/types'
+import type { Listing } from '@soliy/types'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 

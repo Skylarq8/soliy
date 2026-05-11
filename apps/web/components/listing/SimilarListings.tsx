@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js'
-import type { Database } from '@swaply/db'
-import type { Listing } from '@swaply/types'
+import type { Database } from '@soliy/db'
+import type { Listing } from '@soliy/types'
 import Image from 'next/image'
 import Link from 'next/link'
 

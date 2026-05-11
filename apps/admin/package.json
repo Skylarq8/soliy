@@ -1,5 +1,5 @@
 {
-  "name": "@swaply/admin",
+  "name": "@soliy/admin",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -12,9 +12,9 @@
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
     "@supabase/supabase-js": "^2.43.0",
-    "@swaply/db": "workspace:*",
-    "@swaply/types": "workspace:*",
-    "@swaply/ui": "workspace:*",
+    "@soliy/db": "workspace:*",
+    "@soliy/types": "workspace:*",
+    "@soliy/ui": "workspace:*",
     "@tanstack/react-query": "^5.40.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",

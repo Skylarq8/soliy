@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { Notification } from '@swaply/types'
+import type { Notification } from '@soliy/types'
 
 export function useNotifications(userId: string | null) {
   const [unreadCount, setUnreadCount] = useState(0)

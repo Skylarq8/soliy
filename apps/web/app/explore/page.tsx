@@ -2,7 +2,7 @@ import { Suspense } from 'react'
 import { ListingFeed } from '@/components/listing/ListingFeed'
 import { FeedFilters } from '@/components/listing/FeedFilters'
 
-export const metadata = { title: 'Хайх — Swaply' }
+export const metadata = { title: 'Хайх — Soliy' }
 
 export default function ExplorePage({
   searchParams,

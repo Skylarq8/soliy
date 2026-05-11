@@ -1,5 +1,5 @@
 import { createMiddleware } from 'hono/factory'
-import { supabaseAdmin } from '@swaply/db'
+import { supabaseAdmin } from '@soliy/db'
 
 export const authMiddleware = createMiddleware<{ Variables: { userId: string } }>(async (c, next) => {
   const token = c.req.header('Authorization')?.replace('Bearer ', '')

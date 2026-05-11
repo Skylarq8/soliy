@@ -63,7 +63,7 @@ export default function SetupProfilePage() {
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
           <div className="text-4xl mb-3">🎉</div>
-          <h1 className="text-3xl font-bold">Swaply</h1>
+          <h1 className="text-3xl font-bold">Soliy</h1>
           <p className="text-muted-foreground mt-1">И-мэйл баталгаажлаа! Нэрээ сонгоно уу.</p>
         </div>
 

@@ -62,7 +62,7 @@ app.use('*', async (c, next) => {
 // Public routes (no auth)
 app.route('/webhooks', webhooks)
 app.route('/auth', auth)
-app.get('/', (c) => c.json({ ok: true, service: 'swaply-api', ts: new Date().toISOString() }))
+app.get('/', (c) => c.json({ ok: true, service: 'soliy-api', ts: new Date().toISOString() }))
 app.get('/health', (c) => c.json({ ok: true, ts: new Date().toISOString() }))
 
 // Protected routes

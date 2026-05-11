@@ -17,7 +17,7 @@ import {
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 import { CategoryFields } from './CategoryFields'
-import type { Category } from '@swaply/types'
+import type { Category } from '@soliy/types'
 
 interface FormData {
   title: string

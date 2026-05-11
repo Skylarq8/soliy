@@ -4,8 +4,8 @@ import { AdminSidebar } from '@/components/AdminSidebar'
 import { Providers } from './providers'
 
 export const metadata: Metadata = {
-  title: { default: 'Swaply Admin', template: '%s · Swaply Admin' },
-  description: 'Swaply marketplace admin dashboard',
+  title: { default: 'Soliy Admin', template: '%s · Soliy Admin' },
+  description: 'Soliy marketplace admin dashboard',
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {

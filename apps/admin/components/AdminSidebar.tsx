@@ -40,7 +40,7 @@ export function AdminSidebar() {
             <Zap className="w-4 h-4 text-white" strokeWidth={2.5} />
           </div>
           <div className="flex flex-col leading-none">
-            <span className="text-sm font-bold tracking-tight text-[hsl(var(--foreground))]">Swaply</span>
+            <span className="text-sm font-bold tracking-tight text-[hsl(var(--foreground))]">Soliy</span>
             <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[hsl(var(--muted-foreground))]">
               Admin
             </span>

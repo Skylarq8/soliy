@@ -1,6 +1,6 @@
 import { ListingForm } from '@/components/listing/ListingForm'
 
-export const metadata = { title: 'Зар нэмэх — Swaply' }
+export const metadata = { title: 'Зар нэмэх — Soliy' }
 
 export default function NewListingPage() {
   return (

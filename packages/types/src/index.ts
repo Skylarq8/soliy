@@ -1,4 +1,4 @@
-import type { Database } from '@swaply/db'
+import type { Database } from '@soliy/db'
 
 export type Tables = Database['public']['Tables']
 

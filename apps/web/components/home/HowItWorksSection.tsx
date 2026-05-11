@@ -62,7 +62,7 @@ export function HowItWorksSection() {
             ЭНГИЙН ПРОЦЕСС
           </p>
           <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mb-3">
-            Swaply хэрхэн ажилладаг вэ?
+            Soliy хэрхэн ажилладаг вэ?
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto text-sm md:text-base">
             Зараас тохиролцоо хүртэл ойлгомжтой, хяналттай, хурдан.

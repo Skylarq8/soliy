@@ -2,7 +2,7 @@
 export const dynamic = 'force-dynamic'
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabase'
-import type { Notification } from '@swaply/types'
+import type { Notification } from '@soliy/types'
 import Link from 'next/link'
 
 const TYPE_LABELS: Record<string, string> = {

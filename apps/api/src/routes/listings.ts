@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { z } from 'zod'
-import { supabaseAdmin } from '@swaply/db'
-import type { Json } from '@swaply/db'
+import { supabaseAdmin } from '@soliy/db'
+import type { Json } from '@soliy/db'
 import type { AppEnv } from '../types'
 
 const app = new Hono<AppEnv>()

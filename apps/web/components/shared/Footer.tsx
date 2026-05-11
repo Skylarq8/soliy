@@ -44,7 +44,7 @@ export function Footer() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
                 </svg>
               </div>
-              <span className="text-xl font-extrabold text-white">Swaply</span>
+              <span className="text-xl font-extrabold text-white">Soliy</span>
             </div>
 
             <p className="text-sm leading-relaxed mb-6 max-w-xs">
@@ -115,7 +115,7 @@ export function Footer() {
         {/* Bottom bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6">
           <p className="text-xs text-white/30 order-2 sm:order-1">
-            © 2026 Swaply, Inc. Бүх эрх хуулиар хамгаалагдсан.
+            © 2026 Soliy, Inc. Бүх эрх хуулиар хамгаалагдсан.
           </p>
 
           <div className="flex items-center gap-5 order-1 sm:order-2">
