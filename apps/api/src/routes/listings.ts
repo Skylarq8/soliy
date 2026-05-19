@@ -10,7 +10,7 @@ const app = new Hono<AppEnv>()
 const createSchema = z.object({
   title:         z.string().min(3).max(100),
   description:   z.string().max(1000).optional(),
-  category:      z.enum(['clothing', 'skincare', 'makeup', 'accessories']),
+  category:      z.enum(['clothing', 'skincare', 'makeup', 'accessories', 'perfume', 'instruments']),
   photos:        z.array(z.string().url()).min(1).max(8),
   condition:     z.number().int().min(1).max(5),
   price:         z.number().int().positive().optional(),

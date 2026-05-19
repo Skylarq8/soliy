@@ -9,7 +9,7 @@ const CATEGORIES = [
   { value: 'makeup',      label: 'Будалт' },
   { value: 'accessories', label: 'Цүнх' },
   { value: 'perfume',     label: 'Үнэртэн' },
-  { value: 'instrument',  label: 'Хөгжмийн зэмсэг' },
+  { value: 'instruments', label: 'Хөгжмийн зэмсэг' },
 ]
 
 interface Props {

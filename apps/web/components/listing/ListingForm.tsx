@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import {
@@ -86,8 +86,15 @@ const inputClass =
 const selectClass =
   'w-full appearance-none rounded-2xl border border-border bg-background px-4 py-3 pr-10 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 cursor-pointer'
 
+function formatMntInput(value: number | null | undefined) {
+  if (!value || !Number.isFinite(value)) return ''
+  return value.toLocaleString('en-US')
+}
+
 export function ListingForm() {
   const router = useRouter()
+  const formTopRef = useRef<HTMLElement | null>(null)
+  const didMountRef = useRef(false)
   const [step, setStep] = useState(0)
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
@@ -136,6 +143,21 @@ export function ListingForm() {
       setCheckingAuth(false)
     })
   }, [router])
+
+  useEffect(() => {
+    register('price')
+  }, [register])
+
+  useEffect(() => {
+    if (!didMountRef.current) {
+      didMountRef.current = true
+      return
+    }
+
+    window.requestAnimationFrame(() => {
+      formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    })
+  }, [step])
 
   async function uploadPhotos(files: FileList | null) {
     if (!files?.length) return
@@ -261,7 +283,7 @@ export function ListingForm() {
         </div>
       </aside>
 
-      <section className="rounded-3xl border border-border bg-card p-5 md:p-6">
+      <section ref={formTopRef} className="rounded-3xl border border-border bg-card p-5 md:p-6">
         <div className="mb-5 border-b border-border pb-4">
           <div className="flex items-center justify-between gap-4">
             <div>
@@ -466,9 +488,14 @@ export function ListingForm() {
             <div className="rounded-2xl border border-border bg-background p-4">
               <label className="text-sm font-medium">Үнэ (₮)</label>
               <input
-                type="number"
-                {...register('price', { valueAsNumber: true })}
-                placeholder="120000"
+                type="text"
+                inputMode="numeric"
+                value={formatMntInput(price)}
+                onChange={e => {
+                  const digits = e.target.value.replace(/[^\d]/g, '')
+                  setValue('price', digits ? Number(digits) : null, { shouldDirty: true, shouldValidate: true })
+                }}
+                placeholder="120,000"
                 className="mt-2 w-full border-0 bg-transparent p-0 text-3xl font-bold outline-none placeholder:text-muted-foreground/50"
               />
               <p className="mt-2 text-xs text-muted-foreground">{marketHint}</p>

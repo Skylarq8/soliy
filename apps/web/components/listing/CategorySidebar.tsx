@@ -8,7 +8,8 @@ const CATEGORIES = [
   { value: 'accessories',  label: 'Цүнх' },
   { value: 'skincare',     label: 'Арьс засал' },
   { value: 'makeup',       label: 'Будалт' },
-  { value: 'fragrance',    label: 'Үнэртэн' },
+  { value: 'perfume',      label: 'Үнэртэн' },
+  { value: 'instruments',  label: 'Хөгжмийн зэмсэг' },
   { value: 'jewelry',      label: 'Гоёл' },
 ]
 
