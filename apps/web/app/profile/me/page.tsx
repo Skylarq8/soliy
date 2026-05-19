@@ -458,8 +458,8 @@ function VerificationModal({
   }
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-4 pb-24 sm:pb-4">
-      <div className="w-full max-w-md bg-card rounded-3xl border border-border shadow-xl overflow-hidden flex flex-col max-h-[calc(100vh-7rem)] sm:max-h-[92vh]">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 pb-24 sm:pb-4">
+      <div className="w-full max-w-md bg-card rounded-3xl border border-border shadow-xl overflow-hidden flex flex-col max-h-[calc(100vh-8rem)] sm:max-h-[92vh]">
 
         {/* Header */}
         <div className="flex items-center gap-2 px-5 py-4 border-b border-border">
