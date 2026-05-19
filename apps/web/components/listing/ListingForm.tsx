@@ -81,10 +81,10 @@ const cityOptions = [
 ] as const
 
 const inputClass =
-  'w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10'
+  'w-full rounded-2xl border border-border bg-background px-4 py-3 text-base outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 md:text-sm'
 
 const selectClass =
-  'w-full appearance-none rounded-2xl border border-border bg-background px-4 py-3 pr-10 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 cursor-pointer'
+  'w-full appearance-none rounded-2xl border border-border bg-background px-4 py-3 pr-10 text-base outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/10 cursor-pointer md:text-sm'
 
 function formatMntInput(value: number | null | undefined) {
   if (!value || !Number.isFinite(value)) return ''
@@ -93,7 +93,6 @@ function formatMntInput(value: number | null | undefined) {
 
 export function ListingForm() {
   const router = useRouter()
-  const formTopRef = useRef<HTMLElement | null>(null)
   const didMountRef = useRef(false)
   const [step, setStep] = useState(0)
   const [loading, setLoading] = useState(false)
@@ -155,7 +154,7 @@ export function ListingForm() {
     }
 
     window.requestAnimationFrame(() => {
-      formTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      window.scrollTo({ top: 0, behavior: 'smooth' })
     })
   }, [step])
 
@@ -283,7 +282,7 @@ export function ListingForm() {
         </div>
       </aside>
 
-      <section ref={formTopRef} className="rounded-3xl border border-border bg-card p-5 md:p-6">
+      <section className="rounded-3xl border border-border bg-card p-5 md:p-6">
         <div className="mb-5 border-b border-border pb-4">
           <div className="flex items-center justify-between gap-4">
             <div>

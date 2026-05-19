@@ -10,7 +10,7 @@ interface Props {
 }
 
 const cls =
-  'w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground/60'
+  'w-full rounded-xl border border-border bg-card px-3.5 py-2.5 text-base outline-none transition focus:border-primary focus:ring-2 focus:ring-primary/15 placeholder:text-muted-foreground/60 md:text-sm'
 
 function Label({ children }: { children: React.ReactNode }) {
   return (

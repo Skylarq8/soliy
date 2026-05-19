@@ -7,7 +7,7 @@ const CATEGORIES = [
   { value: 'clothing',    label: 'Хувцас' },
   { value: 'skincare',    label: 'Skincare' },
   { value: 'makeup',      label: 'Будалт' },
-  { value: 'accessories', label: 'Цүнх' },
+  { value: 'accessories', label: 'Accessories' },
   { value: 'perfume',     label: 'Үнэртэн' },
   { value: 'instruments', label: 'Хөгжмийн зэмсэг' },
 ]
