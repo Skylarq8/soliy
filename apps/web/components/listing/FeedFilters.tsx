@@ -5,7 +5,7 @@ import { useTransition } from 'react'
 const CATEGORIES = [
   { value: '',            label: 'Бүгд' },
   { value: 'clothing',    label: 'Хувцас' },
-  { value: 'skincare',    label: 'Арьс засал' },
+  { value: 'skincare',    label: 'Skincare' },
   { value: 'makeup',      label: 'Будалт' },
   { value: 'accessories', label: 'Цүнх' },
   { value: 'perfume',     label: 'Үнэртэн' },

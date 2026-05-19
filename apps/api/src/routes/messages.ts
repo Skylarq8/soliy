@@ -146,7 +146,7 @@ app.post('/', zValidator('json', z.object({
     .insert({
       proposal_id,
       sender_id: senderId,
-      content: blocked ? '[Message blocked: contact info detected]' : content,
+      content: blocked ? '[Мессеж блоклогдсон: холбоо барих мэдээлэл илэрсэн]' : content,
       blocked,
     })
     .select()

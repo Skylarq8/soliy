@@ -135,8 +135,8 @@ export default async function AdminDashboard() {
           <DashboardChart data={chartData} />
         </div>
 
-        <div className="space-y-3">
-          <div className="rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
+        <div className="flex flex-col gap-3">
+          <div className="flex-1 rounded-2xl border border-[hsl(var(--border))] bg-[hsl(var(--card))] p-5">
             <h2 className="text-sm font-semibold mb-3">Quick Actions</h2>
             <div className="space-y-1">
               {[

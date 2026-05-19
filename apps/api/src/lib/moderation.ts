@@ -43,6 +43,30 @@ const PATTERNS: RegExp[] = [
   // "<platform> account <handle_with_underscore_or_dot>" — e.g. "ig account the_skylarq"
   // Identifier must contain _ or . (typical username format) to avoid false-positives on requests like "accountaa uguuch"
   new RegExp(`${SOCIAL}\\s+(?:(?:account|profile|нэр|handle)\\b\\s+)?(?:\\w+[._]\\w+)`, 'gi'),
+
+  // Mongolian (Cyrillic): phone number keywords
+  /дугаараа?|дугара/gi,
+
+  // Mongolian (Cyrillic): bank account — данс and its common case suffixes
+  /данс(?:аа|аар|ны|руу|нд|аас|ан)?/gi,
+
+  // Mongolian (Cyrillic): meeting-up intent
+  /уулзъя|уулзая|уулзаад/gi,
+
+  // Mongolian (Cyrillic): location/address sharing
+  /танайх/gi,
+
+  // Mongolian (Latin script): phone number — dugaar, dugaara, dugaaraa, dugarna
+  /\bdugaar(?:aa?)?\b/gi,
+
+  // Mongolian (Latin script): bank account — dans, dansaa, dansnii, dansnii dugaar
+  /\bdans(?:aa|nii(?:\s+dugaar)?)?\b/gi,
+
+  // Mongolian (Latin script): meeting-up — uulzy, uulzii, uulzya, uulzaad
+  /\buulz(?:y|ii|ya|aad)\b/gi,
+
+  // Mongolian (Latin script): location — haana ve, haana bna, haana
+  /\bhaana\b/gi,
 ]
 
 export function containsContactInfo(text: string): boolean {
