@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'res.cloudinary.com' },
     ],
   },
-  transpilePackages: ['@swaply/ui', '@swaply/db', '@swaply/types'],
+  transpilePackages: ['@soliy/ui', '@soliy/db', '@soliy/types'],
 }
 
 export default nextConfig

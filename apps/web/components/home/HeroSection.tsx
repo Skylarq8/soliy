@@ -74,10 +74,10 @@ export function HeroSection() {
 
               <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 p-3 sm:p-5 items-stretch">
                 <ProductPreview
-                  image="https://images.unsplash.com/photo-1551232864-3f0890e580d9?auto=format&fit=crop&w=900&q=80"
+                  image="https://i.pinimg.com/1200x/02/5d/b2/025db23d82f5665a18b0c27f0699ab49.jpg"
                   title="Кашмер пальто"
                   price="220,000₮"
-                  user="@solongo"
+                  user="@nomio"
                   verified
                 />
 
@@ -93,10 +93,10 @@ export function HeroSection() {
                 </div>
 
                 <ProductPreview
-                  image="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80"
+                  image="https://i.pinimg.com/1200x/d6/ed/11/d6ed11030e110172774ff8683d34f910.jpg"
                   title="Nike пүүз"
                   price="185,000₮"
-                  user="@temka"
+                  user="@anu"
                 />
               </div>
 

@@ -35,7 +35,7 @@ export function ScrollReveal({
 }: ScrollRevealProps) {
   const Comp = as ?? 'div'
   const ref = useRef<HTMLElement | null>(null)
-  const [shown, setShown] = useState(false)
+  const [shown, setShown] = useState(true)
 
   useEffect(() => {
     const node = ref.current
@@ -51,6 +51,10 @@ export function ScrollReveal({
       setShown(true)
       return
     }
+
+    const rect = node.getBoundingClientRect()
+    const isInitiallyVisible = rect.top < window.innerHeight && rect.bottom > 0
+    setShown(isInitiallyVisible)
 
     const observer = new IntersectionObserver(
       entries => {

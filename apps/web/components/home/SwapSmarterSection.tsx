@@ -75,8 +75,8 @@ export function SwapSmarterSection() {
             <div className="p-4 md:p-7">
               <div className="grid md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-5 items-stretch">
                 <DealItem
-                  owner="Солонго санал болгож байна"
-                  image="https://images.unsplash.com/photo-1551232864-3f0890e580d9?auto=format&fit=crop&w=900&q=80"
+                  owner="Номио санал болгож байна"
+                  image="https://i.pinimg.com/1200x/02/5d/b2/025db23d82f5665a18b0c27f0699ab49.jpg"
                   title="Кашмер пальто"
                   price="220,000₮"
                   meta="Цэвэрхэн · M size"
@@ -91,8 +91,8 @@ export function SwapSmarterSection() {
                 </div>
 
                 <DealItem
-                  owner="Тэмкагийн бараа"
-                  image="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=80"
+                  owner="Анугийн бараа"
+                  image="https://i.pinimg.com/1200x/d6/ed/11/d6ed11030e110172774ff8683d34f910.jpg"
                   title="Nike пүүз"
                   price="185,000₮"
                   meta="Original · 39 размер"

@@ -27,7 +27,7 @@ const STEPS = [
   },
   {
     num: '03',
-    color: 'bg-amber-500/10 text-amber-600',
+    color: 'bg-amber-500/20 text-amber-600',
     numBg: 'bg-amber-500',
     title: 'Ярилцаж тохирох',
     desc: 'Суулгасан чатаараа шууд ярилцаарай. Өөрийн хурдаар гэрээгээ байгуулаарай.',
