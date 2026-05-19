@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { api } from '@/lib/api'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import type { User, Listing, VerificationStatus } from '@soliy/types'
 
 type Tab = 'active' | 'sold' | 'reviews'
@@ -457,8 +458,8 @@ function VerificationModal({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-md bg-card rounded-3xl border border-border shadow-xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center bg-black/50 backdrop-blur-sm p-4 pb-24 sm:pb-4">
+      <div className="w-full max-w-md bg-card rounded-3xl border border-border shadow-xl overflow-hidden flex flex-col max-h-[calc(100vh-7rem)] sm:max-h-[92vh]">
 
         {/* Header */}
         <div className="flex items-center gap-2 px-5 py-4 border-b border-border">
@@ -497,7 +498,7 @@ function VerificationModal({
           </div>
           <div className="h-1.5 rounded-full bg-muted overflow-hidden">
             <div
-              className="h-full rounded-full bg-rose-400 transition-all duration-500"
+              className="h-full rounded-full bg-primary transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -543,18 +544,18 @@ function VerificationModal({
                     onClick={() => onTierChange(t)}
                     className={`w-full rounded-2xl border-2 p-4 text-left transition-all ${
                       tier === t
-                        ? 'border-rose-400/70 bg-rose-50/60 dark:bg-rose-950/20'
+                        ? 'border-primary/70 bg-primary/10'
                         : 'border-border hover:bg-muted/30'
                     }`}
                   >
-                    <div className="flex items-start justify-between gap-3">
-                      <div className="flex items-start gap-3">
-                        <div className={`mt-0.5 w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
-                          tier === t ? 'bg-rose-100 text-rose-500 dark:bg-rose-950/60' : 'bg-muted text-muted-foreground'
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="flex min-w-0 flex-1 items-center gap-3">
+                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                          tier === t ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'
                         }`}>
                           {icon}
                         </div>
-                        <div>
+                        <div className="min-w-0">
                           <p className="text-sm font-bold">{title}</p>
                           <p className="text-xs text-muted-foreground mt-0.5">{desc}</p>
                           <div className="flex items-center gap-1 mt-2">
@@ -565,8 +566,8 @@ function VerificationModal({
                           </div>
                         </div>
                       </div>
-                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 mt-0.5 transition-all ${
-                        tier === t ? 'border-rose-400 bg-rose-400' : 'border-muted-foreground/30'
+                      <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all ${
+                        tier === t ? 'border-primary bg-primary' : 'border-muted-foreground/30'
                       }`}>
                         {tier === t && (
                           <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
@@ -747,7 +748,7 @@ function VerificationModal({
             <button
               onClick={() => setStep(s => (s + 1) as 1 | 2 | 3)}
               disabled={step === 2 && verifyPhotos.length === 0}
-              className="w-full py-3.5 rounded-2xl bg-rose-400 text-white text-sm font-semibold hover:bg-rose-500 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3.5 rounded-2xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {step === 1 ? 'Үргэлжлүүлэх' : 'Дараагийн алхам'}
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -758,7 +759,7 @@ function VerificationModal({
             <button
               onClick={() => onSubmit({ photos: verifyPhotos, serialNumber, receiptUrl: receiptUrl ?? undefined, certificateUrl: certificateUrl ?? undefined })}
               disabled={saving || verifyPhotos.length === 0}
-              className="w-full py-3.5 rounded-2xl bg-rose-400 text-white text-sm font-semibold hover:bg-rose-500 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-3.5 rounded-2xl bg-primary text-primary-foreground text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center justify-center gap-2"
             >
               {saving ? 'Илгээж байна...' : (
                 <>
@@ -931,6 +932,8 @@ export default function MyProfilePage() {
     loading: boolean
     onConfirm: () => Promise<void>
   } | null>(null)
+
+  useLockBodyScroll(Boolean(editing || editingListing || verifyingListing || confirmState))
 
   async function fetchVerificationStatuses(rows: Listing[]) {
     if (rows.length === 0) return

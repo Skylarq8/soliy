@@ -6,6 +6,7 @@ import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, Loader2, Minus, Repea
 import type { Listing } from '@soliy/types'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 
 interface Props {
   listing: Listing
@@ -53,6 +54,7 @@ const moneyTones = {
 
 export function SwapProposalModal({ listing, onClose }: Props) {
   const router = useRouter()
+  useLockBodyScroll(true)
   const [step, setStep] = useState(0)
   const [myListings, setMyListings] = useState<Listing[]>([])
   const [selected, setSelected] = useState<Listing | null>(null)

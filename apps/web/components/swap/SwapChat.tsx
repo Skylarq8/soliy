@@ -3,6 +3,7 @@ import { useState, useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { Check, Eye, ImagePlus, Loader2, SendHorizonal, X, ZoomIn } from 'lucide-react'
 import { useSwapChat } from '@/hooks/useSwapChat'
+import { useLockBodyScroll } from '@/hooks/useLockBodyScroll'
 import { api } from '@/lib/api'
 import { supabase } from '@/lib/supabase'
 import type { Message, User } from '@soliy/types'
@@ -36,6 +37,7 @@ export function SwapChat({ proposalId, otherUser }: Props) {
   const [error, setError] = useState('')
   const [myId, setMyId] = useState<string | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
+  useLockBodyScroll(Boolean(previewImage))
   // Timestamp of the last time the OTHER user read messages — drives single vs double tick
   const [peerReadAt, setPeerReadAt] = useState<Date | null>(null)
   const messagesRef = useRef<HTMLDivElement>(null)
