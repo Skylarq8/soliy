@@ -16,7 +16,7 @@ const FEATURES = [
 ]
 
 const TIMELINE = [
-  { label: 'Санал ирсэн', value: 'Кашмер пальто ⇄ Nike пүүз' },
+  { label: 'Санал ирсэн', value: 'Nike пүүз ⇄ Кашмер пальто' },
   { label: 'Үнийн зөрүү', value: '+35,000₮ нэмэлт' },
   { label: 'Төлөв', value: 'Хүлээгдэж байна' },
 ]
@@ -75,11 +75,11 @@ export function SwapSmarterSection() {
             <div className="p-4 md:p-7">
               <div className="grid md:grid-cols-[1fr_auto_1fr] gap-4 md:gap-5 items-stretch">
                 <DealItem
-                  owner="Номио санал болгож байна"
-                  image="https://i.pinimg.com/1200x/02/5d/b2/025db23d82f5665a18b0c27f0699ab49.jpg"
-                  title="Кашмер пальто"
-                  price="220,000₮"
-                  meta="Цэвэрхэн · M size"
+                  owner="Ану санал болгож байна"
+                  image="https://i.pinimg.com/1200x/d6/ed/11/d6ed11030e110172774ff8683d34f910.jpg"
+                  title="Nike пүүз"
+                  price="185,000₮"
+                  meta="Original · 39 размер"
                 />
 
                 <div className="flex md:flex-col items-center justify-center gap-2">
@@ -91,11 +91,11 @@ export function SwapSmarterSection() {
                 </div>
 
                 <DealItem
-                  owner="Анугийн бараа"
-                  image="https://i.pinimg.com/1200x/d6/ed/11/d6ed11030e110172774ff8683d34f910.jpg"
-                  title="Nike пүүз"
-                  price="185,000₮"
-                  meta="Original · 39 размер"
+                  owner="Номиогийн бараа"
+                  image="https://i.pinimg.com/1200x/02/5d/b2/025db23d82f5665a18b0c27f0699ab49.jpg"
+                  title="Кашмер пальто"
+                  price="220,000₮"
+                  meta="Цэвэрхэн · M size"
                 />
               </div>
 
@@ -104,7 +104,7 @@ export function SwapSmarterSection() {
                   <div>
                     <p className="text-xs font-bold tracking-widest text-accent uppercase">Balance</p>
                     <p className="text-lg md:text-xl font-extrabold text-foreground mt-1">
-                      Солонго үнийн зөрүүг тэнцүүлэхээр <span className="text-accent">+35,000₮</span> нэмлээ
+                      Ану үнийн зөрүүг тэнцүүлэхээр <span className="text-accent">+35,000₮</span> нэмлээ
                     </p>
                   </div>
                   <div className="rounded-2xl bg-card border border-border px-4 py-3 text-right">

@@ -27,7 +27,7 @@ const STEPS = [
   },
   {
     num: '03',
-    color: 'bg-amber-500/20 text-amber-600',
+    color: 'bg-amber-500/10 text-amber-600',
     numBg: 'bg-amber-500',
     title: 'Ярилцаж тохирох',
     desc: 'Суулгасан чатаараа шууд ярилцаарай. Өөрийн хурдаар гэрээгээ байгуулаарай.',
@@ -84,7 +84,7 @@ export function HowItWorksSection() {
               >
                 {/* Icon box with number badge */}
                 <div className="relative mb-5">
-                  <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center bg-card border border-border shadow-card`}>
+                  <div className={`w-16 h-16 rounded-2xl ${step.color} flex items-center justify-center border border-border shadow-card`}>
                     {step.icon}
                   </div>
                   <div className={`absolute -top-2 -right-2 w-6 h-6 rounded-full ${step.numBg} text-white text-[10px] font-bold flex items-center justify-center`}>

@@ -60,8 +60,10 @@ export function HeroSection() {
         </ScrollReveal>
 
         <ScrollReveal direction="right" delay={120} className="w-full max-w-xl mx-auto">
-          <div className="rounded-[2rem] border border-border bg-card/75 p-3 md:p-4 shadow-card">
-            <div className="rounded-[1.5rem] overflow-hidden bg-background border border-border">
+          <div className="relative isolate rounded-[2.15rem] bg-[linear-gradient(135deg,hsl(var(--primary)/0.7),hsl(var(--accent)/0.28)_36%,hsl(var(--border)/0.55)_68%,hsl(var(--primary)/0.4))] p-[1px] shadow-[0_26px_90px_hsl(var(--primary)/0.18)]">
+            <div className="pointer-events-none absolute -inset-5 -z-10 rounded-[2.75rem] bg-[radial-gradient(circle_at_16%_10%,hsl(var(--primary)/0.26),transparent_34%),radial-gradient(circle_at_88%_18%,hsl(var(--accent)/0.18),transparent_36%),radial-gradient(circle_at_50%_105%,hsl(var(--price)/0.16),transparent_42%)] blur-2xl" />
+            <div className="rounded-[2.05rem] bg-card/80 p-3 backdrop-blur-xl md:p-4">
+              <div className="rounded-[1.5rem] overflow-hidden bg-background/95 border border-border/70">
               <div className="flex items-center justify-between px-4 py-3 border-b border-border">
                 <div>
                   <p className="text-xs font-bold tracking-widest text-primary uppercase">Солилцооны санал</p>
@@ -74,10 +76,10 @@ export function HeroSection() {
 
               <div className="grid grid-cols-[1fr_auto_1fr] gap-2 sm:gap-4 p-3 sm:p-5 items-stretch">
                 <ProductPreview
-                  image="https://i.pinimg.com/1200x/02/5d/b2/025db23d82f5665a18b0c27f0699ab49.jpg"
-                  title="Кашмер пальто"
-                  price="220,000₮"
-                  user="@nomio"
+                  image="https://i.pinimg.com/1200x/d6/ed/11/d6ed11030e110172774ff8683d34f910.jpg"
+                  title="Nike пүүз"
+                  price="185,000₮"
+                  user="@anu"
                   verified
                 />
 
@@ -93,10 +95,10 @@ export function HeroSection() {
                 </div>
 
                 <ProductPreview
-                  image="https://i.pinimg.com/1200x/d6/ed/11/d6ed11030e110172774ff8683d34f910.jpg"
-                  title="Nike пүүз"
-                  price="185,000₮"
-                  user="@anu"
+                  image="https://i.pinimg.com/1200x/02/5d/b2/025db23d82f5665a18b0c27f0699ab49.jpg"
+                  title="Кашмер пальто"
+                  price="220,000₮"
+                  user="@nomio"
                 />
               </div>
 
@@ -111,6 +113,7 @@ export function HeroSection() {
                 ))}
               </div>
             </div>
+          </div>
           </div>
         </ScrollReveal>
       </div>
