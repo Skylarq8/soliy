@@ -85,8 +85,9 @@ export function SwapSmarterSection() {
                 <div className="flex flex-col items-center justify-center gap-2">
                   <div className="hidden h-16 w-px bg-border md:block" />
                   <div className="w-12 h-12 rounded-full bg-background border border-border flex items-center justify-center text-primary font-black shadow-sm">
-                    <span className="md:hidden">↕</span>
-                    <span className="hidden md:inline">⇄</span>
+                    <svg className="w-6 h-6 rotate-90 md:rotate-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                    </svg>
                   </div>
                   <div className="hidden h-16 w-px bg-border md:block" />
                 </div>
