@@ -82,12 +82,13 @@ export function SwapSmarterSection() {
                   meta="Original · 39 размер"
                 />
 
-                <div className="flex md:flex-col items-center justify-center gap-2">
-                  <div className="h-px md:h-16 w-12 md:w-px bg-border" />
+                <div className="flex flex-col items-center justify-center gap-2">
+                  <div className="hidden h-16 w-px bg-border md:block" />
                   <div className="w-12 h-12 rounded-full bg-background border border-border flex items-center justify-center text-primary font-black shadow-sm">
-                    ⇄
+                    <span className="md:hidden">↕</span>
+                    <span className="hidden md:inline">⇄</span>
                   </div>
-                  <div className="h-px md:h-16 w-12 md:w-px bg-border" />
+                  <div className="hidden h-16 w-px bg-border md:block" />
                 </div>
 
                 <DealItem
